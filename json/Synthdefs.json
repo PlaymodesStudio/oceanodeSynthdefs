@@ -1,0 +1,1102 @@
+{
+    "Analog": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Levels:0:0:1, vi:Type:0:0:3, vf:Pitch:48:0:128, vf:PW:0:0:1, vf:vibA:0:0:1, vf:vibF:1:0:8, vf:tremA:0:0:1, vf:tremF:1:0:8, vf:FMPitch:48:12:96, vf:FMAmp:0:0:500",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Analog13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vi:Type:0:0:3, vf:Pitch:48:0:128, vf:PW:0:0:1, vf:vibA:0:0:1, vf:vibF:1:0:8, vf:tremA:0:0:1, vf:tremF:1:0:8, vf:FMPitch:48:12:96, vf:FMAmp:0:0:500",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "AnalogMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Levels:0:0:1, vi:Type:0:0:3, vf:Pitch:48:0:128, vf:PW:0:0:1, vf:vibA:0:0:1, vf:vibF:1:0:8, vf:tremA:0:0:1, vf:tremF:1:0:8, vf:FMPitch:48:12:96, vf:FMAmp:0:0:500",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "IkedaBass": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Pitch:36:12:128, vf:Harm:14:0:64, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "IkedaBass13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Pitch:36:12:128, vf:Harm:14:0:64, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "IkedaBassMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Pitch:36:12:128, vf:Harm:14:0:64, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+     "TB303": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Pitch:36:0:128, vi:WaveType:0:0:1, vf:Cutoff:48:0:128, vf:Resonance:0.2:0:1, vf:Sustain:0:0:8, vf:Decay:1:0:8, vf:Envelope:1000:0:10000, vi:Trigger:0:0:1, vf:Level:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "TB30313": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Pitch:36:0:128, vi:WaveType:0:0:1, vf:Cutoff:48:0:128, vf:Resonance:0.2:0:1, vf:Sustain:0:0:8, vf:Decay:1:0:8, vf:Envelope:1000:0:10000, vi:Trigger:0:0:1, vf:Level:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "TB303Mono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Pitch:36:0:128, vi:WaveType:0:0:1, vf:Cutoff:48:0:128, vf:Resonance:0.2:0:1, vf:Sustain:0:0:8, vf:Decay:1:0:8, vf:Envelope:1000:0:10000, vi:Trigger:0:0:1, vf:Level:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+     "Buzz13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Pitch:36:0:128, vf:Noise:8210:40:20000, vf:HiF:800:40:20000, vf:Distortion:5:0:50, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PHMod": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:CarP:48:12:108, vf:ModP:60:12:108, vf:PMIndex:0:0:20, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PHMod13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:CarP:48:12:108, vf:ModP:60:12:108, vf:PMIndex:0:0:20, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PHModMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:CarP:48:12:108, vf:ModP:60:12:108, vf:PMIndex:0:0:20, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FM": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Pitch:36:12:120, vi:mWave:0:0:3, vi:mRatio:1:0:16, vf:mRatioFine:0:0:1, vi:cRatio:1:0:16, vf:cRatioFine:0:0:1, vf:Index:0:0:20, vf:mFeedback:0:0:4, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FM13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Pitch:36:12:120, vi:mWave:0:0:3, vi:mRatio:1:0:16, vf:mRatioFine:0:0:1, vi:cRatio:1:0:16, vf:cRatioFine:0:0:1, vf:Index:0:0:20, vf:mFeedback:0:0:4, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FMMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Pitch:36:12:120, vi:mWave:0:0:3, vi:mRatio:1:0:16, vf:mRatioFine:0:0:1, vi:cRatio:1:0:16, vf:cRatioFine:0:0:1, vf:Index:0:0:20, vf:mFeedback:0:0:4, vf:Levels:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Noise": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Levels:0:0:1, vi:Type:0:0:3, vf:Density:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+     "Noise13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vi:Type:0:0:3, vf:Density:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+      "NoiseMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Levels:0:0:1, vi:Type:0:0:3, vf:Density:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "DynKlang": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:FreqArray:60:0:10000, vf:AmpArray:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "DynKlang13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:FreqArray:60:0:10000, vf:AmpArray:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+     "DynKlangMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:FreqArray:60:0:10000, vf:AmpArray:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MiniKlang": {
+        "In_Size": 2,
+        "Out_Size": 2,
+        "Params": "vf:FreqArray:60:0:10000, vf:AmpArray:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FORMS": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:FreqArray:60:0:10000, vf:AmpArray:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Click": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+     "Click13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+     "ClickMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "KickDrum": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vi:WaveType:0:0:1, vi:Trigger:0:0:1, vf:hiFreq:18000:10:20000, vf:loPitch:36:12:120, vf:Freq1Time:0.035:0:1, vf:Freq2Time:0.8:0:1, vf:FreqCurve:-8:-20:20, vf:Attack:0:0:1, vf:Sustain:0.1:0:1, vf:Release:3:0:6, vf:PMPitch:0:0:36, vf:PMIndex:0:0:64",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "KickDrum13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vi:WaveType:0:0:1, vi:Trigger:0:0:1, vf:hiFreq:18000:10:20000, vf:loPitch:36:12:120, vf:Freq1Time:0.035:0:1, vf:Freq2Time:0.8:0:1, vf:FreqCurve:-8:-20:20, vf:Attack:0:0:1, vf:Sustain:0.1:0:1, vf:Release:3:0:6, vf:PMPitch:0:0:36, vf:PMIndex:0:0:64",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+     "KickDrumMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vi:WaveType:0:0:1, vi:Trigger:0:0:1, vf:hiFreq:18000:10:20000, vf:loPitch:36:12:120, vf:Freq1Time:0.035:0:1, vf:Freq2Time:0.8:0:1, vf:FreqCurve:-8:-20:20, vf:Attack:0:0:1, vf:Sustain:0.1:0:1, vf:Release:3:0:6, vf:PMPitch:0:0:36, vf:PMIndex:0:0:64",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "KickDrumB": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vi:Trigger:0:0:1, vf:Pitch:36:0:128, vf:PitchCurve:-20:-100:0, vf:AmpCurve:-20:-100:0, vf:PitchDecay:4:0:8, vf:AmpDecay:4:0:8, vf:hiTune:300:0:5000, vf:Harmonics:40:0:100",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "KickDrumB13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vi:Trigger:0:0:1, vf:Pitch:36:0:128, vf:PitchCurve:-20:-100:0, vf:AmpCurve:-20:-100:0, vf:PitchDecay:4:0:8, vf:AmpDecay:4:0:8, vf:hiTune:300:0:5000, vf:Harmonics:40:0:100",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "KickDrumBMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vi:Trigger:0:0:1, vf:Pitch:36:0:128, vf:PitchCurve:-20:-100:0, vf:AmpCurve:-20:-100:0, vf:PitchDecay:4:0:8, vf:AmpDecay:4:0:8, vf:hiTune:300:0:5000, vf:Harmonics:40:0:100",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "SyncSaw": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Levels:0:0:1, vf:Pitch:36:12:120, vf:SyncHz:440:20:4000",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "SyncSaw13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vf:Pitch:36:12:120, vf:SyncHz:440:20:4000",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+     "SyncSawMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Levels:0:0:1, vf:Pitch:36:12:120, vf:SyncHz:440:20:4000",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Sampler": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Levels:0:0:1, vf:Speed:1:-32:32, vi:Loop:0:0:1, vf:StartPos:0:0:1, vi:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
+    "Sampler13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vf:Speed:1:-32:32, vi:Loop:0:0:1, vf:StartPos:0:0:1, vi:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
+     "SamplerMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Levels:0:0:1, vf:Speed:1:-32:32, vi:Loop:0:0:1, vf:StartPos:0:0:1, vi:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
+    "GrainSampler": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Levels:0:0:1, vf:Speed:1:-32:32, vf:GrainSize:0.1:0.00001:2, vi:EnvType:0:0:1, vf:StartPos:0:0:1, vi:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
+    "GrainSampler13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vf:Speed:1:-32:32, vf:GrainSize:0.1:0.00001:2, vi:EnvType:0:0:1, vf:StartPos:0:0:1, vi:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
+     "GrainSamplerMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Levels:0:0:1, vf:Speed:1:-32:32, vf:GrainSize:0.1:0.00001:2, vi:EnvType:0:0:1, vf:StartPos:0:0:1, vi:Trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
+    "DynKlank": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:FreqArray:60:0:10000, vf:DecayArray:0.5:0:4, vf:AmpArray:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "DynKlank13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:FreqArray:60:0:10000, vf:DecayArray:0.5:0:4, vf:AmpArray:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+     "DynKlankMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:FreqArray:60:0:10000, vf:DecayArray:0.5:0:4, vf:AmpArray:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "RingMod": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Pitch:72:12:120, vf:Strength:1:0:4, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "RingMod13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Pitch:72:12:120, vf:Strength:1:0:4, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "RingModMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Pitch:72:12:120, vf:Strength:1:0:4, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "AmpMod": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Pitch:72:12:120, vf:Strength:1:0:4, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "AmpMod13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Pitch:72:12:120, vf:Strength:1:0:4, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "AmpModMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Pitch:72:12:120, vf:Strength:1:0:4, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Filter": {
+        "In_Size": 78,
+        "Out_Size": 78, 
+        "Params": "vi:Type:0:0:4, vf:Pitch:128:0:128, vf:Q:1:0.005:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Filter13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vi:Type:0:0:4, vf:Pitch:128:0:128, vf:Q:1:0.005:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FilterMono": {
+        "In_Size": 1,
+        "Out_Size": 1, 
+        "Params": "vi:Type:0:0:4, vf:Pitch:128:0:128, vf:Q:1:0.005:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "BandPass78": {
+        "In_Size": 78,
+        "Out_Size": 78, 
+        "Params": "vf:Pitch:128:0:128, vf:Q:1:0.005:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "BandPass13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:Pitch:128:0:128, vf:Q:1:0.005:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Comb": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:InputGain:1:0:1, vf:Pitch:48:0:128, vf:Decay:1:0.01:12, vf:Mix:0:0:1, vf:vibA:0:0:1, vf:vibF:1:0:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Comb13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:InputGain:1:0:1, vf:Pitch:48:0:128, vf:Decay:1:0.01:12, vf:Mix:0:0:1, vf:vibA:0:0:1, vf:vibF:1:0:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+     "CombMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:InputGain:1:0:1, vf:Pitch:48:0:128, vf:Decay:1:0.01:12, vf:Mix:0:0:1, vf:vibA:0:0:1, vf:vibF:1:0:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Reverb2": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:PreDelay:0.02:0:1, vf:Time:4:0.1:20, vf:LowPass:90:10:120, vf:HiPass:12:10:120, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Reverb13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:PreDelay:0.02:0:1, vf:Time:4:0.1:20, vf:LowPass:90:10:120, vf:HiPass:12:10:120, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "ReverbMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:PreDelay:0.02:0:1, vf:Time:4:0.1:20, vf:LowPass:90:10:120, vf:HiPass:12:10:120, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Echo": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:InputGain:1:0:1, vf:Delay:0.2:0.01:2, vf:Feed:0.3:0:1, vi:FilterType:0:0:3, vf:CutOff:60:12:120, vf:Resonance:0.2:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Echo13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:InputGain:1:0:1, vf:Delay:0.2:0.01:2, vf:Feed:0.3:0:1, vi:FilterType:0:0:3, vf:CutOff:60:12:120, vf:Resonance:0.2:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "EchoMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:InputGain:1:0:1, vf:Delay:0.2:0.01:2, vf:Feed:0.3:0:1, vi:FilterType:0:0:3, vf:CutOff:60:12:120, vf:Resonance:0.2:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PitchDelay13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:InputGain:1:0:1, vf:Pitch:36:0:128, vf:Feed:0.3:0:1, vi:FilterType:0:0:3, vf:CutOff:60:12:120, vf:Resonance:0.2:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Distort": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:preGain:0.2:0:0.999, vi:Type:0:0:5, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Distort13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:preGain:0.2:0:0.999, vi:Type:0:0:5, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "DistortMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:preGain:0.2:0:0.999, vi:Type:0:0:5, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Flanger": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Delay:0.005:0:0.02, vf:FeedBack:0.5:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Flanger13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Delay:0.005:0:0.02, vf:FeedBack:0.5:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FlangerMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Delay:0.005:0:0.02, vf:FeedBack:0.5:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FlangerPitch": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Pitch:60:0:128, vf:FeedBack:0.5:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FlangerPitch13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Pitch:60:0:128, vf:FeedBack:0.5:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FlangerPitchMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Pitch:60:0:128, vf:FeedBack:0.5:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Phaser": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Frequency:2:0:10, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Phaser13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Frequency:2:0:10, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PhaserMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Frequency:2:0:10, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Chorus": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Frequency:0.01:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Chorus13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Frequency:0.01:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "ChorusMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Frequency:0.01:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Compressor": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Threshold:1:0.01:1, vf:SlopeAbove:1:0:1, vf:SlopeBelow:1:0:1, vf:Attack:0.005:0:0.01, vf:Release:0.01:0:0.05, vf:MakeUp:1:1:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Compressor13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Threshold:1:0.01:1, vf:SlopeAbove:1:0:1, vf:SlopeBelow:1:0:1, vf:Attack:0.005:0:0.01, vf:Release:0.01:0:0.05, vf:MakeUp:1:1:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "CompressorMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Threshold:1:0.01:1, vf:SlopeAbove:1:0:1, vf:SlopeBelow:1:0:1, vf:Attack:0.005:0:0.01, vf:Release:0.01:0:0.05, vf:MakeUp:1:1:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Limiter": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Level:1:0.01:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Limiter13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Level:1:0.01:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "LimiterMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Level:1:0.01:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "SineShaper": {
+        "In_Size": 78,
+        "Out_Size": 78, 
+        "Params": "vf:Level:1:1:20, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "SineShaper13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:Level:1:1:20, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "SineShaperMono": {
+        "In_Size": 1,
+        "Out_Size": 1, 
+        "Params": "vf:Level:1:1:20, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "EQ": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:LowF:80:20:200, vf:LowDb:0:-45:45, vf:MidLowF:300:100:600, vf:MidLowDb:0:-45:45, vf:MidF:800:600:1200, vf:MidDb:0:-45:45, vf:MidHighF:2000:1200:3000, vf:MidHighDb:0:-45:45, vf:HighF:4000:3000:10000, vf:HighDb:0:-45:45",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "EQ13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:LowF:80:20:200, vf:LowDb:0:-45:45, vf:MidLowF:300:100:600, vf:MidLowDb:0:-45:45, vf:MidF:800:600:1200, vf:MidDb:0:-45:45, vf:MidHighF:2000:1200:3000, vf:MidHighDb:0:-45:45, vf:HighF:4000:3000:10000, vf:HighDb:0:-45:45",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "EQMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:LowF:80:20:200, vf:LowDb:0:-45:45, vf:MidLowF:300:100:600, vf:MidLowDb:0:-45:45, vf:MidF:800:600:1200, vf:MidDb:0:-45:45, vf:MidHighF:2000:1200:3000, vf:MidHighDb:0:-45:45, vf:HighF:4000:3000:10000, vf:HighDb:0:-45:45",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "StereoMix": {
+        "In_Size": 78,
+        "Out_Size": 2,
+        "Params": "",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "StereoMix13": {
+        "In_Size": 13,
+        "Out_Size": 2,
+        "Params": "",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Gain": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:GainMult:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Gain13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:GainMult:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "LinearGain": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:GainMult:1:0:1, vf:Pow:1:0:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "LinearGain13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:GainMult:1:0:1, vf:Pow:1:0:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "LinearGainMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:GainMult:1:0:1, vf:Pow:1:0:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "CampaneitorSignes": {
+        "In_Size": 78,
+        "Out_Size": 13,
+        "Params": "vf:Spread:1:0:1, vf:Width:2:0:13, vf:Position:0.5:0:1, vf:Orientation:0.5:0:1, vf:Level:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Panner13": {
+        "In_Size": 1,
+        "Out_Size": 13,
+        "Params": "vf:Position:0:0:2, vf:Width:2:0:13, vf:Orientation:0.5:0:1, vf:Level:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MonoTo78": {
+        "In_Size": 1,
+        "Out_Size": 78,
+        "Params": "vf:Level:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MonoTo13": {
+        "In_Size": 1,
+        "Out_Size": 13,
+        "Params": "vf:Level:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Monoize78": {
+        "In_Size": 78,
+        "Out_Size": 1,
+        "Params": "vf:Level:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+     "Monoize13": {
+        "In_Size": 13,
+        "Out_Size": 1,
+        "Params": "vf:Level:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "SideChain13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Strength:1:0:4, vf:Attack:0.001:0:1, vf:Release:0.1:0:3, vf:Smooth:0.01:0:1",
+        "In": 2,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Multiplier": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Mul1:1:0:1, vf:Mul2:1:0:1, vf:Mul3:1:0:1, vf:Mul4:1:0:1, vf:Levels2:0.5:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Multiplier13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Mul1:1:0:1, vf:Mul2:1:0:1, vf:Mul3:1:0:1, vf:Mul4:1:0:1, vf:Levels2:0.5:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MultiplierMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Mul1:1:0:1, vf:Mul2:1:0:1, vf:Mul3:1:0:1, vf:Mul4:1:0:1, vf:Levels2:0.5:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Mixer": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Levels1:0.5:0:1, vf:Levels2:0.5:0:1",
+        "In": 2,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Mixer13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels1:0.5:0:1, vf:Levels2:0.5:0:1",
+        "In": 2,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MixerMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Levels1:0.5:0:1, vf:Levels2:0.5:0:1",
+        "In": 2,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PolyMixer": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Levels1:0.5:0:1, vf:Levels2:0.5:0:1, vf:Levels3:0.5:0:1, vf:Levels4:0.5:0:1, vf:Levels5:0.5:0:1, vf:Levels6:0.5:0:1, vf:Levels7:0.5:0:1, vf:Levels8:0.5:0:1, vf:MasterLevel:1:0:1",
+        "In": 8,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PolyMixer13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels1:0.5:0:1, vf:Levels2:0.5:0:1, vf:Levels3:0.5:0:1, vf:Levels4:0.5:0:1, vf:Levels5:0.5:0:1, vf:Levels6:0.5:0:1, vf:Levels7:0.5:0:1, vf:Levels8:0.5:0:1, vf:MasterLevel:1:0:1",
+        "In": 8,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PolyMixerMono": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Levels1:0.5:0:1, vf:Levels2:0.5:0:1, vf:Levels3:0.5:0:1, vf:Levels4:0.5:0:1, vf:Levels5:0.5:0:1, vf:Levels6:0.5:0:1, vf:Levels7:0.5:0:1, vf:Levels8:0.5:0:1, vf:MasterLevel:1:0:1",
+        "In": 8,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Delay": {
+        "In_Size": 1,
+        "Out_Size": 1,
+        "Params": "vf:Levels1:0.5:0:1, vf:Levels2:0.5:0:1, vf:Levels3:0.5:0:1, vf:Levels4:0.5:0:1, vf:Levels5:0.5:0:1, vf:Levels6:0.5:0:1, vf:Levels7:0.5:0:1, vf:Levels8:0.5:0:1, vf:MasterLevel:1:0:1",
+        "In": 8,
+        "Out": 1,
+        "Buf": 0
+    },
+    "fm4Raw": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:levels:0.5:0:1, vf:pitch:36:0:128, vf:r1:1:0:32, vf:r2:1.2:0:32, vf:r3:1.5:0:32, vf:r4:1.8:0:32, vf:fm:0.2:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Membrane": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:masterLevel:0.15:0:1, vf:exciterLevel:0.15:0:1, vf:pitch:36:0:128, vf:tension:0.05:0:4, vf:loss:2.9:0.9:4 ",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MembraneStereo": {
+        "In_Size": 2,
+        "Out_Size": 2,
+        "Params": "vf:masterLevel:0.15:0:1, vf:exciterLevel:0.15:0:1, vf:pitch:36:0:128, vf:tension:0.05:0:4, vf:loss:2.9:0.9:4 ",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MembraneFx13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:masterLevel:0.15:0:1, vf:pitch:36:0:128, vf:tension:0.05:0:4, vf:loss:2.9:0.9:4 ",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Pluck": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:amp:0.1:0:1, vf:coef:0.85:0:1, vf:vel:1:0:1, vf:dur:3:0.1:10, vf:pitch:42:0:128, vf:levels:0.5:0:1, vf:trigger:0:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MoogFilter13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:pitch:60:0:128, vf:q:0.2:0.01:1, vi:mode:0:0:3, vf:saturation:0.95:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "StereoPan13": {
+        "In_Size": 13,
+        "Out_Size": 2, 
+        "Params": "vf:pan:0:-1:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "StereoPan78": {
+        "In_Size": 78,
+        "Out_Size": 2, 
+        "Params": "vf:pan:0:-1:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MultibandDistortion13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:lowFreq:300:20:1000, vf:highFreq:3200:1000:8000, vf:lowDrive:1:0:100, vf:midDrive:1:0:100, vf:highDrive:1:0:100, vf:lowGain:1:0:2, vf:midGain:1:0:2, vf:highGain:1:0:2, vf:level:1:0:1, vf:dryWet:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "MultibandSineShaper13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:lowFreq:300:20:1000, vf:highFreq:3200:1000:8000, vf:lowDrive:1:0:100, vf:midDrive:1:0:100, vf:highDrive:1:0:100, vf:lowGain:1:0:2, vf:midGain:1:0:2, vf:highGain:1:0:2, vf:level:1:0:1, vf:dryWet:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PitchShifter": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:pitchRatio:1:0:4, vf:pitchDisp:0:0:1, vf:timeDisp:0:0:0.1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "FreqShifter": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:freqShift:150:0:10000, vf:phase:0:0:6.28",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Decimator": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:sampleRate:44100:0:44100, vf:bitDepth:24:0:24",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Ringz78": {
+        "In_Size": 78,
+        "Out_Size": 78, 
+        "Params": "vf:inputGain:0.01:0:0.1, vf:pitch:48:0:128, vf:decay:1:0:10",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Ringz13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:inputGain:0.01:0:0.1, vf:pitch:48:0:128, vf:decay:1:0:10",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Formants": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:level:0.5:0:1, vf:pitch:48:0:128, vf:vibF:6:0.1:16, vf:vibA:4:0.1:16, vf:vowel:0:0:4",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Kalimba13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vf:level:0.5:0:1, vf:pitch:48:0:128, vf:gate:0:0:1, vf:lo:0.8:0:1, vf:mid:0.05:0:1, vf:hi:0.07:0:1, vf:resoMix:0.1:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "cymbalPad13": {
+    "In_Size": 13,
+    "Out_Size": 13,
+    "Params": "vf:loCut:20000:0:20000, vf:hiCut:10000:0:20000, vf:Hi:1:0:1, vf:Lo:1:0:1, vf:Level:0.1:0:1",
+    "In": 0,
+    "Out": 1,
+    "Buf": 0
+    },
+    "FMComplex13": {
+    "In_Size": 13,
+    "Out_Size": 13,
+    "Params": "vf:pitch:36:0:120, vf:r1:1:0:64, vf:r2:2:0:64, vf:r3:3:0:64, vf:r4:4:0:64, vf:fm1:0.2:0:2, vf:fm2:0.2:0:2, vf:fm3:0.2:0:2, vf:fm4:0.2:0:2, vf:feed1:0:0:4, vf:feed2:0:0:4, vf:feed3:0:0:4, vf:feed4:0:0:4, vf:vibA:0:0:2, vf:vibF:1:0:16, vf:Levels:0.1:0:1",
+    "In": 0,
+    "Out": 1,
+    "Buf": 0
+    },
+   "Mallet": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:pitch:80:20:10000, vf:t60:2.5:0.1:10, vf:amp:0.25:0:1, vf:gate:1:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+}
+
+
+
+
+}
