@@ -28,7 +28,7 @@ SynthDef.new(\noise13, {
 		WhiteNoise.ar({1}!13,0), //pow?
 		PinkNoise.ar({1}!13,0), //pow?
 		Crackle.ar(d*2,1,0),
-		Dust2.ar(d*8,1,0)*2
+		Dust2.ar(d*64,1,0)*2
 	];
 
 	finalSig=Select.ar(\type.kr(0!13),waves);
