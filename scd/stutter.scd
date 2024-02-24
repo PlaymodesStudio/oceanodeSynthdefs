@@ -10,6 +10,7 @@ SynthDef(\stutter,{
 	var envGen, sustainTime;
 	var atkTime=0.002, relTime=0.002;
 
+	reset=reset*on;
     // Convert pitch to delay time in seconds
     delayTime = delayPitch.midicps.reciprocal;
 
