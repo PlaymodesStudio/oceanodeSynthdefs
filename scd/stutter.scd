@@ -1,11 +1,11 @@
 (
-SynthDef(\stutter,{
+SynthDef(\stutter13,{
 	arg in=0, out=0;
-    var sig, delayTime, increment, trigger;
+    var insig, sig, delayTime, increment, trigger;
 	var reset=\reset.kr(0);
-	var delayPitch=\pitch.kr(12);
+	var delayPitch=\pitch.kr(12!13);
 	var offsetms=\offsetms.kr(0)/1000;
-	var strobe=\strobe.kr(1);
+	var gatepw=\gatepw.kr(1);
 	var on=\onoff.kr(0);
 	var envGen, sustainTime;
 	var atkTime=0.002, relTime=0.002;
@@ -21,24 +21,25 @@ SynthDef(\stutter,{
     sustainTime = delayTime - (atkTime + relTime);
 
     // Ensure sustainTime is not negative
-    sustainTime = max(sustainTime, 0)*strobe;
+    sustainTime = max(sustainTime, 0)*gatepw;
 
     // Increment delay time
-    increment = Dseries(0, delayTime, inf)*on;
-    increment = Demand.ar(trigger, reset, increment);
+	increment = Dseries(0, delayTime, inf)*on;
+	increment = (Demand.ar(trigger, reset, increment))!13; //this is not exactly my intention, as i'd preffer to have 13 different increments, one per channel
 
 	// Generate an envelope to soften clicks
     envGen = EnvGen.ar(Env([0, 1, 1, 0], [atkTime, sustainTime, relTime], 'lin'), trigger);
 
 
     // Get input signal
-    sig = In.ar(in, 1); // Assuming stereo input
+    insig = In.ar(in, 13); // Assuming stereo input
 
     // Apply delay
-    sig = DelayC.ar(sig, 24, increment+offsetms);
+    sig = DelayC.ar(insig, 24, increment+offsetms);
 
 	// Apply envGen
 	sig=sig*envGen;
+	sig=(sig*on)+(insig*(1-on));
 
     // Output
     Out.ar(out, sig);
@@ -47,4 +48,48 @@ SynthDef(\stutter,{
 
 
 d = thisProcess.nowExecutingPath.dirname;
+
+
+//eli fieldsteel solution
+s.boot;
+
+// using built-in sample as source sound
+b = Buffer.read(s, Platform.resourceDir ++ "/sounds/a11wlk01.wav");
+
+// empty 5 sec buffer for loop record/playback
+~b = Buffer.alloc(s, s.sampleRate * 5, 1);
+
+(
+SynthDef(\stutter, {
+	arg in=0, out=0;
+	var b;
+	var sig, insig, trigger, delayTime;
+	var delayPitch = \pitch.kr(12!3);
+	var buf = LocalBuf.new(44100,1);
+
+	// source signal — can be replaced with In/SoundIn or whatever
+	//insig = PlayBuf.ar(1, b, BufRateScale.ir(b), loop:1) * 0.2;
+	insig = SoundIn.ar(0);
+
+	// calculate delay times and trigger signal
+	delayTime = delayPitch.midicps.reciprocal;
+	trigger = Impulse.ar(delayTime.reciprocal);
+
+	// record source to empty buffer
+	RecordBuf.ar(insig, buf, loop: 0);
+
+	// loop playback specific chunk of recorded audio
+	sig = PlayBuf.ar(1, buf, 1, trigger, MouseX.kr(0,BufFrames.kr(buf)));
+
+	// mix 12 channels down to 2 so all channels are audible
+	sig = Splay.ar(sig);
+
+	// output
+	Out.ar(out, sig);
+}).add;
+)
+
+x = Synth(\stutter, [pitch: [-10,2,4]]);
+
+x.free;
 
