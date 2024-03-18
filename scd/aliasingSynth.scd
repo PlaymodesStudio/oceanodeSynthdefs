@@ -90,14 +90,14 @@ SynthDef.new(\aliasingsynth13, {
 
 	b = LocalBuf.new(1024,13);
 
-	//aliasing synth (5 voices)
+	//aliasing synth (13 voices)
 	writef=SinOsc.kr(writelfofreq,0,writelfoamp)+writeratio+writefine+transpose;
 	readf=SinOsc.kr(readlfofreq,0,readlfoamp)+readratio+readfine+transpose;
 
-	writePos = Phasor.ar(0.0, writef, 0.0, BufFrames.kr(b)); //write position header
+	writePos = (Phasor.ar(0.0, writef, 0.0, BufFrames.kr(b))*2)-1; //write position header
 	readPos = Phasor.ar(0.0, readf, 0.0, BufFrames.kr(b)); //read position header
 	BufWr.ar(readPos, b, writePos); //in the original synth, writeSig=readPos
-	aliased = BufRd.ar(13, b, readPos); //aliasing synthesis result, 5 voices spread across stereo
+	aliased = (BufRd.ar(13, b, readPos)*2)-1; //aliasing synthesis result, 13 voices
 
 	//final signal conditioning
 	finalsig=LeakDC.ar(aliased,0.995); //final saturation and dc correction
@@ -109,3 +109,49 @@ SynthDef.new(\aliasingsynth13, {
 
 d = thisProcess.nowExecutingPath.dirname;
 
+
+//not properly working, but trying to be closer to the original
+(
+SynthDef.new(\aliasingsynth13b, {
+	//Aliasing Synth. Based on a Reaktor Ensemble by Dietrich Pank.
+	//https://www.native-instruments.com/es/reaktor-community/reaktor-user-library/entry/show/5241/:
+	//Coded by Santi Vilanova (Playmodes) and Eric Sluyter, with the invaluable help of Thor_Madsen
+
+
+	arg in=0,out=0;
+	var b, writeSig, writePos, readPos;
+	var aliased,filteredHP,filteredLP,inputLPfm,inputHPfm,finalsig,writef,readf;
+
+	var levels=\levels.kr(0!13);
+
+	var readratio=\readratio.kr(1!13); //0-5
+	var readfine=\readfine.kr(0.04!13); //-0.5 0.5
+	var writeratio=\writeratio.kr(2!13); //0-5
+	var writefine=\writefine.kr(0.051!13); //-0.5 0.5
+	var transpose=\transpose.kr(0!13); //-12 12
+	var writeq=\writeq.kr(0); // 0-1
+
+	var readlfofreq=\readlfofreq.kr(0.01!13)*12; //normalized input
+	var writelfofreq=\writelfofreq.kr(0.0013!13)*12;
+	var readlfoamp=\readlfoamp.kr(0.01!13); //normalized input
+	var writelfoamp=\writelfoamp.kr(0.001!13);
+
+	b = LocalBuf.new(1024,13);
+
+	//aliasing synth (13 voices)
+	writef=SinOsc.kr(writelfofreq,0,writelfoamp)+writeratio+writefine+transpose;
+	readf=SinOsc.kr(readlfofreq,0,readlfoamp)+readratio+readfine+transpose;
+
+	//writePos = (Phasor.ar(0.0, writef, 0.0, BufFrames.kr(b)); //write position header
+	writePos=((VarSaw.ar(writef,0,writeq)*0.5)+0.5)*1024;
+	readPos = Phasor.ar(0.0, readf, 0.0, BufFrames.kr(b)); //read position header
+	BufWr.ar(readPos/1024, b, writePos); //in the original synth, writeSig=readPos
+	aliased = ((BufRd.ar(13, b, readPos))*2)-1; //aliasing synthesis result, 13 voices
+
+	//final signal conditioning
+	finalsig=LeakDC.ar(aliased,0.995); //final saturation and dc correction
+	finalsig=Limiter.ar(finalsig*0.1);
+	Out.ar(out, finalsig*levels);
+
+}).writeDefFile(d);
+)
