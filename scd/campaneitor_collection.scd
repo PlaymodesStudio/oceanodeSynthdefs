@@ -1,3 +1,5 @@
+d = thisProcess.nowExecutingPath.dirname;
+
 (//campaneitor llumbcn
 SynthDef.new(\campaneitorsignes, {
 	arg in, out=0;
@@ -51,7 +53,7 @@ SynthDef.new(\campaneitorsignes, {
 )
 
 (//campaneitor unna
-SynthDef.new(\campaneitorsignes, {
+SynthDef.new(\campaneitorunna, {
 	arg in, out=0;
 	var sig, spr=1,lvl=1,wdth=2,cnt=0,orient=0.5, pos;
 	lvl=\level.kr(1);
@@ -68,3 +70,5 @@ SynthDef.new(\campaneitorsignes, {
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )
+
+d = thisProcess.nowExecutingPath.dirname;
