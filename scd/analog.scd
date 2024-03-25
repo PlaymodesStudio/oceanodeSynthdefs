@@ -75,3 +75,31 @@ SynthDef.new(\analogmono, {
 	Out.ar(out, finalSig);
 }).writeDefFile(d);
 )
+
+(
+SynthDef.new(\analog13ar, {
+	arg out=0,in=0;
+	var p,vib,trem,finalP,x,waves,pulsew,finalSig,fm,fmp,fma,input;
+	p=\pitch.kr(36!13);
+	pulsew=\pw.kr(0!13);
+	vib=SinOsc.ar(\vibf.kr(0!13),0,\viba.kr(0!13),0);
+	trem=1-((SinOsc.ar(\tremf.kr(0!13),0,1,1)/2)*\trema.kr(0!13));
+	finalP=p+vib;
+	fmp=\fmpitch.kr(48!13);
+	fma=\fmamp.kr(0!13);
+	fm=SinOsc.ar(fmp.midicps,0)*fma;
+	input = In.ar(in, 13);
+
+	waves=[
+		Saw.ar(finalP.midicps+fm,1,0),
+		LFTri.ar(finalP.midicps+fm,0),
+		Pulse.ar(finalP.midicps+fm,(pulsew+0.5)%1,1),
+		SinOsc.ar(finalP.midicps+fm,0)
+	];
+
+	finalSig=Select.ar(\type.kr(0!13),waves);
+	finalSig=finalSig*input*trem;
+	Out.ar(out, finalSig);
+}).writeDefFile(d);
+)
+d = thisProcess.nowExecutingPath.dirname;
