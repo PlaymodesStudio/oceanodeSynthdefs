@@ -93,3 +93,27 @@ x = Synth(\stutter, [pitch: [-10,2,4]]);
 
 x.free;
 
+/////
+
+(
+SynthDef(\stutter, {
+	arg in=0, out=0;
+	var sig, insig, trigger, delayTime;
+	var delayPitch = \pitch.kr(12!3);
+	var buf = LocalBuf.new(SampleRate.ir / 20, 1);
+
+	insig = PinkNoise.ar(0.1);
+	delayTime = delayPitch.midicps.reciprocal;
+	trigger = Impulse.ar(delayTime.reciprocal);
+	RecordBuf.ar(insig, buf, loop: 0);
+	sig = PlayBuf.ar(1, buf, 1, MouseY.kr > 0.5, MouseX.kr(0, BufFrames.kr(buf)));
+	sig = Splay.ar(sig);
+	Out.ar(out, sig);
+}).add;
+)
+
+x = Synth(\stutter, [pitch: [55, 65, 75]]);
+
+x.set(\pitch, [53, 62, 70]);
+
+x.free;
