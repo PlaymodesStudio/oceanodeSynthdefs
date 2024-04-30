@@ -17,3 +17,15 @@ SynthDef.new(\stereomix13, {
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )
+
+(//stereo downmixer
+SynthDef.new(\stereomix48, {
+	arg in, out=0;
+	var sig;
+	sig = In.ar(in, 48);
+	sig=Splay.ar(sig,1,1,0);
+	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;

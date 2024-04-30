@@ -39,6 +39,25 @@ SynthDef(\chorus13, {
 )
 
 (//chorus
+SynthDef(\chorus6, {
+	arg out, in, amp = 1, loDelay = 0.001, hiDelay = 0.005,
+	maxDelayTime = 0.1, mx;
+	var sig, dry, freq, inSig;
+
+	inSig = In.ar(in, 6);
+	dry=In.ar(in, 6);
+	mx=\mix.kr(0!6);
+	freq=\frequency.kr(1!6);
+	inSig = Mix.fill(10, { |i|
+		DelayL.ar(inSig, maxDelayTime, LFDNoise3.ar(freq).range(loDelay, hiDelay))
+	});
+	inSig=inSig/2;
+	sig=(dry*(1-mx))+(inSig*mx);
+	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+(//chorus
 SynthDef(\chorusmono, {
 	arg out, in, amp = 1, loDelay = 0.001, hiDelay = 0.005,
 	maxDelayTime = 0.1, mx;

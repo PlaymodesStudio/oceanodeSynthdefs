@@ -11,3 +11,5 @@ SynthDef.new(\panner13, {
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )
+
+PanAz

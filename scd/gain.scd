@@ -36,6 +36,18 @@ SynthDef.new(\lineargain, {
 }).writeDefFile(d);
 )
 
+(/// linearGain
+SynthDef.new(\lineargain48, {
+	arg in, out;
+	var sig, ctl,pw;
+	ctl=\gainmult.kr(1!48, 1/30, fixedLag:true);
+	pw=\pow.kr(1!48);
+	ctl=pow(ctl,pw);
+	sig = In.ar(in, 48)*ctl;
+	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
 (/// linearGain 13ch
 SynthDef.new(\lineargain13, {
 	arg in, out;
@@ -44,6 +56,18 @@ SynthDef.new(\lineargain13, {
 	pw=\pow.kr(1!13);
 	ctl=pow(ctl,pw);
 	sig = In.ar(in, 13)*ctl;
+	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+(/// linearGain 13ch
+SynthDef.new(\lineargain6, {
+	arg in, out;
+	var sig, ctl,pw;
+	ctl=\gainmult.kr(1!6, 1/30, fixedLag:true);
+	pw=\pow.kr(1!6);
+	ctl=pow(ctl,pw);
+	sig = In.ar(in, 6)*ctl;
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )

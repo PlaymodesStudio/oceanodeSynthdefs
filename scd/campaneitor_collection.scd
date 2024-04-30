@@ -64,7 +64,7 @@ SynthDef.new(\campaneitorunna, {
 	sig = sig.asArray.reshape(4,12);
 	sig = Mix.ar(sig);
 
-	pos = [0.0] ++ [0, 1].resamp1(10) ++ [1.0];
+	pos = [0.0] ++ [0, 1].resamp1(11); //revisar aixo a unna
 	sig = PanX.ar(6, sig, pos, lvl*sig.size.reciprocal.sqrt, wdth).flop.collect(Mix(_));
 
 	Out.ar(out, sig);

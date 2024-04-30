@@ -1,3 +1,4 @@
+d = thisProcess.nowExecutingPath.dirname;
 
 (//noise oscillators
 SynthDef.new(\noise, {
@@ -14,6 +15,25 @@ SynthDef.new(\noise, {
 
 	finalSig=Select.ar(\type.kr(0!78),waves);
 	finalSig=finalSig*\levels.kr(0!78, 1/30, fixedLag:true);
+	Out.ar(out, finalSig);
+}).writeDefFile(d);
+)
+
+(//noise oscillators
+SynthDef.new(\noise48, {
+	arg out;
+	var d,waves,finalSig,p;
+	d=\density.kr(1!48);
+
+	waves=[
+		WhiteNoise.ar({1}!48,0), //pow?
+		PinkNoise.ar({1}!48,0), //pow?
+		Crackle.ar(d*2,1,0),
+		Dust2.ar(d*8,1,0)*2
+	];
+
+	finalSig=Select.ar(\type.kr(0!48),waves);
+	finalSig=finalSig*\levels.kr(0!48, 1/30, fixedLag:true);
 	Out.ar(out, finalSig);
 }).writeDefFile(d);
 )

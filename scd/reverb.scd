@@ -49,6 +49,34 @@ SynthDef(\reverb13, {
 )
 
 (//reverb 13ch
+SynthDef(\reverb6, {
+	arg in, out=0;
+	var predel,revtime,lpf,hpf,mx,amp=1,dry,wet,temp,sig;
+	predel=\predelay.kr(1!6);
+	revtime=\time.kr(4!6);
+	lpf=\lowpass.kr(100!6).midicps;
+	hpf=\hipass.kr(12!6).midicps;
+	mx=\mix.kr(0!6);
+
+	dry = In.ar(in, 6);
+	temp= In.ar(in, 6);
+
+	wet=0;
+	temp=DelayN.ar(temp, 1!6, predel);
+	32.do {temp=AllpassL.ar(temp, 0.05!6, {Rand(0.001,0.05)}!6,revtime);
+		temp=LPF.ar(temp,lpf);
+		temp=HPF.ar(temp,hpf);
+		wet=wet + temp;
+	};
+	sig=(dry*(1-mx))+(wet*mx);
+	Out.ar(out,sig);
+}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;
+
+
+(//reverb 13ch
 SynthDef(\reverbmono, {
 	arg in, out=0;
 	var predel,revtime,lpf,hpf,mx,amp=1,dry,wet,temp,sig;

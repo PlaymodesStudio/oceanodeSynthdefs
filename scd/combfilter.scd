@@ -20,6 +20,29 @@ SynthDef.new(\comb, {
 )
 
 (
+SynthDef.new(\comb48, {
+	arg in, out=0;
+	var input,combed,sig,p,finalP,dec,drywet,vib,ing;
+	ing=\inputgain.kr(1!48, 1/30, fixedLag:true);
+	input = In.ar(in, 48);
+
+	p=\pitch.kr(36!48);
+	dec=\decay.kr(1!48);
+	drywet=\mix.kr(0!48);
+	vib=SinOsc.ar(\vibf.kr(0!48),0,\viba.kr(0!48),0);
+	finalP=p+vib;
+	finalP=finalP.midicps;
+
+	combed=CombL.ar(input*ing,0.1,1/finalP,dec,1,0)/2;
+	sig=(drywet*combed)+((1-drywet)*input);
+	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;
+
+
+(
 SynthDef.new(\comb13, {
 	arg in, out=0;
 	var input,combed,sig,p,finalP,dec,drywet,vib,ing;
@@ -38,6 +61,29 @@ SynthDef.new(\comb13, {
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )
+
+(
+SynthDef.new(\comb6, {
+	arg in, out=0;
+	var input,combed,sig,p,finalP,dec,drywet,vib,ing;
+	ing=\inputgain.kr(1!6, 1/30, fixedLag:true);
+	input = In.ar(in, 6);
+
+	p=\pitch.kr(36!6);
+	dec=\decay.kr(1!6);
+	drywet=\mix.kr(0!6);
+	vib=SinOsc.ar(\vibf.kr(0!6),0,\viba.kr(0!6),0);
+	finalP=p+vib;
+	finalP=finalP.midicps;
+
+	combed=CombL.ar(input*ing,0.1,1/finalP,dec,1,0)/2;
+	sig=(drywet*combed)+((1-drywet)*input);
+	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;
+
 
 (
 SynthDef.new(\combmono, {

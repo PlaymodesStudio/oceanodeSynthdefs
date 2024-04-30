@@ -91,3 +91,31 @@ SynthDef(\echomono,{
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )
+
+(// feedback 13ch
+SynthDef(\delayfeed13,{
+	arg in=0, out=0;
+	var fb,del,sig,mx,dry,feedback,grainsz,pitchsh,delmod,modgain;
+	fb=\feed.kr(1!13, 1/30, fixedLag:true);
+	del=\delay.kr(0.05!13, 1/30, fixedLag:true);
+	mx=\mix.kr(0!13, 1/30, fixedLag:true);
+	grainsz= \grainsize.kr(0.1!13, 1/30, fixedLag:true);
+	pitchsh=\pitchshift.kr(0.5!13, 1/30, fixedLag:true);
+	modgain=\delmodgain.kr(1!13,1/30, fixedLag:true);
+	delmod=((LFNoise2.ar(0.3!13) * 1e-3) + (LFNoise2.ar(1!13) * 1e-4))*modgain;
+
+	dry = In.ar(in, 13);
+	feedback = dry+ LocalIn.ar(13);
+	feedback=DelayC.ar(feedback, 1, del+delmod);
+	feedback=feedback+PitchShift.ar(feedback, grainsz, pitchsh);
+	feedback = LeakDC.ar(feedback*fb);
+	feedback = feedback.tanh;
+	feedback = feedback * -15.dbamp;
+
+	LocalOut.ar(feedback);
+	sig=XFade2.ar(dry,feedback,mx*2-1,1!13);
+	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;

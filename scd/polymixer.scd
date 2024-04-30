@@ -22,7 +22,8 @@ SynthDef.new(\polymixer13, { //cuidao! he afegit mute i solo
     var sig1, sig2, sig3, sig4, sig5, sig6, sig7, sig8;
     var inputs, mixedInput, soloedInput, finalsig;
 
-	var mute=\mute.kr(1!8); //8 inputs, un mute per input
+	var mute=\gainvec.kr(1!8, 1/30, fixedLag:true); //8 inputs, un mute per input
+
     // Inputs
 	sig1 = In.ar(in, 13)*\levels1.kr(0.5!13, 1/30, fixedLag:true)*mute[0];
 	sig2 = In.ar(in2, 13)*\levels2.kr(0.5!13, 1/30, fixedLag:true)*mute[1];
@@ -41,7 +42,7 @@ SynthDef.new(\polymixer13, { //cuidao! he afegit mute i solo
         inputs.collect {|input| input[chan]}.sum
     });
 
-    soloindex = \solo.kr(0); // 0 for mix, 1-8 for solo inputs
+    soloindex=\solo.kr(0); // 0 for mix, 1-8 for solo inputs
 
     // Construct an array for Select.ar to choose from, placing mixedInput at index 0
     // This ensures that soloindex directly corresponds to the user's choice
@@ -52,6 +53,9 @@ SynthDef.new(\polymixer13, { //cuidao! he afegit mute i solo
     Out.ar(out, finalsig);
 }).writeDefFile(d);
 )
+
+d = thisProcess.nowExecutingPath.dirname;
+
 
 (//// polymixer
 SynthDef.new(\polymixermono, {
