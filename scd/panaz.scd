@@ -61,16 +61,12 @@ SynthDef.new(\panaz13multi, {
 (
 SynthDef.new(\panaz13multiar, {
     arg in=0, in2=0, out=0;
-    var signals, pannedSignals, summedSignals, positions, wdth, gainin, gainout;
+    var signals, pannedSignals, summedSignals, positions, wdth;
 
 
-    wdth = \width.kr(2!13, 1/30, fixedLag:true);
-	gainin=\levelsin.kr(1!13, 1/30, fixedLag:true);
-	gainout=\levelsout.kr(1!13, 1/30, fixedLag:true);
+    wdth = \width.kr(2);
 
     signals = In.ar(in, 13);
-	signals=signals*gainin;
-
 	positions = In.ar(in2, 13);
 
     // Pan each channel independently
@@ -85,6 +81,6 @@ SynthDef.new(\panaz13multiar, {
         }).sum;
     });
 
-    Out.ar(out, summedSignals*gainout);
+    Out.ar(out, summedSignals);
 }).writeDefFile(d);
 )
