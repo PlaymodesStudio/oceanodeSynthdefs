@@ -4,12 +4,17 @@ d = thisProcess.nowExecutingPath.dirname;
 SynthDef(\supersaw13, {
 	arg out=0;
 	// Parameters with multichannel expansion
-	var freq = \pitch.kr(36 ! 13).midicps,
+	var freq = \pitch.kr(36 ! 13),
 	    mix = \mix.kr(0.75 ! 13),
 	    detune = \detune.kr(0.75 ! 13),
-	levels = \levels.kr(1!13);
+	levels = \levels.kr(1!13),
+	trem,vib;
 
 	var detuneCurve, centerGain, sideGain, signals;
+
+	trem=1-((SinOsc.ar(\tremf.kr(0!13),0,1,1)/2)*\trema.kr(0!13));
+	vib=SinOsc.ar(\vibf.kr(0!13),0,\viba.kr(0!13),0);
+	freq=(freq+vib).midicps;
 
 	// Detune curve function
 	detuneCurve = { |x|
@@ -52,7 +57,7 @@ SynthDef(\supersaw13, {
 		var sig = (center * centerGain.(thisMix)) + (side * sideGain.(thisMix));
 		HPF.ar(sig, thisFreq) // Apply high-pass filter
 	});
-	signals=signals*levels;
+	signals=signals*levels*trem;
 
 	// Route each signal to its respective output channel
 	Out.ar(out, signals);
