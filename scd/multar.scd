@@ -8,6 +8,19 @@
 }).writeDefFile(d);
 )
 
+( SynthDef(\rectify,
+	{ arg in=0, in2=0, out=0;
+		var sig, siga, sigb,pw;
+		pw=\pow.kr(1!13);
+		siga = In.ar(0, 13);
+		siga=(siga+1)/2;
+		siga=siga.pow(pw);
+
+		Out.ar(out, siga);
+
+}).writeDefFile(d);
+)
+
 d = thisProcess.nowExecutingPath.dirname;
 
 (
