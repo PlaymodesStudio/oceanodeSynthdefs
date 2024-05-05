@@ -170,6 +170,42 @@ SynthDef.new(\panaz6multiar, {
     });
 
 	finalsig=(summedSignals*wetdry)+(signals*(1-wetdry));
-    Out.ar(out, summedSignals);
+    Out.ar(out, finalsig);
 }).writeDefFile(d);
 )
+
+(
+SynthDef.new(\shiftchannels, {
+    arg in=0, in2=0, out=0;
+    var signals, shiftedSignals, shift;
+
+    signals = In.ar(in, 13); // Assuming 'in' is the starting bus channel for the input signals
+	shift = In.ar(in2, 1)*13;
+
+    shiftedSignals = Array.fill(13, { |i|
+        var baseIndex, nextIndex, frac, signal1, signal2, mixSig;
+
+        baseIndex = (i + shift.floor).mod(13);
+        nextIndex = (baseIndex + 1).mod(13);
+        frac = shift - shift.floor;
+
+        signal1 = SelectX.ar(baseIndex, signals);  // Corrected usage
+        signal2 = SelectX.ar(nextIndex, signals); // Corrected usage
+
+        mixSig = XFade2.ar(signal1, signal2, frac * 2 - 1);
+
+        mixSig;
+    });
+
+    Out.ar(out, shiftedSignals);
+}).writeDefFile(d);
+)
+
+
+
+
+
+
+
+
+
