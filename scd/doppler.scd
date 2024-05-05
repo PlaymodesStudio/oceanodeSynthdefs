@@ -54,7 +54,7 @@ SynthDef.new(\doppler, {
 (
 SynthDef.new(\panazdoppler13, {
 	arg in=0, out=0;
-    var signals, pannedSignals, summedSignals, wdth, x, y, distance, amplitude, azimuth, panValue;
+    var signals, pannedSignals, summedSignals, wdth, x, y, distance, amplitude, azimuth, panValue,filt,filtmin,filtmax,filtrange;
 
     signals = In.ar(in,13);
 
@@ -62,13 +62,21 @@ SynthDef.new(\panazdoppler13, {
 	x = \x.kr(10!13, 1/30, fixedLag:true);
 	y = \y.kr(1!13, 1/30, fixedLag:true);
     distance = hypot(x, y);
-    amplitude = 40 / distance.squared;
+	amplitude = (40 / distance.squared);
+
+	filtmin=\cutmin.kr(20!13);
+	filtmax=\cutmax.kr(130!13);
+	filtrange=filtmax-filtmin;
+	filt=(amplitude*filtrange)+filtmin;
+	filt=filt.clip(20,130);
+	filt=filt.midicps;
+
     azimuth = atan2(y, x); // azimuth in radians
     panValue = (azimuth / 0.5pi).clip2(1);
 
     // Pan each channel independently
     pannedSignals = Array.fill(13, { |i|
-		PanAz.ar(13, DelayL.ar(signals[i], 110/344, distance[i]/344), panValue[i], amplitude[i], wdth[i])
+		PanAz.ar(13, DelayC.ar(LPF.ar(signals[i],filt[i]), 110/344, distance[i]/344), panValue[i], amplitude[i], wdth[i])
     });
 
     // Sum the signals channel-wise
@@ -84,3 +92,42 @@ SynthDef.new(\panazdoppler13, {
 
 
 d = thisProcess.nowExecutingPath.dirname;
+
+(
+SynthDef.new(\panazdoppler6, {
+	arg in=0, out=0;
+    var signals, pannedSignals, summedSignals, wdth, x, y, distance, amplitude, azimuth, panValue,filt,filtmin,filtmax,filtrange;
+
+    signals = In.ar(in,6);
+
+	wdth = \width.kr(2!6, 1/30, fixedLag:true);
+	x = \x.kr(10!6, 1/30, fixedLag:true);
+	y = \y.kr(1!6, 1/30, fixedLag:true);
+    distance = hypot(x, y);
+	amplitude = (40 / distance.squared);
+
+	filtmin=\cutmin.kr(20!6);
+	filtmax=\cutmax.kr(130!6);
+	filtrange=filtmax-filtmin;
+	filt=(amplitude*filtrange)+filtmin;
+	filt=filt.clip(20,130);
+	filt=filt.midicps;
+
+    azimuth = atan2(y, x); // azimuth in radians
+    panValue = (azimuth / 0.5pi).clip2(1);
+
+    // Pan each channel independently
+    pannedSignals = Array.fill(6, { |i|
+		PanAz.ar(6, DelayC.ar(LPF.ar(signals[i],filt[i]), 110/344, distance[i]/344), panValue[i], amplitude[i], wdth[i])
+    });
+
+    // Sum the signals channel-wise
+    summedSignals = Array.fill(6, { |chan|
+        pannedSignals.collect({ |sig|
+            sig[chan]
+        }).sum;
+    });
+
+    Out.ar(out, summedSignals);
+}).writeDefFile(d);
+)
