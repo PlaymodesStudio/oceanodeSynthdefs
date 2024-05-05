@@ -21,6 +21,16 @@
 }).writeDefFile(d);
 )
 
+( SynthDef(\unrectify,
+	{ arg in=0, in2=0, out=0;
+		var sig, siga, sigb,pw;
+		siga = In.ar(0, 13);
+		siga=(siga*2)-1;
+		Out.ar(out, siga);
+
+}).writeDefFile(d);
+)
+
 d = thisProcess.nowExecutingPath.dirname;
 
 (
