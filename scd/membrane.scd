@@ -33,3 +33,25 @@ SynthDef(\membrane, {
 )
 
 d = thisProcess.nowExecutingPath.dirname;
+
+(
+SynthDef(\membrane13, {
+	arg out=0;
+	var p, excitation, signal, finalSig;
+
+	var tension = \tension.kr(0.115!13, 1/30, fixedLag: true);
+	var loss = \loss.kr(2.9!13, 1/30, fixedLag: true);
+	var lossexp = LinLin.ar(loss, 0.0, 1.0, 0.9, 1.0);
+	var exciterLevel = \exciterlevel.kr(0.3!13, 1/30, fixedLag: true);
+	var masterLevel = \masterlevel.kr(0.15!13, 1/30, fixedLag: true);
+	p = \pitch.kr(22!13, 1/30, fixedLag: true).midicps;
+
+
+	excitation = PinkNoise.ar(exciterLevel);
+	signal = MembraneCircle.ar(excitation, tension * (p / 60.midicps), lossexp);
+
+	finalSig = signal * masterLevel;
+
+	Out.ar(out, finalSig);
+}).writeDefFile(d);
+)
