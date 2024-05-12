@@ -4,10 +4,10 @@ d = thisProcess.nowExecutingPath.dirname;
 SynthDef(\supersaw13, {
 	arg out=0;
 	// Parameters with multichannel expansion
-	var freq = \pitch.kr(36 ! 13),
-	    mix = \mix.kr(0.75 ! 13),
-	    detune = \detune.kr(0.75 ! 13),
-	levels = \levels.kr(1!13),
+	var freq = \pitch.kr(36 ! 13, 1/30, fixedLag:true),
+	    mix = \mix.kr(0.75 ! 13, 1/30, fixedLag:true),
+	    detune = \detune.kr(0.75 ! 13, 1/30, fixedLag:true),
+	levels = \levels.kr(1!13, 1/30, fixedLag:true),
 	trem,vib;
 
 	var detuneCurve, centerGain, sideGain, signals;
@@ -68,10 +68,10 @@ SynthDef(\supersaw13, {
 SynthDef(\supersaw6, {
 	arg out=0;
 	// Parameters with multichannel expansion
-	var freq = \pitch.kr(36 ! 6).midicps,
-	    mix = \mix.kr(0.75 ! 6),
-	    detune = \detune.kr(0.75 ! 6),
-	levels = \levels.kr(1!6);
+	var freq = \pitch.kr(36 ! 6, 1/30, fixedLag:true).midicps,
+	    mix = \mix.kr(0.75 ! 6, 1/30, fixedLag:true),
+	    detune = \detune.kr(0.75 ! 6, 1/30, fixedLag:true),
+	levels = \levels.kr(1!6, 1/30, fixedLag:true);
 
 	var detuneCurve, centerGain, sideGain, signals;
 
@@ -125,15 +125,16 @@ SynthDef(\supersaw6, {
 
 d = thisProcess.nowExecutingPath.dirname;
 
+
 (
 SynthDef(\superpulse13, {
 	arg out=0;
 	// Parameters with multichannel expansion
-	var freq = \pitch.kr(36 ! 13).midicps,
-	    mix = \mix.kr(0.75 ! 13),
-	    detune = \detune.kr(0.75 ! 13),
-	pw = \pw.kr(0.5 ! 13),
-	levels = \levels.kr(1!13);
+	var freq = \pitch.kr(36 ! 13, 1/30, fixedLag:true).midicps,
+	    mix = \mix.kr(0.75 ! 13, 1/30, fixedLag:true),
+	    detune = \detune.kr(0.75 ! 13, 1/30, fixedLag:true),
+	pw = \pw.kr(0.5 ! 13, 1/30, fixedLag:true),
+	levels = \levels.kr(1!13, 1/30, fixedLag:true);
 
 	var detuneCurve, centerGain, sideGain, signals;
 
