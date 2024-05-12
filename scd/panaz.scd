@@ -30,6 +30,26 @@ SynthDef.new(\panaz13, {
 }).writeDefFile(d);
 )
 
+(
+SynthDef.new(\panaz6, {
+	arg in=0, out=0;
+	var monosig, pannedSig, pos, wdth;
+
+	pos = \position.kr(0!6,  1/30, fixedLag: true);  // Expanded control-rate position
+	wdth = \width.kr(2!6,  1/30, fixedLag: true);    // Expanded control-rate width
+
+	monosig = In.ar(in, 1);
+
+	// Pan each channel independently using the expanded control signals
+
+	pannedSig=PanAz.ar(6, monosig, pos, 1, wdth);
+
+
+	// Output the independently panned signals
+	Out.ar(out, pannedSig);
+}).writeDefFile(d);
+)
+
 d = thisProcess.nowExecutingPath.dirname;
 
 (
@@ -67,7 +87,7 @@ SynthDef.new(\panaz78to6, {
     signals = In.ar(in, 78);
 
     // Define panning positions for 78 inputs across 6 outputs
-    positions = \position.kr(0!78, 1/30, fixedLag:true);
+    positions = \position.kr(0!78, 1/4, fixedLag:true);
     wdth = \width.kr(2!78, 1/30, fixedLag:true);  // Control the width of the panning
 
     // Pan each of the 78 input channels
@@ -175,7 +195,7 @@ SynthDef.new(\panaz6multiar, {
 )
 
 (
-SynthDef.new(\shiftchannels, {
+SynthDef.new(\shiftchannels13, {
     arg in=0, in2=0, out=0;
     var signals, shiftedSignals, shift;
 
@@ -187,6 +207,33 @@ SynthDef.new(\shiftchannels, {
 
         baseIndex = (i + shift.floor).mod(13);
         nextIndex = (baseIndex + 1).mod(13);
+        frac = shift - shift.floor;
+
+        signal1 = SelectX.ar(baseIndex, signals);  // Corrected usage
+        signal2 = SelectX.ar(nextIndex, signals); // Corrected usage
+
+        mixSig = XFade2.ar(signal1, signal2, frac * 2 - 1);
+
+        mixSig;
+    });
+
+    Out.ar(out, shiftedSignals);
+}).writeDefFile(d);
+)
+
+(
+SynthDef.new(\shiftchannels6, {
+    arg in=0, in2=0, out=0;
+    var signals, shiftedSignals, shift;
+
+    signals = In.ar(in, 6); // Assuming 'in' is the starting bus channel for the input signals
+	shift = In.ar(in2, 1)*6;
+
+    shiftedSignals = Array.fill(6, { |i|
+        var baseIndex, nextIndex, frac, signal1, signal2, mixSig;
+
+        baseIndex = (i + shift.floor).mod(6);
+        nextIndex = (baseIndex + 1).mod(6);
         frac = shift - shift.floor;
 
         signal1 = SelectX.ar(baseIndex, signals);  // Corrected usage
