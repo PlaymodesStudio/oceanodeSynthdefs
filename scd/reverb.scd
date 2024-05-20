@@ -100,3 +100,29 @@ SynthDef(\reverbmono, {
 	Out.ar(out,sig);
 }).writeDefFile(d);
 )
+
+(
+SynthDef(\jpverb13, {
+	arg in = 0, out = 0;
+	var source, sig, revtime = 1, damp = 0, size = 1, early = 0.707, low, mid, high, lowcut, highcut, modDepth, modFreq,mx;
+
+	revtime=\time.kr(1!13, 1/30, fixedLag: true);
+	damp=\damp.kr(0!13, 1/30, fixedLag: true);
+	size=\size.kr(1!13, 1/30, fixedLag: true);
+	early=\early.kr(0.7, 1/30, fixedLag: true);
+	low=\lowtime.kr(1!13, 1/30, fixedLag: true);
+	mid=\midtime.kr(1!13, 1/30, fixedLag: true);
+	high=\hitime.kr(1!13, 1/30, fixedLag: true);
+	lowcut=\lowcut.kr(200!13, 1/30, fixedLag: true);
+	highcut=\hicut.kr(5000!13, 1/30, fixedLag: true);
+	modDepth=\moddepth.kr(0.1!13, 1/30, fixedLag: true);
+	modFreq=\modfreq.kr(2!13, 1/30, fixedLag: true);
+	mx=\mix.kr(0!1);
+
+	source = In.ar (in, 13);
+	sig = 0!13 + JPverb.ar (source, revtime, damp, size, early, modDepth, modFreq, low, mid, high, lowcut, highcut);
+	sig=(source*(1-mx))+(sig*mx);
+	Out.ar (out, sig);
+}).writeDefFile(d);
+)
+d = thisProcess.nowExecutingPath.dirname;
