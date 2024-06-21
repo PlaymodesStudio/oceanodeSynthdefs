@@ -6,6 +6,7 @@ SynthDef(\freeze, {
     in = SoundIn.ar(inp);
     chain = FFT(LocalBuf(1024), in);
     chain = PV_Freeze(chain, MouseY.kr > 0.5 );
+	chain=PV_Diffuser(chain,MouseY.kr >0.5);
     Out.ar(out, 0.5 * IFFT(chain).dup);
 }).play();
 )
@@ -40,14 +41,79 @@ SynthDef(\freeze13, {
 }).writeDefFile(d);
 )
 
+(//test amb overlap... no acaba d'anar
+SynthDef(\freeze13, {
+    arg in, out=0;
+    var sig, chain, overlaps=2, fftSize=2048, fftBuf, pos;
+
+    // Input signal
+    sig = In.ar(in, 13);
+
+    // Allocate local buffers for FFT processing
+    fftBuf = LocalBuf(fftSize!13*overlaps, 1);
+
+    // Create FFT chains with overlapping
+    chain = FFT(fftBuf, sig, hop: 1.0/overlaps);
+    chain = PV_Freeze(chain, \trigger.kr(0!13));
+
+    // Adding phase diffusion
+    chain = PV_Diffuser(chain, chain > -1);
+
+    // IFFT and mixdown
+    sig = IFFT(chain).dup;
+
+    // Outputting the audio
+    Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\freezefeed13, {
+	arg in=0, out=0;
+	var freezeAmt=\feed.kr(1!13), wet = \mix.kr(1!13);
+	var local, input, fft, freeze, ifft;
+
+	local = LocalIn.ar(13);
+	input = In.ar(in, 13);
+	fft = FFT(LocalBuf(1024.dup(13), 1), input+(local*freezeAmt), 0.5);
+	freeze = PV_Freeze(fft, Impulse.ar(1/(2.pow(16)))); // try to trigger per window size
+	ifft = IFFT.ar(freeze);
+	LocalOut.ar(ifft);
+	Out.ar(out, ifft.dup(13)*wet + ((1.0 - wet) * input));
+}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;
+
+(
+SynthDef(\freezefeed13, {
+	arg in = 0, out = 0;
+	var freezeAmt = \feed.kr(1!13), wet = \mix.kr(1!13);
+	var local, input, fft, freeze, ifft, mix;
+
+	local = LocalIn.ar(13);
+	input = In.ar(in, 13);
+	fft = FFT(LocalBuf(1024, 1), input + (local * freezeAmt), 0.5);
+	freeze = PV_Freeze(fft, Impulse.ar(1 / (2.pow(16)))); // trigger per window size
+	ifft = IFFT.ar(freeze);
+
+	// Process each channel independently
+	LocalOut.ar(ifft);
+	mix = Mix.fill(13, { |i| ifft[i] * wet + (1.0 - wet) * input[i] });
+
+	Out.ar(out, mix);
+}).writeDefFile(d);
+)
+
 (
 SynthDef(\freezemod, {
-	arg out=0,amp=0.5;
-	var sig1,sig2,in,in2,l,r,chain1,chain2,winsize=1024;
+	arg out=0,in,in2;
+	var amp=0.5;
+	var sig1,sig2,l,r,chain1,chain2,winsize=1024;
 
 	var freeze = \trigger.kr(0);
 
-	in = In.ar(0, 2);
+	in = SoundIn.ar(0, 2);
 	l=in[0];
 	r=in[1];
 	chain1 = FFT(LocalBuf(1024), l);
@@ -75,7 +141,7 @@ SynthDef(\freezemod, {
 	sig2 = IFFT(chain2);
 
 	Out.ar(out, [sig1,sig2]);
-}).writeDefFile(d);
+}).play();
 )
 
 
