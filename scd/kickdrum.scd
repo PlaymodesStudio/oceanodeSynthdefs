@@ -35,7 +35,7 @@ SynthDef(\kickdrum13, {
 	var waves;
 	var go=\trigger.kr(0!13);
 	var hi=\hifreq.kr(18000!13);
-	var lo=\lopitch.kr(36!78).midicps;
+	var lo=\lopitch.kr(36!13).midicps;
 	var time1=\freq1time.kr(0.035!13);
 	var time2=\freq2time.kr(0.8!13);
 	var curv=\freqcurve.kr(-8!13);
@@ -56,6 +56,9 @@ SynthDef(\kickdrum13, {
 }).writeDefFile(d);
 )
 
+d = thisProcess.nowExecutingPath.dirname;
+
+
 (//kickdrum
 SynthDef(\kickdrummono, {
 	arg out = 0, pan = 0, amp = 1;
@@ -63,7 +66,7 @@ SynthDef(\kickdrummono, {
 	var waves;
 	var go=\trigger.kr(0!1);
 	var hi=\hifreq.kr(18000!1);
-	var lo=\lopitch.kr(36!78).midicps;
+	var lo=\lopitch.kr(36!1).midicps;
 	var time1=\freq1time.kr(0.035!1);
 	var time2=\freq2time.kr(0.8!1);
 	var curv=\freqcurve.kr(-8!1);
