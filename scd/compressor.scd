@@ -48,3 +48,23 @@ SynthDef.new(\compressormono, {
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )
+
+d = thisProcess.nowExecutingPath.dirname;
+
+//compressor good nathan
+(
+SynthDef(\compressorb13, {
+	arg in, out;
+	var snd, attack=0, release=0.1, threshold= -6, ratio=4, make;
+	var amplitudeDb, gainDb;
+	attack=\attack.kr(0.005!13);
+	release=\release.kr(0.01!13);
+	threshold=\threshold.kr(-6!13);
+	ratio=\ratio.kr(4!13);
+	make=\makeup.kr(1!13);
+	snd=In.ar(in, 13);
+	amplitudeDb = Amplitude.ar(snd, attack, release).ampdb;
+	gainDb = ((amplitudeDb - threshold) * (1 / ratio - 1)).min(0);
+	Out.ar(out, snd * gainDb.dbamp * make);
+}).writeDefFile(d);
+)
