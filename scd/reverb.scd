@@ -125,4 +125,28 @@ SynthDef(\jpverb13, {
 	Out.ar (out, sig);
 }).writeDefFile(d);
 )
+
+(
+SynthDef(\greyholereverb13, {
+	arg in = 0, out = 0;
+	var source, sig, revtime = 1, damp = 0, size = 1, diff, modDepth, modFreq,feed,mx,lowp,hip;
+
+	revtime=\time.kr(1!13, 1/30, fixedLag: true); //0-60
+	damp=\damp.kr(0!13, 1/30, fixedLag: true); //0.5-5
+	size=\size.kr(1!13, 1/30, fixedLag: true); //0-1
+	diff=\diff.kr(0.7, 1/30, fixedLag: true); //0-3
+	feed=\feedback.kr(0.9!13, 1/30, fixedLag: true); //0-1
+	modDepth=\moddepth.kr(0.1!13, 1/30, fixedLag: true); //0-1
+	modFreq=\modfreq.kr(2!13, 1/30, fixedLag: true); //0-10
+	mx=\mix.kr(0!1); //0-1
+	lowp=\lopass.kr(130!13).midicps;
+	hip=\hipass.kr(10!13).midicps;
+	source = In.ar (in, 13);
+	sig = Greyhole.ar (source, revtime, damp, size, diff, feed, modDepth, modFreq);
+	sig=LPF.ar(sig,lowp);
+	sig=HPF.ar(sig,hip);
+	sig=(source*(1-mx))+(sig*mx);
+	Out.ar (out, sig);
+}).writeDefFile(d);
+)
 d = thisProcess.nowExecutingPath.dirname;
