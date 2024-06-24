@@ -54,7 +54,7 @@ SynthDef(\hardsyncblsaw13, {
 SynthDef(\hardsyncblpulse13, {
 	arg out=0;
 	var syncFreq = \syncpitch.kr(36!13, 1/30, fixedLag:true).midicps,
-	    sawFreq = \sawpitch.kr(60!13, 1/30, fixedLag:true).midicps,
+	    sawFreq = \pulsepitch.kr(60!13, 1/30, fixedLag:true).midicps,
 	    maxRatio = 20, minFreq = 10;
 	var maxDelay = 1 / minFreq;
 	var sig = Array.newClear(13);
