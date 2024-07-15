@@ -1,8 +1,11 @@
+d = thisProcess.nowExecutingPath.dirname;
+
 (//distortion
 SynthDef.new(\distort, {
 	arg in, out=0;
 	var input,distort,distortions,type,sig,wet,dry,distamp,tp;
 	input = In.ar(in, 78);
+	input=LeakDC.ar(input);
 
 	distamp=(\pregain.kr(0.2!78, 0.1, fixedLag:true).pow(2)*80); //param1 preGain
 
@@ -30,6 +33,7 @@ SynthDef.new(\distort13, {
 	arg in, out=0;
 	var input,distort,distortions,type,sig,wet,dry,distamp,tp;
 	input = In.ar(in, 13);
+	input=LeakDC.ar(input);
 
 	distamp=(\pregain.kr(0.2!13, 0.1, fixedLag:true).pow(2)*80); //param1 preGain
 
@@ -57,6 +61,7 @@ SynthDef.new(\distortmono, {
 	arg in, out=0;
 	var input,distort,distortions,type,sig,wet,dry,distamp,tp;
 	input = In.ar(in, 1);
+	input=LeakDC.ar(input);
 
 	distamp=(\pregain.kr(0.2!1, 0.1, fixedLag:true).pow(2)*80); //param1 preGain
 

@@ -1,3 +1,4 @@
+(
 SynthDef(\multibanddistortion13, {
 	arg in=0, out=0;
 	var highFreq, lowFreq, masterLevel, dryWet, midRq, signals, drySignal, low, mid, high;
@@ -5,6 +6,7 @@ SynthDef(\multibanddistortion13, {
 
 	// Input signal from the specified bus - expecting 13 channels
 	signals = In.ar(in, 13);
+	signals = LeakDC.ar(signals);
 	drySignal = signals;
 
 	// Frequency bands
@@ -44,6 +46,7 @@ SynthDef(\multibanddistortion13, {
 	// Output
 	Out.ar(out, finalSignal);
 }).writeDefFile(d);
+)
 
 
 d = thisProcess.nowExecutingPath.dirname;
@@ -94,4 +97,55 @@ SynthDef(\multibandsineshaper13, {
     Out.ar(out, finalSignal);
 }).writeDefFile(d);
 )
+
+(
+SynthDef(\multibandhardclip13, {
+    arg in=0, out=0;
+    var highFreq, lowFreq, masterLevel, dryWet, signals, drySignal, low, mid, high;
+    var distortedLow, distortedMid, distortedHigh, mixedSignal, finalSignal;
+
+    // Input signal from the specified bus - expecting 13 channels
+    signals = In.ar(in, 13);
+    signals = LeakDC.ar(signals);
+    drySignal = signals;
+
+    // Frequency bands
+    lowFreq = \lowfreq.kr(300!13);  // Lower crossover frequency
+    highFreq = \highfreq.kr(3200!13);  // Higher crossover frequency
+
+    // Splitting the signal into three bands
+    low = LPF.ar(LPF.ar(signals, lowFreq), lowFreq);
+    signals = signals - low;  // Remove the low frequencies from the original signal to isolate the mids and highs
+    mid = LPF.ar(LPF.ar(signals, highFreq), highFreq);
+    high = signals - mid;  // What remains after removing mid frequencies are the high frequencies
+
+    // Apply hardclip distortion to each band
+    distortedLow = (low * \lowdrive.kr(1!13)).clip2(\lowclip.kr(0.8!13));
+    distortedMid = (mid * \middrive.kr(1!13)).clip2(\midclip.kr(0.8!13));
+    distortedHigh = (high * \highdrive.kr(1!13)).clip2(\highclip.kr(0.8!13));
+
+    // Apply gain correction to each band
+    distortedLow = distortedLow * \lowgain.kr(1!13);
+    distortedMid = distortedMid * \midgain.kr(1!13);
+    distortedHigh = distortedHigh * \highgain.kr(1!13);
+
+    // Mix all distorted signals
+    mixedSignal = Mix.new([distortedLow, distortedMid, distortedHigh]);
+
+    // Dry/Wet Mix
+    dryWet = \drywet.kr(0.5!13);
+    finalSignal = (dryWet * mixedSignal) + ((1 - dryWet) * drySignal);
+
+    // Master Level - control the overall level of the final signal
+    masterLevel = \level.kr(1!13);
+
+    // Final signal - applying master amplitude control
+    finalSignal = finalSignal * masterLevel;
+
+    // Output
+    Out.ar(out, finalSignal);
+}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;
 

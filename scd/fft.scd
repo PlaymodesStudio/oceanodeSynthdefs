@@ -81,6 +81,21 @@ d = thisProcess.nowExecutingPath.dirname;
 }).writeDefFile(d);
 )
 
+d = thisProcess.nowExecutingPath.dirname;
+
+(
+SynthDef(\binshift, {
+    arg in, out=0;
+    var sig, chain;
+    var shift = \shift.kr(0!13);
+	var stretch = \stretch.kr(1!13);
+    sig = In.ar(in, 13);
+    chain = FFT(LocalBuf(2048.dup(13), 1), sig);
+    chain = PV_BinShift(chain, stretch, shift, 1);
+    sig = IFFT(chain);
+    Out.ar(out, sig);
+}).writeDefFile(d);
+)
 
 ///
 (
@@ -116,3 +131,5 @@ SynthDef(\freeze_spectra, {
 	Out.ar(out, sig);
 }).add;
 )
+
+

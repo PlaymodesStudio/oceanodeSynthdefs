@@ -3,7 +3,7 @@ SynthDef.new(\limiter, {
 	arg in, out=0,level=1;
 	var input,sig;
 	input = In.ar(in, 78);
-	sig=Limiter.ar(input,level,0.01)*level.reciprocal;
+	sig=Limiter.ar(LeakDC.ar(input),level,0.01)*level.reciprocal;
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )
@@ -13,7 +13,7 @@ SynthDef.new(\limiter13, {
 	arg in, out=0,level=1;
 	var input,sig;
 	input = In.ar(in, 13);
-	sig=Limiter.ar(input,level,0.01)*level.reciprocal;
+	sig=Limiter.ar(LeakDC.ar(input),level,0.01)*level.reciprocal;
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )
@@ -23,7 +23,7 @@ SynthDef.new(\limitermono, {
 	arg in, out=0,level=1;
 	var input,sig;
 	input = In.ar(in, 1);
-	sig=Limiter.ar(input,level,0.01)*level.reciprocal;
+	sig=Limiter.ar(LeakDC.ar(input),level,0.01)*level.reciprocal;
 	Out.ar(out, sig);
 }).writeDefFile(d);
 )

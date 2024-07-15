@@ -118,6 +118,46 @@ SynthDef(\reverbmono, {
 )
 
 (
+SynthDef(\fdn_reverb13, {
+    arg in, out=0;
+    var input, output, delayTimes, delays, feedback, temp;
+    var feedbackAmount, damping, mix, lpf, hpf;
+
+    // User-controllable parameters
+    feedbackAmount = \feedback.kr(0.5!13);
+    damping = \damping.kr(0.1!13);
+    mix = \mix.kr(0.33!13);
+    lpf = \lowpass.kr(10000!13);
+    hpf = \hipass.kr(20!13);
+
+    input = In.ar(in, 13);
+    delayTimes = {Rand(0.01, 0.1)}!13;
+
+    delays = DelayC.ar(input, 0.2, delayTimes);
+    feedback = Rotate2.ar(delays, delays, 0.23);
+
+    16.do {
+        temp = DelayC.ar(feedback, 0.2, delayTimes);
+        feedback = (temp * feedbackAmount) + (input * 0.125);
+        feedback = Rotate2.ar(feedback, feedback, 0.23);
+    };
+
+    // Apply filters outside the loop
+    feedback = LPF.ar(feedback, (1 - damping) * 10000 + 1000); // Damping
+    feedback = LPF.ar(feedback, lpf); // User-controlled LPF
+    feedback = HPF.ar(feedback, hpf); // User-controlled HPF
+
+    output = Mix(feedback) * 0.25;
+    output = LeakDC.ar(output);
+
+    // Mix dry and wet signals
+    output = (input * (1 - mix)) + (output * mix);
+
+    Out.ar(out, output);
+}).writeDefFile(d);
+)
+
+(
 SynthDef(\jpverb13, {
 	arg in = 0, out = 0;
 	var source, sig, revtime = 1, damp = 0, size = 1, early = 0.707, low, mid, high, lowcut, highcut, modDepth, modFreq,mx;
