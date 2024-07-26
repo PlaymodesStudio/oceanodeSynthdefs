@@ -14,7 +14,7 @@ SynthDef.new(\stereomix13, {
 	var sig;
 	sig = In.ar(in, 13);
 	sig=Splay.ar(sig,1,1,0);
-	Out.ar(out, sig);
+	ReplaceOut.ar(out, sig);
 }).writeDefFile(d);
 )
 
