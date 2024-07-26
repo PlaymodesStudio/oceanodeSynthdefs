@@ -50,7 +50,7 @@ SynthDef.new(\polymixer13, { //cuidao! he afegit mute i solo
 	finalsig=soloedInput*\masterlevel.kr(1!13, 1/30, fixedLag:true);
 
     // Output the final signal
-    Out.ar(out, finalsig);
+    ReplaceOut.ar(out, finalsig);
 }).writeDefFile(d);
 )
 
