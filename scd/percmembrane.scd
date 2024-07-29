@@ -17,7 +17,7 @@ SynthDef(\percmembrane13, {
         membraneSig * EnvGen.ar(Env.perc, trigger[i], amp[i], 0, dur[i], doneAction: 0);
     };
 
-    Out.ar(out, signal);
+	Out.ar(out, LeakDC.ar(signal));
 }).writeDefFile(d);
 )
 
