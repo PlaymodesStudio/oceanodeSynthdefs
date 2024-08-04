@@ -53,44 +53,89 @@ SynthDef(\graincloud13, {
     arg in = 0, out = 0, maxGrains = 64;
     var numChannels = 13;
     var input, circularBufs, writePos, bufFrames;
-    var buf = \bufnum.kr(0);
-    var amp = \levels.kr(1!numChannels, 1/30, fixedLag:true), delayTime = \delay.kr(1000!numChannels)/1000,
-    grainDur = \graindur.kr(100!numChannels)/1000, pitch = \pitch.kr(0!numChannels), dryWet = \mix.kr(0.5!numChannels, 1/30, fixedLag: true);
+    var buf = \bufnum.kr(-1);
+    var amp = \levels.kr(1!numChannels, 1/30, fixedLag:true),
+        delayTime = \delay.kr(1000!numChannels)/1000,
+        grainDur = \graindur.kr(100!numChannels)/1000,
+        pitch = \pitch.kr(0!numChannels),
+        dryWet = \mix.kr(0.5!numChannels, 1/30, fixedLag: true),
+        reverse = \reverse.kr(0!numChannels),
+        feedback = \feedback.kr(0.5!numChannels);
+
+    // Filter parameters
+    var lpfCutoff = \lpf.kr(130!numChannels).midicps,
+        hpfCutoff = \hpf.kr(1!numChannels).midicps;
+
     var trigger = \graintrig.kr(0!numChannels);
     var bufferSize = 16;
-    var grainSynths;
+    var grainSynths, dry, wet, filteredWet, outputSignal;
+    var maxPossibleDur, limitedGrainDur, effectiveRate;
+
     // Input
-    input = In.ar(in, numChannels);
+    dry = In.ar(in, numChannels);
+    wet = LocalIn.ar(numChannels);
+
+    // Apply feedback
+    input = LeakDC.ar(wet * feedback + dry);
+
     // Circular buffer setup for each channel
     circularBufs = numChannels.collect {
         LocalBuf(SampleRate.ir * bufferSize, 1).clear;
     };
     bufFrames = BufFrames.kr(circularBufs[0]);
     writePos = Phasor.ar(0, 1, 0, bufFrames);
+
     // Write each channel to its own circular buffer
     numChannels.do { |i|
         BufWr.ar(input[i], circularBufs[i], writePos);
     };
+
+    // Calculate effective rate (considering reverse)
+    effectiveRate = pitch.midiratio * (1 - (2 * reverse));
+
+    // Calculate maximum possible duration for each grain
+    maxPossibleDur = delayTime / effectiveRate.abs;
+
+    // Limit grain duration to prevent overpassing write position
+    limitedGrainDur = grainDur.clip(0, maxPossibleDur);
+
     // Polyphonic grain synthesis for each channel
     grainSynths = numChannels.collect { |i|
+        var grainPos = Demand.kr(trigger[i], 0,
+            (writePos - (Demand.kr(trigger[i], 0, delayTime[i]) * SampleRate.ir)) / bufFrames
+        );
+
         GrainBufJ.ar(
             numChannels: 1,
-			trigger: trigger[i],
-			dur: Demand.kr(trigger[i], 0, grainDur[i]),
+            trigger: trigger[i],
+            dur: Demand.kr(trigger[i], 0, limitedGrainDur[i]),
             sndbuf: circularBufs[i],
-			rate: Demand.kr(trigger[i], 0, pitch[i].midiratio),
-			pos: Demand.kr(trigger[i], 0, (writePos - (Demand.kr(trigger[i], 0, delayTime[i]) * SampleRate.ir)) / bufFrames),
+            rate: Demand.kr(trigger[i], 0, effectiveRate[i]),
+            pos: grainPos,
             interp: 2,
             envbufnum: buf,
             maxGrains: maxGrains
         );
     };
-    // Mix dry and wet signals for each channel
-    grainSynths = numChannels.collect { |i|
-		XFade2.ar(input[i], grainSynths[i], dryWet[i] * 2 - 1);
+
+    // Apply LPF and HPF in series to the wet (granular) signal for each channel
+    filteredWet = numChannels.collect { |i|
+        var sig = grainSynths[i];
+		sig = HPF.ar(sig, hpfCutoff[i]);
+        sig = LPF.ar(sig, lpfCutoff[i]);
+        sig;
     };
+
+    // Mix dry and filtered wet signals for each channel
+    outputSignal = numChannels.collect { |i|
+        XFade2.ar(dry[i], filteredWet[i], dryWet[i] * 2 - 1);
+    };
+
+    // Send processed and filtered signal back for feedback
+    LocalOut.ar(filteredWet);
+
     // Output all channels
-    Out.ar(out, grainSynths*amp);
+    Out.ar(out, outputSignal * amp);
 }).writeDefFile(d);
 )
 
@@ -149,3 +194,5 @@ s.waitForBoot({
     s.quit;
 });
 )
+
+grainbuf
