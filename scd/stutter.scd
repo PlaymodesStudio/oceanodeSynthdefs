@@ -1,44 +1,43 @@
 (
-SynthDef(\stutter13,{
-	arg in=0, out=0;
+SynthDef(\stutter13, {
+    arg in=0, out=0;
     var sig, delayTime, increment, trigger;
-	var reset=\reset.kr(0);
-	var delayPitch=\pitch.kr(12);
-	var offsetms=\offsetms.kr(0, 1/30, fixedLag: true)/1000;
-	var strobe=\gatepw.kr(1);
-	var on=\onoff.kr(0);
-	var envGen, sustainTime;
-	var atkTime=0.002, relTime=0.002;
-
-	reset=reset*on;
-    // Convert pitch to delay time in seconds
-    delayTime = delayPitch.midicps.reciprocal;
-
-    // Trigger for incrementing delay time
-    trigger = Impulse.ar(delayTime.reciprocal);
-
-	// Calculate sustain time to ensure envelope stays high for the chunk duration minus attack and release
-    sustainTime = delayTime - (atkTime + relTime);
-
-    // Ensure sustainTime is not negative
-    sustainTime = max(sustainTime, 0)*strobe;
-
-    // Increment delay time
-    increment = Dseries(0, delayTime, inf)*on;
-    increment = Demand.ar(trigger, reset, increment);
-
-	// Generate an envelope to soften clicks
-    envGen = EnvGen.ar(Env([0, 1, 1, 0], [atkTime, sustainTime, relTime], 'lin'), trigger);
-
+    var reset = \reset.kr(0);
+    var delayPitch = \pitch.kr(12);
+    var offsetms = \offsetms.kr(0, 1/30, fixedLag: true) / 1000;
+    var strobe = \gatepw.kr(1);
+    var on = \onoff.kr(0);
+    var envGen, sustainTime;
+    var atkTime = 0.002, relTime = 0.002;
 
     // Get input signal
-    sig = In.ar(in, 13); // Assuming stereo input
+    sig = In.ar(in, 13);
 
-    // Apply delay
-    sig = DelayC.ar(sig, 24, increment+offsetms);
-
-	// Apply envGen
-	sig=sig*envGen;
+    // Only apply the effect if on == 1
+    sig = Select.ar(on, [
+        sig, // Pass the signal directly if on == 0
+        {
+            reset = reset * on;
+            // Convert pitch to delay time in seconds
+            delayTime = delayPitch.midicps.reciprocal;
+            // Trigger for incrementing delay time
+            trigger = Impulse.ar(delayTime.reciprocal);
+            // Calculate sustain time to ensure envelope stays high for the chunk duration minus attack and release
+            sustainTime = delayTime - (atkTime + relTime);
+            // Ensure sustainTime is not negative
+            sustainTime = max(sustainTime, 0) * strobe;
+            // Increment delay time
+            increment = Dseries(0, delayTime, inf);
+            increment = Demand.ar(trigger, reset, increment);
+            // Generate an envelope to soften clicks
+            envGen = EnvGen.ar(Env([0, 1, 1, 0], [atkTime, sustainTime, relTime], 'lin'), trigger);
+            // Apply delay
+            sig = DelayC.ar(sig, 24, increment + offsetms);
+            // Apply envGen
+            sig = sig * envGen;
+            sig
+        }.value
+    ]);
 
     // Output
     Out.ar(out, sig);
