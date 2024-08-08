@@ -23,3 +23,5 @@ SynthDef(\additive13, {
 
 d = thisProcess.nowExecutingPath.dirname;
 
+freeverb
+
