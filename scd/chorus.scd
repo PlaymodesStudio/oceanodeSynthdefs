@@ -1,4 +1,37 @@
+d = thisProcess.nowExecutingPath.dirname;
 
+(
+SynthDef(\chorusb13, {
+	arg out=0, in=0;
+    var dry, wet, snd, tapCount, numchans,mx,freq;
+	numchans = 13;
+	freq=\frequency.kr(0.01, 1/30, fixedLag: true);
+	mx=\mix.kr(1!numchans, 1/30, fixedLag: true);
+	dry = In.ar(in,numchans);
+    tapCount = 6;
+
+
+	wet = LeakDC.ar(LocalIn.ar(numchans)).tanh * \feedback.kr(0.495);
+    wet = wet + dry;
+
+    wet = numchans.collect { |channel|
+        tapCount.collect { |tap|
+            DelayC.ar(
+                wet[channel],
+                0.03,
+                SinOsc.ar(
+                    freq,
+                    ((tap + (channel / numchans)) / tapCount) * 2pi
+                ).linlin(-1, 1, 5e-3, 20e-3)
+            )
+        }.sum / sqrt(tapCount)
+    };
+
+    LocalOut.ar(wet);
+	snd = (dry * (1 - mx)) + (wet * mx);
+	Out.ar(out, snd);
+}).writeDefFile(d);
+)
 
 (//chorus
 SynthDef(\chorus, {

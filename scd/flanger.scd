@@ -1,3 +1,34 @@
+d = thisProcess.nowExecutingPath.dirname;
+
+(
+SynthDef(\flangersync13, {
+
+	arg out=0, in=0;
+	var dry,wet,snd;
+	var numchans=13;
+	var mx=\mix.kr(1!numchans, 1/30, fixedLag: true);
+	var rate = \rate.kr(0.01!numchans);
+	var minDelay = \mindel.kr(0.004!numchans);
+	var maxDelay = \maxdel.kr(0.01!numchans);
+	var decayTime = \decay.kr(1!numchans);
+	var sig, sigA, sigB, lfoA, lfoB, combA, combB, delayTime;
+
+	lfoA = LFSaw.ar(rate, 1, (maxDelay * 0.5) - minDelay, (maxDelay * 0.5) + minDelay); // initial phase of 0 radians
+	lfoB = LFSaw.ar(rate, 0, (maxDelay * 0.5) - minDelay, (maxDelay * 0.5) + minDelay); // initial phase of pi radians
+
+	dry = In.ar(in,13);
+
+	combA = CombC.ar(dry, maxDelay, lfoA, decayTime);
+	combB = CombC.ar(dry, maxDelay, lfoB, decayTime);
+
+	wet = XFade2.ar(combA, combB, LFTri.kr(rate, 1)); // initial phase of pi radians
+
+	snd = (dry * (1 - mx)) + (wet * mx);
+	Out.ar(out, snd);
+
+}).writeDefFile(d);
+)
+
 (//flanger
 SynthDef(\flanger, {
 	arg out=0, in=0;

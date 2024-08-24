@@ -26,7 +26,41 @@ SynthDef(\grainpitchshift13, {
     arg in=0, out=0;
     var numChannels = 13;
     var input, wet, output;
-    var pitchShift = \pitchshift.kr(1!numChannels);
+    var pitchShift = \pitchshift.kr(1!numChannels).midiratio;
+    var grainSpeed = \grainspeed.kr(50!numChannels);
+    var grainPeriods = \grainperiods.kr(4!numChannels);
+    var timeDispersion = \timedisp.kr(6!numChannels);
+    var mix = \mix.kr(1!numChannels);
+    var amp = \levels.kr(1!numChannels);
+
+    input = In.ar(in, numChannels);
+
+    // Apply PitchShiftPA to each channel
+    wet = numChannels.collect({ |i|
+        PitchShiftPA.ar(
+            input[i],
+            grainSpeed[i],    // granulation speed
+            1,                // pitchRatio (not used, should be 1)
+            pitchShift[i],    // formantRatio becomes actual pitch ratio
+            10,               // minFreq
+            20,               // maxFormantRatio becomes maximum pitch ratio
+            grainPeriods[i],  // grainPeriods
+            timeDispersion[i] // timeDispersion
+        );
+    });
+
+    // Multichannel crossfade between dry and wet signals
+    output = (input * (1 - mix)) + (wet * mix);
+    Out.ar(out, output * amp);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\grainpitchshift2, {
+    arg in=0, out=0;
+    var numChannels = 2;
+    var input, wet, output;
+    var pitchShift = \pitchshift.kr(1!numChannels).midiratio;
     var grainSpeed = \grainspeed.kr(50!numChannels);
     var grainPeriods = \grainperiods.kr(4!numChannels);
     var timeDispersion = \timedisp.kr(6!numChannels);

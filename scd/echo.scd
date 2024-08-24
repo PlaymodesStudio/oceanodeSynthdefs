@@ -61,6 +61,37 @@ SynthDef(\echo13,{
 }).writeDefFile(d);
 )
 
+(// echofeed 2ch
+SynthDef(\echo2,{
+	arg in=0, out=0;
+	var filters=0,fb,del,cut,res,selfilt,sig,mx,dry,feedback,wet,ing;
+	fb=\feed.kr(0.5!2);
+	del=\delay.kr(0.2!2, 1/30, fixedLag:true);
+	cut=\cutoff.kr(60!2, 1/30, fixedLag:true).midicps;
+	res=\resonance.kr(0.2!2);
+	selfilt=\filtertype.kr(0!2);
+	mx=\mix.kr(0!2);
+	ing=\inputgain.kr(1!2, 1/30, fixedLag:true);
+
+	dry = In.ar(in, 2);
+	feedback = LocalIn.ar(2);
+	wet = LeakDC.ar(feedback*fb + (dry*ing));
+
+	filters=[
+		RLPF.ar(wet,cut,1-res,1,0),
+		RHPF.ar(wet,cut,1-res,1,0),
+		BPF.ar(wet,cut,1-res,1,0),
+		BPeakEQ.ar(wet,cut,1,res*12,1,0)
+	];
+
+	wet=Select.ar(selfilt,filters);
+	LocalOut.ar(DelayC.ar(wet, 2, del));
+
+	sig=XFade2.ar(dry,wet,mx*2-1,1!2);
+	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
 (// echofeed 1ch
 SynthDef(\echomono,{
 	arg in=0, out=0;
