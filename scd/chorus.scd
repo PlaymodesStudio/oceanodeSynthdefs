@@ -2,34 +2,71 @@ d = thisProcess.nowExecutingPath.dirname;
 
 (
 SynthDef(\chorusb13, {
-	arg out=0, in=0;
-    var dry, wet, snd, tapCount, numchans,mx,freq;
-	numchans = 13;
-	freq=\frequency.kr(0.01, 1/30, fixedLag: true);
-	mx=\mix.kr(1!numchans, 1/30, fixedLag: true);
-	dry = In.ar(in,numchans);
+    arg out=0, in=0;
+    var dry, wet, snd, tapCount, numchans, mx, freq, feedback;
+    numchans = 13;
     tapCount = 6;
 
+    // Individual control for each channel
+    freq = \frequency.kr(0.01!numchans, 1/30, fixedLag: true);
+    mx = \mix.kr(1!numchans, fixedLag: true);
+    feedback = \feedback.kr(0.495!numchans, 1/30, fixedLag: true);
 
-	wet = LeakDC.ar(LocalIn.ar(numchans)).tanh * \feedback.kr(0.495);
+    dry = In.ar(in, numchans);
+    wet = LeakDC.ar(LocalIn.ar(numchans)).tanh * feedback;
     wet = wet + dry;
 
     wet = numchans.collect { |channel|
+        var channelWet = wet[channel];
+        var phases = (0..tapCount-1) / tapCount * 2pi + (channel / numchans * 2pi);
+
         tapCount.collect { |tap|
             DelayC.ar(
-                wet[channel],
+                channelWet,
                 0.03,
-                SinOsc.ar(
-                    freq,
-                    ((tap + (channel / numchans)) / tapCount) * 2pi
-                ).linlin(-1, 1, 5e-3, 20e-3)
+                SinOsc.ar(freq[channel], phases[tap]).linlin(-1, 1, 5e-3, 20e-3)
             )
         }.sum / sqrt(tapCount)
     };
 
     LocalOut.ar(wet);
-	snd = (dry * (1 - mx)) + (wet * mx);
-	Out.ar(out, snd);
+    snd = (dry * (1 - mx)) + (wet * mx);
+    Out.ar(out, snd);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\chorusb78, {
+    arg out=0, in=0;
+    var dry, wet, snd, tapCount, numchans, mx, freq, feedback;
+    numchans = 78;
+    tapCount = 6;
+
+    // Individual control for each channel
+    freq = \frequency.kr(0.01!numchans, 1/30, fixedLag: true);
+    mx = \mix.kr(1!numchans, fixedLag: true);
+    feedback = \feedback.kr(0.495!numchans, 1/30, fixedLag: true);
+
+    dry = In.ar(in, numchans);
+    wet = LeakDC.ar(LocalIn.ar(numchans)).tanh * feedback;
+    wet = wet + dry;
+
+    wet = numchans.collect { |channel|
+        var channelWet = wet[channel];
+        var phases = (0..tapCount-1) / tapCount * 2pi + (channel / numchans * 2pi);
+
+        tapCount.collect { |tap|
+            DelayC.ar(
+                channelWet,
+                0.03,
+                SinOsc.ar(freq[channel], phases[tap]).linlin(-1, 1, 5e-3, 20e-3)
+            )
+        }.sum / sqrt(tapCount)
+    };
+
+    LocalOut.ar(wet);
+    snd = (dry * (1 - mx)) + (wet * mx);
+    Out.ar(out, snd);
 }).writeDefFile(d);
 )
 
