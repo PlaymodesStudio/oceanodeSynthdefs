@@ -1,3 +1,68 @@
+(
+SynthDef(\samplerstretch13, {
+    arg out=0;
+    var signal, spd, buf, buf2, gain, pos, reverse;
+    var windowSize, overlaps, windowRandRatio, interp;
+
+    // Controls
+    gain = \levels.kr(0!13, 1/30, fixedLag:true);
+    buf = \bufnum.kr(0!13);
+	buf2 = \bufnum2.kr(-1!13);
+    spd = \pitch.kr(0!13, 1/30, fixedLag:true).midiratio;
+    pos = \pos.kr(0!13, 1/30, fixedLag:true);
+    reverse = \reverse.kr(0!13);
+
+    // Additional controls
+    windowSize = \winsize.kr(0.2!13, 1/30, fixedLag:true);
+    overlaps = \overlaps.kr(8!13);
+    windowRandRatio = \winrand.kr(0.0!13, 1/30, fixedLag:true);
+    interp = \interp.kr(4!13);
+
+    // Calculate final freqScale, applying reverse if needed
+    spd = spd * (1 - (2 * reverse)); // This will be -spd when reverse=1, and spd when reverse=0
+
+    signal = Warp1.ar(
+        numChannels: 1,
+        bufnum: buf,
+        pointer: pos,
+        freqScale: spd,
+        windowSize: windowSize,
+        envbufnum: buf2,
+        overlaps: overlaps,
+        windowRandRatio: windowRandRatio,
+        interp: interp
+    ) * gain;
+
+    Out.ar(out, signal);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\oneshotsampler13, {
+    arg out=0;
+    var t, signal, spd, buf, start, gain;
+    var env, envgen, attack, decay, sustain, release, curve;
+
+    t = \trigger.kr(0!13);
+    gain = \levels.kr(0!13, 1/30, fixedLag:true);
+    buf = \bufnum.kr(0!13);
+    spd = \pitch.kr(1!13, 1/30, fixedLag:true).midiratio;
+    start = \startpos.kr(0!13) * BufFrames.kr(buf);
+
+    attack = \attack.kr(0.01!13, 1/30, fixedLag:true);
+    decay = \decay.kr(0.1!13, 1/30, fixedLag:true);
+    sustain = \sustain.kr(0.5!13, 1/30, fixedLag:true);
+    release = \release.kr(0.5!13, 1/30, fixedLag:true);
+
+    curve = \curve.kr(0!13, 1/30, fixedLag:true);
+
+    env = Env.adsr(attack, decay, sustain, release, 1, curve);
+    envgen = EnvGen.kr(env, t);
+
+    signal = PlayBuf.ar(1, buf, spd, t, start, 0) * envgen;
+    Out.ar(out, signal * gain);
+}).writeDefFile(d);
+)
 
 
 (// samples
