@@ -63,6 +63,22 @@
         "Out": 1,
         "Buf": 0
     },
+    "AliasingSynth13C": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vf:ReadRatio:1:0:5, vf:ReadFine:0.04:-0.5:0.5, vf:WriteRatio:2:0:5, vf:WriteFine:0.04:-0.5:0.5, vf:Transpose:0:-36:36, vf:WriteQ:0:0:1, vf:ReadLFOFreq:0.01:0:1, vf:ReadLFOAmp:0.01:0:1, vf:WriteLFOFreq:0.001:0:1, vf:WriteLFOAmp:0.001:0:1,",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "AliasingSynth13D": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vf:ReadRatio:1:0:5, vf:ReadFine:0.04:-0.5:0.5, vf:WriteRatio:2:0:5, vf:WriteFine:0.04:-0.5:0.5, vf:Transpose:0:-48:48, vf:WriteQ:0:0:1, vf:ReadLFOFreq:0.01:0:1, vf:ReadLFOAmp:0.01:0:1, vf:WriteLFOFreq:0.001:0:1, vf:WriteLFOAmp:0.001:0:1,",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
     "Flute": {
         "In_Size": 13,
         "Out_Size": 13,
@@ -368,6 +384,22 @@
         "Out": 1,
         "Buf": 1
     },
+    "OneShotSampler13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vf:Pitch:0:-36:36, vf:StartPos:0:0:1, vi:Trigger:0:0:1, vf:Attack:0.01:0:3, vf:Decay:0.1:0:3, vf:Sustain:0.5:0:1, vf:Release:0.5:0:3, vf:Curve:-4:-8:8",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
+    "SamplerStretch13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:0:0:1, vi:Reverse:0:0:1, vf:Pitch:0:-36:36, vf:Pos:0:0:1, vf:WinSize:0.1:0:0.5, vi:Overlaps:8:1:16, vf:WinRand:0:0:1, vf:Interp:4:1:4",
+        "In": 0,
+        "Out": 1,
+        "Buf": 2
+    },
      "SamplerMono": {
         "In_Size": 1,
         "Out_Size": 1,
@@ -440,6 +472,14 @@
         "Out": 1,
         "Buf": 0
     },
+    "RingModB13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Strength:1:0:4, vf:Mix:0:0:1",
+        "In": 2,
+        "Out": 1,
+        "Buf": 0
+    },
     "RingModMono": {
         "In_Size": 1,
         "Out_Size": 1,
@@ -461,6 +501,14 @@
         "Out_Size": 13,
         "Params": "vf:Pitch:72:12:120, vf:Strength:1:0:4, vf:Mix:0:0:1",
         "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "AmpModB13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Strength:1:0:4, vf:Mix:0:0:1",
+        "In": 2,
         "Out": 1,
         "Buf": 0
     },
@@ -524,6 +572,14 @@
         "In_Size": 78,
         "Out_Size": 78,
         "Params": "vf:InputGain:1:0:1, vf:Pitch:48:0:128, vf:Decay:1:0.01:12, vf:Mix:0:0:1, vf:vibA:0:0:1, vf:vibF:1:0:8",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "CombFeed13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:InputGain:1:0:1, vf:Pitch:48:0:128, vf:vibA:0:0:1, vf:vibF:1:0:8, vf:Feedback:0.5:-0.9999:0.9999, vf:preLPF:130:0:130, vf:postLPF:130:0:130, vf:Mix:0:0:1",
         "In": 1,
         "Out": 1,
         "Buf": 0
@@ -632,6 +688,14 @@
         "Out": 1,
         "Buf": 0
     },
+    "Echo2": {
+        "In_Size": 2,
+        "Out_Size": 2,
+        "Params": "vf:InputGain:1:0:1, vf:Delay:0.2:0.01:2, vf:Feed:0.3:0:1, vi:FilterType:0:0:3, vf:CutOff:60:12:120, vf:Resonance:0.2:0:1, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
     "EchoMono": {
         "In_Size": 1,
         "Out_Size": 1,
@@ -704,6 +768,14 @@
         "Out": 1,
         "Buf": 0
     },
+    "FlangerSync13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Rate:0.01:0:1, vf:minDel:0.004:0:0.1, vf:maxDel:0.01:0:0.1, vf:Decay:1:0:2, vf:Mix:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
     "Flanger13": {
         "In_Size": 13,
         "Out_Size": 13,
@@ -760,10 +832,42 @@
         "Out": 1,
         "Buf": 0
     },
+    "PhaserB13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Frequency:2:0:10, vf:Skew:0:-1:1, vf:Feedback:0.5:0:0.95, vf:Mod:0.5:0:1, vf:Stages:25:1:50, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PhaserC13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Frequency:0.1:0:1, vf:Min:0:0:1, vf:Max:1:0:1, vf:Feedback:0.5:0:0.99, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
     "PhaserMono": {
         "In_Size": 1,
         "Out_Size": 1,
         "Params": "vf:Frequency:2:0:10, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "ChorusB13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Frequency:0.01:0:1, vf:Feedback:0.5:0:2, vf:Mix:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "ChorusB78": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:Frequency:0.01:0:1, vf:Feedback:0.5:0:2, vf:Mix:1:0:1",
         "In": 1,
         "Out": 1,
         "Buf": 0
@@ -1264,6 +1368,14 @@
         "Out": 1,
         "Buf": 0
     },
+    "GrainPitchShift2": {
+        "In_Size": 2,
+        "Out_Size": 2, 
+        "Params": "vf:grainSpeed:50:20:100, vf:pitchShift:0:-24:24, vf:grainPeriods:4:0:10, vf:timeDisp:0.0001:0:0.1, vf:Mix:1:0:1, vf:Levels:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
     "FreqShifter": {
         "In_Size": 13,
         "Out_Size": 13, 
@@ -1400,6 +1512,14 @@
         "Out": 1,
         "Buf": 0
     },
+    "SuperSaw78": {
+        "In_Size": 78,
+        "Out_Size": 78,
+        "Params": "vf:pitch:36:0:120, vf:mix:0.75:0:1, vf:detune:0.75:0:1, vf:levels:1:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
     "SuperSaw13": {
         "In_Size": 13,
         "Out_Size": 13,
@@ -1491,7 +1611,7 @@
     "GrainFreeze": {
         "In_Size": 2,
         "Out_Size": 2,
-        "Params": "vf:point:0:0:1, vi:gate:0:0:1, vi:play:0:0:1",
+        "Params": "vf:point:0:0:1, vf:pitch:0:-36:36, vf:glide:0:0:2, vf:wsize:0.1:0.01:1, vf:rate:0.1:0.01:2, vi:gate:0:0:1, vi:play:0:0:1",
         "In": 1,
         "Out": 1,
         "Buf": 0
@@ -1952,6 +2072,14 @@
         "Out": 1,
         "Buf": 1
     },
+    "FFTStretch2": {
+        "In_Size": 2,
+        "Out_Size": 2,
+        "Params": "vf:pos:0:0:1, vf:levels:1:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
     "FFTStretch6": {
         "In_Size": 6,
         "Out_Size": 6,
@@ -2003,7 +2131,7 @@
     "VadimFilter13": {
         "In_Size": 13,
         "Out_Size": 13,
-        "Params": "vf:pitch:130:0:130, vf:res:1:0:1, vi:type:0:0:5",
+        "Params": "vf:pitch:130:0:130, vf:res:0:0:1, vi:type:0:0:5",
         "In": 1,
         "Out": 1,
         "Buf": 0
@@ -2056,9 +2184,25 @@
         "Out": 1,
         "Buf": 0
     },
+    "CrossLooperB13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vi:Trig:0:0:1, vf:Levels:1:0:1, vf:Pitch:0:-24:24, vf:End:0.5:0:1, vf:Start:0:0:1, vf:xFadeTime:0.1:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
     "CrossLooper13": {
         "In_Size": 13,
         "Out_Size": 13,
+        "Params": "vi:Trig:0:0:1, vi:KeepRegion:0:0:1, vf:Levels:1:0:1, vf:Pitch:0:-24:24, vf:LoopDur:0.5:0:1, vf:Start:0:0:1, vf:xFadeTime:0.1:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 1
+    },
+    "CrossLooper2": {
+        "In_Size": 2,
+        "Out_Size": 2,
         "Params": "vi:Trig:0:0:1, vi:KeepRegion:0:0:1, vf:Levels:1:0:1, vf:Pitch:0:-24:24, vf:LoopDur:0.5:0:1, vf:Start:0:0:1, vf:xFadeTime:0.1:0:1",
         "In": 0,
         "Out": 1,
@@ -2148,6 +2292,70 @@
         "In_Size": 13,
         "Out_Size": 13,
         "Params": "vi:rec:0:0:1, vi:fixedTime:0:0:1, vf:recMs:1000:0:10000, vi:play:0:0:1, vi:autoPlay:1:0:1, vf:start:0:0:1, vf:end:1:0:1, vf:rate:1:0.01:8, vf:deClick:0.1:0:1, vf:mix:0.5:0:1, vf:amp:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "PaulStretch2": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Stretch:50:1:100, vf:window:0.25:0.001:1, vf:amp:1:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 2
+    },
+     "CircularBuffer13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:numReaders:4:1:8, vf:rate:1:0:8, vf:offsetms:100:0:20000",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "CircularBufferFFT2": {
+        "In_Size": 2,
+        "Out_Size": 2,
+        "Params": "vf:levels:1:0:1, vf:pos:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "RealSnare2": {
+        "In_Size": 2,
+        "Out_Size": 2,
+        "Params": "vi:gate:0:0:1, vf:transP:139:20:1000, vf:transPW:0.3:0:1, vf:transHP:120:20:1000, vf:transDec:0.079:0:10, vf:transDb:3:-60:60, vf:wnoiseDec:10.17:0:20, vf:wnoiseDb:-3:-60:60, vf:wnoiseHP:300:20:2000, vf:resoHP:400:20:2000, vf:resoLP:3000:20:20000, vf:resoFreq:550:20:2000, vf:resoDb:-4.3:-60:60, vf:resoLength:30.11:0:60, vf:finaleq:2.5:-20:20, vf:finalHP:150:20:1000, vf:finalDec:0.7:0:10",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "ParamShaper13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Amount:0:0:1, vf:Mix:1:0:1, vf:Level:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "SigmoidShaper13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Steep:0:-1:1, vf:Inflec:0:-1:1, vf:Mix:1:0:1, vf:Level:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "NoiseGate13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:threshDb:60:0:60, vf:attack:0.01:0:1, vf:release:0.01:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "SoloChannel13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vi:SoloCh:0:0:12,",
         "In": 1,
         "Out": 1,
         "Buf": 0
