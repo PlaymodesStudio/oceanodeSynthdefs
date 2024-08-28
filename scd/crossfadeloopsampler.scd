@@ -1,3 +1,43 @@
+(
+SynthDef(\crosslooperb13, {
+    arg out=0;
+    var numchans = 13;
+    var buf = \bufnum.kr(0 ! numchans);
+    var xfadePercent = \xfadetime.kr(0.1 ! numchans);  // Crossfade as percentage of loop duration
+    var end = \end.kr(1 ! numchans);
+    var trig = \trig.kr(0 ! numchans);
+    var levels = \levels.kr(1 ! numchans);
+    var pitch = \pitch.kr(0 ! numchans); // Pitch in semitones
+    var start = \start.kr(0 ! numchans);
+
+    var rate = pitch.midiratio; // Convert semitones to playback rate
+    var bufDur = BufDur.kr(buf);
+    var startPos = start * bufDur;
+    var endPos = end * bufDur;
+    var forward = startPos < endPos;
+    var loopDur = (endPos - startPos).abs;
+    var xfadeTime = xfadePercent * loopDur;  // Calculate crossfade time in seconds
+
+    var signals = numchans.collect { |i|
+        var actualRate = rate[i] * forward[i].binaryValue * 2 - rate[i];
+        var actualStart = forward[i].if(startPos[i], endPos[i]);
+        XPlayBuf.ar(
+            numChannels: 1,
+            bufnum: buf[i],
+            rate: actualRate,
+            trigger: trig[i],
+            startPos: actualStart,
+            loopDur: loopDur[i],
+            loop: 1,
+            fadeTime: 0.001,
+            xFadeTime: xfadeTime[i]
+        ) * levels[i]
+    };
+
+    Out.ar(out, signals);
+}).writeDefFile(d);
+)
+
 d = thisProcess.nowExecutingPath.dirname;
 b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
 (
