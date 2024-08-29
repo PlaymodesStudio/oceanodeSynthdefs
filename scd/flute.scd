@@ -27,9 +27,9 @@ SynthDef(\flute13, {
     ax = DelayC.ar(asum2, ifqc.reciprocal - block * 0.5, afqc * 0.5 - (asum1/ifqc/cr) + 0.001);
     apoly = ax - (ax.cubed);
     asum3 = apoly + (aflute1 * ifeedbk2);
-    avalue = LPF.ar(asum3, lpf);
+	avalue = Sanitize.ar(LPF.ar(asum3, lpf));
     aflute1 = DelayC.ar(avalue, ifqc.reciprocal - block, afqc);
-	LocalOut.ar(aflute1); //LocalOut.ar(Limiter.ar(aflute1,10)); doesnt blow but changes the sound
+	LocalOut.ar(Sanitize.ar(aflute1)); //LocalOut.ar(Limiter.ar(aflute1,10)); doesnt blow but changes the sound
 	signalOut = LeakDC.ar(avalue);
 	signalOut = Limiter.ar(signalOut);
     Out.ar(out, signalOut * levels);
