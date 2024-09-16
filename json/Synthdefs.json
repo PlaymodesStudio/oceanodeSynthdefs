@@ -79,10 +79,10 @@
         "Out": 1,
         "Buf": 0
     },
-    "Flute": {
+    "Flute13": {
         "In_Size": 13,
         "Out_Size": 13,
-        "Params": "vf:Levels:0.1:0:1, vf:Pitch:60:0:128, vf:Noise:1:0:1, vf:Breath:0.1:0:1, vf:Feed1:0.3:0:1, vf:Feed2:0.5:0:1, vf:vibA:0.4:0:1, vf:vibF:5:0:12",
+        "Params": "vf:Levels:1:0:1, vf:Pitch:32:0:128, vf:Noise:1:0:1, vf:Ibreath:0.09:0:1, vf:Ifeedbk1:0.4:0:1, vf:Ifeedbk2:0.4:0:1, vf:LPF:2000:0:10000, vf:VibAmp:0.2:0:1, vf:VibFreq:5:0.01:10",
         "In": 0,
         "Out": 1,
         "Buf": 0
@@ -520,6 +520,14 @@
         "Out": 1,
         "Buf": 0
     },
+    "Notch13": {
+        "In_Size": 13,
+        "Out_Size": 13, 
+        "Params": "vi:Type:0:0:1, vf:Pitch:90:0:130, vf:Width:50:10:5000",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
     "Filter": {
         "In_Size": 78,
         "Out_Size": 78, 
@@ -616,6 +624,22 @@
         "Out": 1,
         "Buf": 0
     },
+    "Freeverb13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Mix:0.33:0:1, vf:Room:0.5:0:1, vf:Damp:0.5:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "ProReverb13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:PreDelay:0.1:0:1, vf:Time:4:0.1:20, vf:LowPass:5000:20:20000, vf:HiPass:100:20:20000, vf:Mix:0.33:0:1, vf:EarlyDel:0.03:0:0.1, vf:EarlyFeed:0.5:0:1, vf:AllpassDel:0.05:0.001:0.1, vf:CombDel:0.1:0.01:0.5, vf:Diffusion:0.7:0:1, vf:ModDepth:0.1:0:1, vf:ModFreq:0.2:0.01:10, vf:Damp:0.5:0:1, vf:Size:1:0.1:10",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
     "Reverb2": {
         "In_Size": 78,
         "Out_Size": 78,
@@ -627,7 +651,15 @@
     "Reverb13": {
         "In_Size": 13,
         "Out_Size": 13,
-        "Params": "vf:PreDelay:0.02:0:1, vf:Time:4:0.1:20, vf:LowPass:90:10:120, vf:HiPass:12:10:120, vf:Mix:0:0:1",
+        "Params": "vf:InputLevel:1:0:1, vf:PreDelay:0.02:0:1, vf:Time:4:0.1:20, vf:LowPass:90:10:120, vf:HiPass:12:10:120, vf:Mix:0:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Reverb13B": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:InputLevel:1:0:1, vf:PreDelay:0.02:0:1, vf:Time:4:0.1:20, vf:LowPass:90:10:120, vf:HiPass:12:10:120, vf:Mix:0:0:1",
         "In": 1,
         "Out": 1,
         "Buf": 0
@@ -1288,10 +1320,10 @@
         "Out": 1,
         "Buf": 0
     },
-    "Pluck": {
-        "In_Size": 78,
-        "Out_Size": 78,
-        "Params": "vf:amp:0.1:0:1, vf:coef:0.85:0:1, vf:vel:1:0:1, vf:dur:3:0.1:10, vf:pitch:42:0:128, vf:levels:0.5:0:1, vf:trigger:0:0:1",
+     "Bow13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Levels:1:0:1, vf:Pitch:36:0:127, vf:vibAmp:0.003:0:1, vf:Amp:1:0:1, vf:Force:0.13:0:1, vf:Pos:0.1:0:1, vf:InvDec:1:0:10, vf:HighLoss:3000:0.1:8000, vf:Inharm:80:0:1000, vf:Impedance:0.55:0.001:32 vf:LPF:90:0:130",
         "In": 0,
         "Out": 1,
         "Buf": 0
@@ -1784,6 +1816,22 @@
         "Out": 1,
         "Buf": 0
     },
+    "Pulsetrain": {
+        "In_Size": 2,
+        "Out_Size": 2,
+        "Params": "vf:TrigRate:20:0.1:1000, vf:Grainfreq:440:0:10000, vi:Overlap:30:1:100, vf:phMod:3:1:40, vi:phModIdx:2:0:20, vf:Amp:0.5:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Pulsetrain_Multi": {
+        "In_Size": 2,
+        "Out_Size": 2,
+        "Params": "vf:WaveForm:0:0:4, vf:TrigRate:20:0.1:1000, vf:Grainfreq:440:0:10000, vf:Attack:0.03:0:0.1, vf:Release:0.97:0:1, vi:Overlap:30:1:100, vf:phMod:3:1:40, vi:phModIdx:2:0:20, vf:Amp:0.5:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
      "Feedback": {
         "In_Size": 2,
         "Out_Size": 2,
@@ -2120,6 +2168,30 @@
         "Out": 1,
         "Buf": 0
     },
+     "Pluck13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vi:Trigg:1:0:1, vf:Amp:1:0:1, vf:Pos:0.1:0:1, vf:Att:0.001:0.001:3, vf:Rel:0.0005:0.0005:10, vf:Pitch:36:0:130, vf:InvDec:1:0:10, vf:HighLoss:3000:0.1:3000, vf:InHarm:80:0:1000, vf:PreLPF:80:0:130, vf:LPF:90:0:130, vf:Levels:1:0:1",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Pluck_In13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vi:Trigg:1:0:1, vf:Amp:1:0:1, vf:Pos:0.1:0:1, vf:Pitch:36:0:130, vf:InvDec:1:0:10, vf:HighLoss:3000:0.1:3000, vf:InHarm:80:0:1000, vf:PreLPF:80:0:130, vf:LPF:90:0:130, vf:Levels:1:0:1",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+     "Sitar13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vi:Trigg:1:0:1, vf:Amp:0.5:0:1, vf:Pos:0.1:0:1, vf:BandWidth:1.03:0:10, vf:Dec1:1:0:10, vf:HiLoss1:100:0.1:3000, vf:LPF1:102:20:130, vf:Dec2:1:0:10, vf:HiLoss2:100:0.1:3000, vf:LPF2:102:20:130, vf:Dry:0.5:0:1, vf:Wet:0.5:0:1, vf:Att:0.001:0.0001:10, vf:Rel:0.03:0.0001:10, vf:Pitch:36:0:130",
+        "In": 0,
+        "Out": 1,
+        "Buf": 0
+    },
      "JunkPerc2": {
         "In_Size": 2,
         "Out_Size": 2,
@@ -2356,6 +2428,14 @@
         "In_Size": 13,
         "Out_Size": 13,
         "Params": "vi:SoloCh:0:0:12,",
+        "In": 1,
+        "Out": 1,
+        "Buf": 0
+    },
+    "Bells13": {
+        "In_Size": 13,
+        "Out_Size": 13,
+        "Params": "vf:Pitch:60:20:130, vf:PitchY:1:1:6, vf:T60:2.5:0.1:10, vf:Levels:0.125:0:1, vi:Gate:0:0:1",
         "In": 1,
         "Out": 1,
         "Buf": 0
