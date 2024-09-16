@@ -145,17 +145,52 @@ SynthDef(\reverb, {
 )
 
 (
-SynthDef(\reverb13, {
+SynthDef(\reverb13b, {
     arg in, out=0;
-    var predel, revtime, lpf, hpf, mx, amp=1, dry, wet, temp, sig;
+    var predel, revtime, lpf, hpf, mx, amp=1, dry, wet, temp, sig, input_level,passes,adjrevtime;
     predel = \predelay.kr(1!13);
     revtime = \time.kr(4!13);
     lpf = \lowpass.kr(100!13).midicps;
     hpf = \hipass.kr(12!13).midicps;
     mx = \mix.kr(0!13);
+    input_level = \inputlevel.kr(1!13); // New parameter for input level control
+	passes=32;
 
     dry = In.ar(in, 13);
-    temp = In.ar(in, 13);
+    temp = In.ar(in, 13) * input_level; // Apply input level control
+
+    // Apply predelay
+    temp = DelayN.ar(temp, 1!13, predel);
+
+    // Allpass chain
+	adjrevtime = revtime / passes;
+    passes.do {
+        temp = AllpassL.ar(temp, 0.05!13, {Rand(0.001,0.05)}!13, adjrevtime);
+    };
+
+    // Apply filters once per channel after the allpass chain
+    wet = LPF.ar(temp, lpf);
+    wet = HPF.ar(wet, hpf);
+
+    // Mix dry and wet signals
+    sig = (dry * (1 - mx)) + (wet * mx);
+    Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\reverb13, {
+    arg in, out=0;
+    var predel, revtime, lpf, hpf, mx, amp=1, dry, wet, temp, sig, input_level;
+    predel = \predelay.kr(1!13);
+    revtime = \time.kr(4!13);
+    lpf = \lowpass.kr(100!13).midicps;
+    hpf = \hipass.kr(12!13).midicps;
+    mx = \mix.kr(0!13);
+    input_level = \inputlevel.kr(1!13); // New parameter for input level control
+
+    dry = In.ar(in, 13);
+    temp = In.ar(in, 13) * input_level; // Apply input level control
 
     // Apply predelay
     temp = DelayN.ar(temp, 1!13, predel);
@@ -171,7 +206,6 @@ SynthDef(\reverb13, {
 
     // Mix dry and wet signals
     sig = (dry * (1 - mx)) + (wet * mx);
-
     Out.ar(out, sig);
 }).writeDefFile(d);
 )
