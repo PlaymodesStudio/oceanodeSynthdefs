@@ -39,11 +39,11 @@ SynthDef(\fbdrone13, {
 	arg out=0;
 	var nch=13;
     var snd;
-	var deltime = \delpitch.kr(31!nch).midicps.reciprocal;
-	var winsize=\winsz.kr(0.03!nch);
-	var prelpf=\prelpf.kr(110!nch).midicps;
-	var rlpf = \lpf.kr(100!nch).midicps;
-	var preamp = \preamp.kr(1!nch);
+	var deltime = \delpitch.kr(31!nch, 1/30, fixedLag:true).midicps.reciprocal;
+	var winsize=\winsz.kr(0.03!nch, 1/30, fixedLag:true);
+	var prelpf=\prelpf.kr(110!nch, 1/30, fixedLag:true).midicps;
+	var rlpf = \lpf.kr(100!nch, 1/30, fixedLag:true).midicps;
+	var preamp = \preamp.kr(1!nch, 1/30, fixedLag:true);
 
     var lfo = { |rate|
         Select.ar(
@@ -65,7 +65,7 @@ SynthDef(\fbdrone13, {
     snd = snd * preamp;
     snd = snd.tanh;
     LocalOut.ar(snd);
-	snd = snd * \levels.kr(0.5!nch);
+	snd = snd * \levels.kr(0.5!nch, 1/30, fixedLag:true);
     Out.ar(out, snd);
 }).writeDefFile(d);
 )
