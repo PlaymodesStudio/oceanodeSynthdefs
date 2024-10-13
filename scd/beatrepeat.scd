@@ -1,125 +1,132 @@
+d = thisProcess.nowExecutingPath.dirname;
+
+
 (
 SynthDef(\beatrepeat13, {
-    arg in=0, out=0, bufferSize=4;
-    var onoff=\go.kr(0), rate=\rate.kr(1);
-    var reset=\reset.kr(0);  // Reset parameter
-    var amp=1;
+    arg in=0, out=0, bufferSize=20;
+    var onoff=\go.kr(0);
     var recms=\repms.kr(1000);
-    var gate=1-\gate.kr(1);
-    var ratestep=\pitchstep.kr(0);
-    var reverse=((1-\reverse.kr(0))*2)-1;
-    var envtime;
-    var input, buffer, playhead, output, loopOutput;
-    var recTrig, recTime, playTrig, bufferEnd, isLooping;
-    var fixedTimeGate, fixedTimeEnd;
+    var offset=\offset.kr(0)/1000.0;
+    var gate=\gate.kr(1);
+    var declick = \declick.kr(0.005);
+    var rate = \rate.kr(1);
+    var reverse = \reverse.kr(0);
+    var pitchstep = \pitchstep.kr(0);
+    var grainamp = \grainamp.kr(1);
+    var input, buffer, output, loopOutput;
     var numChannels = 13;
-    var mixPhase, resetTrig;
-    var declickEnv;
-    var loopPhase;
-    var mix, play, wetGate;
-    var bufferPlayRate, actualPlayPos, loopDur, loopReset, phasor, combinedResetTrig;
-    var declick = \declick.kr(0.005);  // Declick time in seconds, default to 5ms
+    var writePos, readPos, bufFrames, offsetSamples, loopSamples;
+    var recording;
+    var declickEnv, gateEnv;
+    var mix, play, wetGate, mixedOutput;
+    var loopDur, loopReset, loopPhase, gatePhase;
+    var envtime;
+    var effectiveRate;
     var loopCount, currentRate;
+    var reset = \reset.kr(0);
+    var combinedResetTrig;
+    var delayedOnoff;
     var onoffTrig;
-	var mixedOutput;
-	var transitionEnv;
-	var ramp;
+    var gatedDrySignal, gatedWetSignal, transitionOutput;
+    var onoffDelay;
+    var transitionEnv, fadeEnv;
+    var recordTrig, recordReset;
+    // Quantized parameters
+    var qRecms, qOffset, qGate, qRate, qReverse, qPitchstep, qgrainamp;
 
-    // Create a local buffer
-    buffer = LocalBuf(SampleRate.ir * bufferSize, numChannels).clear;
-
-    // Input signal
+    bufFrames = (bufferSize * SampleRate.ir).max(1);
+    buffer = LocalBuf(bufFrames, numChannels).clear;
     input = In.ar(in, numChannels);
 
-    // Detect start of recording and create reset trigger
-    onoffTrig = Trig1.kr(onoff);
-    resetTrig = Trig1.kr(reset);
-    recTrig = onoffTrig;
+    // Asymmetric delay for onoff (playback)
+    onoffDelay = (recms/1000) * onoff;
+    delayedOnoff = DelayN.kr(onoff, recms/1000, onoffDelay);
 
-    // Combined reset trigger for both 'go' and 'reset'
-    combinedResetTrig = Trig1.ar(K2A.ar(onoff) + K2A.ar(reset), ControlDur.ir);
+    // Modified recording logic for rapid transitions
+    recordTrig = 1 - onoff;
+    recordReset = Trig.kr(onoff);
+    recording = (1 - delayedOnoff) + Trig1.kr(recordTrig, recms/1000);
 
-    // Create a gate that closes after fixed time
-    fixedTimeGate = EnvGen.kr(Env([0, 1, 0], [0, recms/1000], ['step', 'step']), recTrig);
-    fixedTimeEnd = TDelay.kr(1 - fixedTimeGate, recms/1000);
+    writePos = Phasor.ar(recordReset, BufRateScale.kr(buffer) * recording, 0, BufFrames.kr(buffer));
+    BufWr.ar(input, buffer, writePos);
 
-    // Link mix to onoff, but delayed by recms
-    mix = DelayN.kr(onoff, recms/1000, recms/1000);
+    onoffTrig = Trig.kr(onoff);
+    combinedResetTrig = Trig1.ar(K2A.ar(delayedOnoff) + K2A.ar(reset), ControlDur.ir);
 
-    // Create a gate for the wet signal that opens after recms
-    wetGate = DelayN.kr(onoff, recms/1000, recms/1000);
+    loopDur = recms / 1000;
+    loopPhase = Phasor.ar(combinedResetTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
+    gatePhase = Phasor.ar(onoffTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
 
-    // Link play to onoff with delay
-    play = onoff;
+    loopReset = Trig1.ar((loopPhase - Delay1.ar(loopPhase)) > 0, ControlDur.ir);
 
-    // Detect end of recording
-    playTrig = Trig1.kr(fixedTimeEnd);
+    // Quantize parameters
+    qRecms = Latch.kr(recms, loopReset);
+    qOffset = Latch.kr(offset, loopReset);
+    qGate = Latch.kr(gate, loopReset);
+    qRate = Latch.kr(rate, loopReset);
+    qReverse = Latch.kr(reverse, loopReset);
+    qPitchstep = Latch.kr(pitchstep, loopReset);
+    qgrainamp = Latch.kr(grainamp, loopReset);
 
-    // Determine buffer end and loop duration
-    bufferEnd = recms / 1000;
-    loopDur = bufferEnd;
+    loopSamples = (qRecms / 1000 * SampleRate.ir).round(1).max(1);
+    offsetSamples = (qOffset * SampleRate.ir).round(1);
 
-    // Record to buffer
-    RecordBuf.ar(input, buffer, loop: 0, trigger: recTrig);
-
-    // Create a loop reset trigger using Phasor
-    phasor = Phasor.ar(combinedResetTrig, 1 / (SampleRate.ir * loopDur), 0, 1);
-    loopReset = (phasor - Delay1.ar(phasor) > 0).clip(0, 1);
-
-    // Count loop cycles, resetting when either 'go' or 'reset' triggers
     loopCount = PulseCount.ar(loopReset, combinedResetTrig);
+    currentRate = qRate * (2 ** (qPitchstep * loopCount / 12));
+    effectiveRate = currentRate * (1 - (qReverse * 2));
 
-    // Calculate current rate based on ratestep (in semitones)
-    currentRate = rate * (2 ** (ratestep * loopCount / 12));
-
-    // Calculate buffer play rate
-    bufferPlayRate = currentRate * BufRateScale.kr(buffer);
-
-    // Playhead for buffer playback
-    playhead = Phasor.ar(
+    readPos = Phasor.ar(
         trig: loopReset,
-        rate: bufferPlayRate * reverse,
-        start: 0,
-        end: bufferEnd * SampleRate.ir,
-        resetPos: 0
+        rate: BufRateScale.kr(buffer) * effectiveRate,
+        start: qReverse * loopSamples,
+        end: (1 - qReverse) * loopSamples,
+        resetPos: qReverse * loopSamples
     );
+    readPos = writePos - offsetSamples - loopSamples + readPos;
+    readPos = readPos.wrap(0, BufFrames.kr(buffer) - 1);
 
-    // Calculate actual play position, clamping for rates < 1
-    actualPlayPos = if(
-        currentRate < 1,
-        playhead.clip(0, bufferEnd * currentRate * SampleRate.ir),
-        playhead % (bufferEnd * SampleRate.ir)
-    );
+    mix = delayedOnoff;
+    wetGate = delayedOnoff;
+    play = delayedOnoff;
 
-    // Create the envelope as described
-    envtime = (recms/1000) - (2 * declick);
+    envtime = (qRecms/1000 - (2 * declick)).max(0);
     declickEnv = EnvGen.ar(
         Env(
             levels: [0, 1, 1, 0],
-            times: [declick, envtime-(envtime*gate), declick],
-            curve: [\lin, \step, \lin]
+            times: [declick, envtime, declick],
+            curve: [\sin, \step, \sin]
         ),
-        gate: loopReset,
-        levelScale: 1,
-        levelBias: 0,
-        timeScale: 1
+        gate: loopReset
     );
 
-    // Play from buffer only if we're looping
-    loopOutput = BufRd.ar(numChannels, buffer, actualPlayPos, loop: 1) * play * declickEnv * wetGate;
+    gateEnv = (gatePhase < qGate).lag(declick.min(loopDur / 4));
 
-    // Mix input and loop output
-    mixedOutput = (input * (1 - mix)) + (loopOutput * mix);
+    loopOutput = BufRd.ar(numChannels, buffer, readPos, loop: 1);
+    loopOutput = loopOutput * play * declickEnv * qgrainamp;
 
-    // Create a fast ramping envelope for smooth transitions
-    transitionEnv = Env.asr(declick, 1, declick, 'sine');
-    ramp = EnvGen.ar(transitionEnv, K2A.ar(onoff));
+    gatedDrySignal = input * gateEnv;
+    gatedWetSignal = loopOutput * gateEnv;
 
-    // Use SelectX for smooth transition between dry and wet signals
-    output = SelectX.ar(ramp, [input, mixedOutput]);
+    fadeEnv = EnvGen.ar(
+        Env.asr(declick, 1, declick, 'sine'),
+        gate: onoff
+    );
 
-    Out.ar(out, output * amp);
+    transitionEnv = EnvGen.ar(
+        Env.asr(declick, 1, declick, 'sine'),
+        gate: delayedOnoff
+    );
+
+    transitionOutput = XFade2.ar(
+        gatedDrySignal,
+        gatedWetSignal,
+        transitionEnv * 2 - 1
+    );
+
+    output = SelectX.ar(fadeEnv, [input, transitionOutput]);
+
+    Out.ar(out, output * \levels.kr(1, 1/50, fixedLag: true));
 }).writeDefFile(d);
 )
 
-d = thisProcess.nowExecutingPath.dirname;
+
