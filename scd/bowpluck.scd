@@ -35,23 +35,31 @@ SynthDef(\pluck13, {
     arg out=0;
     var nch=13;
     var freq=\pitch.kr(36!nch, 1/30, fixedLag:true).midicps,
-    amp=\amp.kr(1!nch, 1/30, fixedLag:true), //0-1
-    trig=\trigg.tr(0!nch),
-    pos=\pos.kr(0.1!nch, 1/30, fixedLag:true),//0-1
-    c1=\invdec.kr(1!nch, 1/30, fixedLag:true), //0-10
-    c3=\highloss.kr(3000!nch, 1/30, fixedLag:true), //0-3000
-	rel=1000!nch, //si no, s'allibera el sinte
-    fB = \inharm.kr(80!nch, 1/30, fixedLag:true), //0-1000
-	prelpf=\prelpf.kr(80!nch, 1/30, fixedLag:true).midicps,
-	lpf=\lpf.kr(90!nch, 1/30, fixedLag:true).midicps,
-	att=\att.kr(0.001/nch, 1/30, fixedLag:true),
-	release=\rel.kr(0.0005!nch, 1/30, fixedLag:true);
+    amp=\amp.kr(1!nch, 1/30, fixedLag:true),
+    rawTrig=\trigg.tr(0!nch),  // Back to trigger rate
+    pos=\pos.kr(0.1!nch, 1/30, fixedLag:true),
+    c1=\invdec.kr(1!nch, 1/30, fixedLag:true),
+    c3=\highloss.kr(3000!nch, 1/30, fixedLag:true),
+    rel=1000!nch,
+    fB=\inharm.kr(80!nch, 1/30, fixedLag:true),
+    prelpf=\prelpf.kr(80!nch, 1/30, fixedLag:true).midicps,
+    lpf=\lpf.kr(90!nch, 1/30, fixedLag:true).midicps,
+    att=\att.kr(0.001/nch, 1/30, fixedLag:true),
+    release=\rel.kr(0.0005!nch, 1/30, fixedLag:true);
 
     var levels=\levels.kr(1!nch, 1/30, fixedLag:true);
     var env = Env.new([0,1, 1, 0],[att,0.006, release],[5,-5, -8]);
+
+    // Trigger conditioning to prevent rapid retriggering
+    var trig = Trig1.ar(rawTrig, 0.035);  // Minimum 35ms between triggers
+
     var inp = amp * LFClipNoise.ar(prelpf) * EnvGen.ar(env, trig, doneAction:0);
     var son = DWGPluckedStiff.ar(freq, amp, trig, pos, c1, c3, inp, rel, fB);
-	son = LPF.ar(son,lpf);
+    son = LeakDC.ar(son);
+    son = LPF.ar(son, lpf);
+    son = Limiter.ar(son, 0.95);
+    son = Sanitize.ar(son);
+
     Out.ar(out, son * levels * 0.2);
 }).writeDefFile(d);
 )

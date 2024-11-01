@@ -42,3 +42,20 @@ SynthDef(\sigmoidshaper13, {
     Out.ar(out, sig * level);
 }).add;
 )
+
+(
+SynthDef(\waveshaper13, {
+    arg in=0, out=0;
+    var sig, distorted;
+	var buf;
+	var amp=\levels.kr(1!13, 1/30, fixedLag: true);
+	buf=\bufnum.kr(0);
+
+	sig = In.ar(in,13);
+	distorted = XFade2.ar(sig, Shaper.ar(buf, sig), \mix.kr(1)*2-1);
+
+    Out.ar(out, distorted*amp);
+}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;

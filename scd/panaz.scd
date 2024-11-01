@@ -79,6 +79,32 @@ SynthDef.new(\panaz13multi, {
 )
 
 (
+SynthDef.new(\panaz6multi, {
+    arg in=0, out=0;
+    var signals, pannedSignals, summedSignals, positions, wdth;
+
+    positions = \position.kr(0!6, 1/30, fixedLag:true);
+    wdth = \width.kr(2!6, 1/30, fixedLag:true);
+
+    signals = In.ar(in, 6);
+
+    // Pan each channel independently
+    pannedSignals = Array.fill(6, { |i|
+		PanAz.ar(6, signals[i], positions[i], 1, wdth[i])
+    });
+
+    // Sum the signals channel-wise
+    summedSignals = Array.fill(6, { |chan|
+        pannedSignals.collect({ |sig|
+            sig[chan]
+        }).sum;
+    });
+
+    Out.ar(out, summedSignals);
+}).writeDefFile(d);
+)
+
+(
 SynthDef.new(\panaz78to6, {
     arg in=0, out=0;
     var signals, pannedSignals, summedSignals, positions, wdth;

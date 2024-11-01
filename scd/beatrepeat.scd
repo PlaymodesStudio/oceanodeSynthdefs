@@ -3,15 +3,18 @@ d = thisProcess.nowExecutingPath.dirname;
 
 (
 SynthDef(\beatrepeat13, {
-    arg in=0, out=0, bufferSize=20;
+    arg in=0, out=0;
+	var bufferSize=8;
     var onoff=\go.kr(0);
     var recms=\repms.kr(1000);
+    var adapt=\adaptlength.kr(0);
     var offset=\offset.kr(0)/1000.0;
     var gate=\gate.kr(1);
     var declick = \declick.kr(0.005);
     var rate = \rate.kr(1);
     var reverse = \reverse.kr(0);
     var pitchstep = \pitchstep.kr(0);
+    var numsteps = \numpitchsteps.kr(12);
     var grainamp = \grainamp.kr(1);
     var input, buffer, output, loopOutput;
     var numChannels = 13;
@@ -19,7 +22,7 @@ SynthDef(\beatrepeat13, {
     var recording;
     var declickEnv, gateEnv;
     var mix, play, wetGate, mixedOutput;
-    var loopDur, loopReset, loopPhase, gatePhase;
+    var loopDur, adaptiveLoopDur, loopReset, loopPhase, gatePhase;
     var envtime;
     var effectiveRate;
     var loopCount, currentRate;
@@ -31,21 +34,27 @@ SynthDef(\beatrepeat13, {
     var onoffDelay;
     var transitionEnv, fadeEnv;
     var recordTrig, recordReset;
-    // Quantized parameters
-    var qRecms, qOffset, qGate, qRate, qReverse, qPitchstep, qgrainamp;
 
     bufFrames = (bufferSize * SampleRate.ir).max(1);
     buffer = LocalBuf(bufFrames, numChannels).clear;
     input = In.ar(in, numChannels);
 
-    // Asymmetric delay for onoff (playback)
-    onoffDelay = (recms/1000) * onoff;
-    delayedOnoff = DelayN.kr(onoff, recms/1000, onoffDelay);
+    loopDur = recms / 1000;
+    currentRate = rate * (2 ** (pitchstep / 12));
+    effectiveRate = currentRate * (1 - (reverse * 2));
 
-    // Modified recording logic for rapid transitions
+    // Adaptive loop duration calculation
+    adaptiveLoopDur = Select.kr(adapt, [loopDur, loopDur / currentRate.abs]);
+    loopSamples = (adaptiveLoopDur * SampleRate.ir).round(1).max(1);
+
+    // Asymmetric delay for onoff (playback)
+    onoffDelay = adaptiveLoopDur * onoff;
+    delayedOnoff = DelayN.kr(onoff, adaptiveLoopDur, onoffDelay);
+
+    // Recording logic
     recordTrig = 1 - onoff;
     recordReset = Trig.kr(onoff);
-    recording = (1 - delayedOnoff) + Trig1.kr(recordTrig, recms/1000);
+    recording = (1 - delayedOnoff) + Trig1.kr(recordTrig, adaptiveLoopDur);
 
     writePos = Phasor.ar(recordReset, BufRateScale.kr(buffer) * recording, 0, BufFrames.kr(buffer));
     BufWr.ar(input, buffer, writePos);
@@ -53,34 +62,29 @@ SynthDef(\beatrepeat13, {
     onoffTrig = Trig.kr(onoff);
     combinedResetTrig = Trig1.ar(K2A.ar(delayedOnoff) + K2A.ar(reset), ControlDur.ir);
 
-    loopDur = recms / 1000;
-    loopPhase = Phasor.ar(combinedResetTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
-    gatePhase = Phasor.ar(onoffTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
+    loopPhase = Phasor.ar(combinedResetTrig, 1 / (SampleRate.ir * adaptiveLoopDur), 0, 1, 0);
+    gatePhase = Phasor.ar(onoffTrig, 1 / (SampleRate.ir * adaptiveLoopDur), 0, 1, 0);
 
     loopReset = Trig1.ar((loopPhase - Delay1.ar(loopPhase)) > 0, ControlDur.ir);
 
+    loopCount = PulseCount.ar(loopReset, combinedResetTrig) % numsteps;
+
     // Quantize parameters
-    qRecms = Latch.kr(recms, loopReset);
-    qOffset = Latch.kr(offset, loopReset);
-    qGate = Latch.kr(gate, loopReset);
-    qRate = Latch.kr(rate, loopReset);
-    qReverse = Latch.kr(reverse, loopReset);
-    qPitchstep = Latch.kr(pitchstep, loopReset);
-    qgrainamp = Latch.kr(grainamp, loopReset);
+    currentRate = Latch.kr(currentRate, loopReset);
+    effectiveRate = Latch.kr(effectiveRate, loopReset);
+    adaptiveLoopDur = Latch.kr(adaptiveLoopDur, loopReset);
+    loopSamples = Latch.kr(loopSamples, loopReset);
+    gate = Latch.kr(gate, loopReset);
+    grainamp = Latch.kr(grainamp, loopReset);
 
-    loopSamples = (qRecms / 1000 * SampleRate.ir).round(1).max(1);
-    offsetSamples = (qOffset * SampleRate.ir).round(1);
-
-    loopCount = PulseCount.ar(loopReset, combinedResetTrig);
-    currentRate = qRate * (2 ** (qPitchstep * loopCount / 12));
-    effectiveRate = currentRate * (1 - (qReverse * 2));
+	offsetSamples = Latch.kr((offset * SampleRate.ir).round(1), loopReset);
 
     readPos = Phasor.ar(
         trig: loopReset,
         rate: BufRateScale.kr(buffer) * effectiveRate,
-        start: qReverse * loopSamples,
-        end: (1 - qReverse) * loopSamples,
-        resetPos: qReverse * loopSamples
+        start: reverse * loopSamples,
+        end: (1 - reverse) * loopSamples,
+        resetPos: reverse * loopSamples
     );
     readPos = writePos - offsetSamples - loopSamples + readPos;
     readPos = readPos.wrap(0, BufFrames.kr(buffer) - 1);
@@ -89,7 +93,7 @@ SynthDef(\beatrepeat13, {
     wetGate = delayedOnoff;
     play = delayedOnoff;
 
-    envtime = (qRecms/1000 - (2 * declick)).max(0);
+    envtime = (adaptiveLoopDur - (2 * declick)).max(0);
     declickEnv = EnvGen.ar(
         Env(
             levels: [0, 1, 1, 0],
@@ -99,10 +103,10 @@ SynthDef(\beatrepeat13, {
         gate: loopReset
     );
 
-    gateEnv = (gatePhase < qGate).lag(declick.min(loopDur / 4));
+    gateEnv = (gatePhase < gate).lag(declick.min(adaptiveLoopDur / 4));
 
     loopOutput = BufRd.ar(numChannels, buffer, readPos, loop: 1);
-    loopOutput = loopOutput * play * declickEnv * qgrainamp;
+    loopOutput = loopOutput * play * declickEnv * grainamp;
 
     gatedDrySignal = input * gateEnv;
     gatedWetSignal = loopOutput * gateEnv;
@@ -128,5 +132,4 @@ SynthDef(\beatrepeat13, {
     Out.ar(out, output * \levels.kr(1, 1/50, fixedLag: true));
 }).writeDefFile(d);
 )
-
 
