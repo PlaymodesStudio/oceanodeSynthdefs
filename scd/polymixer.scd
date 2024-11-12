@@ -48,6 +48,7 @@ SynthDef.new(\polymixer13, { //cuidao! he afegit mute i solo
     // This ensures that soloindex directly corresponds to the user's choice
     soloedInput = Select.ar(soloindex, [mixedInput] ++ inputs);
 	finalsig=soloedInput*\masterlevel.kr(1!13, 1/30, fixedLag:true);
+	finalsig=Limiter.ar(finalsig);
 
     // Output the final signal
     ReplaceOut.ar(out, finalsig);

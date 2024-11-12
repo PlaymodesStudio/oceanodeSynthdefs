@@ -117,4 +117,79 @@ SynthDef(\mallet13, {
 }).writeDefFile(d);
 )
 
+(
+SynthDef(\malletdrone13, {
+    arg out = 0;
+	var nch=13;
+    // Named controls with multichannel expansion
+    var pitch = \pitch.kr(80!nch).midicps;
+    var t60 = \t60.kr(2.5!nch);
+    var amp = \amp.kr(0.25!nch);
+    var excite = \excite.kr(0.2!nch);
+    var snd;
+
+    // Generate sound for each channel
+    snd = Array.fill(nch, {|i|
+        var exciter, sig;
+
+        // Exciter - using the original envelope design
+        exciter = WhiteNoise.ar() * 0.25 * excite;
+
+        // Synthesis using DynKlank
+        sig = DynKlank.ar(
+            `[
+                [1, 2, 2.803, 3.871, 5.074, 7.81, 10.948, 14.421],
+                [1, 0.044, 0.891, 0.0891, 0.794, 0.1, 0.281, 0.079],
+                [1, 0.205, 1, 0.196, 0.339, 0.047, 0.058, 0.047] * t60[i]
+            ],
+            exciter,
+            freqscale: pitch[i]
+        );
+
+        // Apply amplitude
+        sig * amp[i]
+    });
+
+    // Output each channel separately
+	Out.ar(out, Limiter.ar(snd*0.1));
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\malletin13, {
+    arg out, in;
+	var nch=13;
+    // Named controls with multichannel expansion
+    var pitch = \pitch.kr(80!nch).midicps;
+    var t60 = \t60.kr(2.5!nch);
+    var amp = \amp.kr(0.25!nch);
+    var snd;
+	var inp=In.ar(in,nch);
+
+    // Generate sound for each channel
+    snd = Array.fill(nch, {|i|
+        var exciter, sig;
+
+        // Exciter - using the original envelope design
+		exciter = inp[i] * 0.1;
+
+        // Synthesis using DynKlank
+        sig = DynKlank.ar(
+            `[
+                [1, 2, 2.803, 3.871, 5.074, 7.81, 10.948, 14.421],
+                [1, 0.044, 0.891, 0.0891, 0.794, 0.1, 0.281, 0.079],
+                [1, 0.205, 1, 0.196, 0.339, 0.047, 0.058, 0.047] * t60[i]
+            ],
+            exciter,
+            freqscale: pitch[i]
+        );
+
+        // Apply amplitude
+        sig * amp[i]
+    });
+
+    // Output each channel separately
+	Out.ar(out, Limiter.ar(snd*0.1));
+}).writeDefFile(d);
+)
 d = thisProcess.nowExecutingPath.dirname;

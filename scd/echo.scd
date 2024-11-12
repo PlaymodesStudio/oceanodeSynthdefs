@@ -61,6 +61,8 @@ SynthDef(\echo13,{
 }).writeDefFile(d);
 )
 
+d = thisProcess.nowExecutingPath.dirname;
+
 (// echofeed 2ch
 SynthDef(\echo2,{
 	arg in=0, out=0;
@@ -89,6 +91,48 @@ SynthDef(\echo2,{
 
 	sig=XFade2.ar(dry,wet,mx*2-1,1!2);
 	Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\pingpongecho2, {
+    arg in=0, out=0;
+    var filters=0, fb, del, cut, res, selfilt, sig, mx, dry, feedbackL, feedbackR, wetL, wetR, ing, spread;
+    fb = \feed.kr(0.5);
+    del = \delay.kr(0.2, 1/30, fixedLag:true);
+    cut = \cutoff.kr(60, 1/30, fixedLag:true).midicps;
+    res = \resonance.kr(0.2);
+    selfilt = \filtertype.kr(0);
+    mx = \mix.kr(0, 1/30, fixedLag:true);
+    ing = \inputgain.kr(1, 1/30, fixedLag:true);
+    spread = \spread.kr(1, 1/30, fixedLag:true);  // New stereo spread parameter
+
+    dry = In.ar(in, 2);
+    #feedbackL, feedbackR = LocalIn.ar(2);
+
+    wetL = LeakDC.ar(feedbackR * fb + (dry[0] * ing));
+    wetR = LeakDC.ar(feedbackL * fb + (dry[1] * ing));
+
+    filters = [
+        RLPF.ar([wetL, wetR], cut, 1-res),
+        RHPF.ar([wetL, wetR], cut, 1-res),
+        BPF.ar([wetL, wetR], cut, 1-res),
+        BPeakEQ.ar([wetL, wetR], cut, 1, res*12)
+    ];
+
+    #wetL, wetR = Select.ar(selfilt, filters);
+
+    // Apply stereo spread
+    wetL = Balance2.ar(wetL, wetL, spread.neg);
+    wetR = Balance2.ar(wetR, wetR, spread);
+
+    LocalOut.ar([
+        DelayC.ar(wetL[0] + wetL[1], 2, del),
+        DelayC.ar(wetR[0] + wetR[1], 2, del)
+    ]);
+
+    sig = XFade2.ar(dry, [wetL[0] + wetL[1], wetR[0] + wetR[1]], mx*2-1);
+    Out.ar(out, sig);
 }).writeDefFile(d);
 )
 

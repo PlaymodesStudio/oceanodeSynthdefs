@@ -12,6 +12,20 @@ SynthDef(\hardsync13, {
 }).writeDefFile(d);
 )
 
+(
+SynthDef(\hardsyncpulse13, {
+	arg out=0;
+	var freq, syncFreqRatio, masterOsc, slaveOsc, sync, amp;
+	freq=\pitch.kr(26!13, 1/30, fixedLag: true).midicps;
+	syncFreqRatio=\ratio.kr(4!13, 1/30, fixedLag: true);
+	amp=\levels.kr(1!13, 1/30, fixedLag: true);
+	masterOsc = Pulse.ar(freq, \pwmaster.kr(0.5!13, 1/30, fixedLag: true));
+	slaveOsc = RLPF.ar(Pulse.ar(freq * syncFreqRatio, \pwslave.kr(0.5!13, 1/30, fixedLag: true)),\prelpf.kr(2000!13, 1/30, fixedLag:true),\preq.kr(1,1/30,fixedLag:true));
+    sync = slaveOsc * (masterOsc < 0);
+    Out.ar(out, sync*amp);
+}).writeDefFile(d);
+)
+
 d = thisProcess.nowExecutingPath.dirname;
 
 (
