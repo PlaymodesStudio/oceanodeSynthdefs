@@ -219,7 +219,7 @@ SynthDef(\recursive2, {
 
 (
 SynthDef(\recursive2, {
-    // Main mix controls
+    arg out=0;
     var amp = \amp.kr(0.5, 0.01);
     var spread = \spread.kr(1.0, 0.1);
 
@@ -291,6 +291,86 @@ SynthDef(\recursive2, {
         .collect({ |chan| LPF.ar(chan, lowpass) })
         .collect({ |chan| Limiter.ar(chan, limiterLevel, 0.01) });
 
-    Out.ar(0, Splay.ar(limited, spread) * amp);
+    Out.ar(out, Splay.ar(limited, spread) * amp);
+}).writeDefFile(d);
+)
+
+
+(
+SynthDef(\recursive13, {
+    arg out=0;
+    var nch = 13;
+    var amp = \amp.kr(0.5!nch, 0.01);
+
+    // Oscillator parameters - multiply by 6 for 13 channel spread
+	var n = (30 * (nch/2)).floor.asInteger;  // original 30 * 6
+	var m = (5 * (nch/2)).floor.asInteger;   // original 5 * 6
+
+    // Time-based controls (single value to preserve recursive structure)
+    var noiseRateLo = \noiselo.kr(0.1, 0.01);
+    var noiseRateHi = \noisehi.kr(2.0, 0.01);
+    var lagTime = \lag.kr(0.1, 0.01);
+
+    // Frequency range controls (single value)
+    var freqLo = \freqlo.kr(0.2, 0.01);
+    var freqHi = \freqhi.kr(1000, 1);
+    var freqMul = \freqmul.kr(1, 0.01);
+
+    // Feedback controls (single value)
+    var fbScale = \fbscale.kr(1.0, 0.01);
+    var fbOffset = \fboffset.kr(0.0, 0.01);
+
+    // Protection/smoothing controls
+    var leakDC = 0.995;
+    var lowpass = \lowpass.kr(12000!nch, 1);  // 13 channel
+    var limiterLevel = 0.95;
+
+    var sig, output, limited;
+    var fb,trig;
+
+    // Create initial feedback with DC filtering
+    fb = LeakDC.ar(LocalIn.ar(n), leakDC);
+
+    // Auto-trigger when any range parameter changes
+     trig = Changed.kr(noiseRateLo) + Changed.kr(noiseRateHi) +
+               Changed.kr(freqLo) + Changed.kr(freqHi);
+
+    // Create n oscillators with smoothed selection
+    sig = n.collect({
+        var noiseRate = TExpRand.kr(noiseRateLo, noiseRateHi, trig);
+        var randMul = TRand.kr(0.0, 1.0, trig);
+        var randOffset = TRand.kr(0.0, n, trig);
+        var freq = TExpRand.kr(freqLo, freqHi, trig);
+        var index = (LFNoise0.kr(noiseRate) * randMul + randOffset).clip(0, n-1);
+        var smoothIndex = Lag3.kr(index, lagTime);
+        var a = (SelectX.ar(smoothIndex, fb) * fbScale + fbOffset);
+        var smoothPhase = Lag.ar(a, 0.001);
+        var osc = SinOsc.ar(freq * freqMul, smoothPhase);
+        LPF.ar(osc, lowpass[0])  // Use first lowpass value for initial filtering
+    });
+
+    // Feed filtered signals back
+    LocalOut.ar(LeakDC.ar(sig, leakDC));
+
+    // Final output stage with smoothed selection
+    output = m.collect({
+        var readPos = LFNoise1.kr(1/m).range(0, n - m - 1);
+        var smoothPos = Lag3.kr(readPos, lagTime * 2);
+        var audioPos = K2A.ar(smoothPos);
+        SelectX.ar(audioPos, sig)
+    });
+
+    // Mix and distribute across 13 channels using SelectX
+    limited = nch.collect({ |i|
+        var pos = i * (m/nch);  // Calculate position in output array
+        var selector = pos + LFNoise1.kr(0.1).range(0, m/nch);  // Add some movement
+        var chan = SelectX.ar(selector, output);
+        var processed = LeakDC.ar(chan, leakDC);
+        processed = LPF.ar(processed, lowpass[i]);
+        processed = Limiter.ar(processed, limiterLevel, 0.01);
+        processed * amp[i]
+    });
+
+    Out.ar(out, limited);
 }).writeDefFile(d);
 )
