@@ -1,4 +1,5 @@
-SynthDef(\peakfilter, {
+(
+SynthDef(\peakfilter13, {
     arg out=0, in=0;
     var nch = 13;
     var out_level = \levels.kr(1!nch);
@@ -10,5 +11,7 @@ SynthDef(\peakfilter, {
     sig = sig * out_level;
     Out.ar(out, sig);
 }).writeDefFile(d);
+)
 
 d = thisProcess.nowExecutingPath.dirname;
+sms
