@@ -20,34 +20,110 @@ d = thisProcess.nowExecutingPath.dirname;
 
 
 (
-SynthDef.new(\bandpass1080, {
-	arg in=0, out=0;
-	var pitchArray=#[440], ampArray=#[1], panArray=#[0], qArray=#[1];
-    var source, bands, freqs, amps, pans, qs, panSignals, stereoOutput;
+SynthDef(\bandpass1080, {
+    arg in=0, out=0;
+    var input, bands, freqs, qs, amps, output, pans;
     var numBands = 1080;
+    var scaling = 1/numBands.sqrt;  // Compensate for band summation
 
-    // Read the mono input
-    source = In.ar(in);
+    input = In.ar(in,1);
 
-    // Arrays for storing filter parameters
-	freqs = \pitcharray.kr(36!1080).midicps;
-	amps = \amparray.kr(1!1080, 1/30, fixedLag:true);
-	pans = \panarray.kr(0!1080, 1/30, fixedLag:true);
-	qs = \qarray.kr(1!1080, 1/30, fixedLag: true);
+    freqs = \pitcharray.kr(60!numBands).midicps;
+    qs = \qarray.kr(1!numBands, 1/30, fixedLag:true);
+    amps = \amparray.kr(1!numBands, 1/30, fixedLag:true);
+    pans = \panarray.kr(0!numBands, 1/30, fixedLag:true);
 
-    // Process each band
     bands = Array.fill(numBands, { |i|
-        var band = BPF.ar(source, freqs[i], freqs[i] / qs[i]);
-        band = band * amps[i];  // Apply amplitude
-        Pan2.ar(band, pans[i])  // Apply panning
+        var bpf1 = BPF.ar(input, freqs[i], qs[i]);
+        Pan2.ar(bpf1 * amps[i], pans[i])
     });
 
-    // Sum all the bands
-    stereoOutput = Mix(bands);
+    output = Mix(bands) * scaling;
 
-    // Output the final stereo signal
-    Out.ar(out, stereoOutput/300);
+    Out.ar(out, output);
 }).writeDefFile(d);
 )
 
 
+// If you hear noise, our routing is working. Then we can add the full processing:
+(
+SynthDef(\bandpass256, {
+    arg in=0, out=0;
+    var input, bands, freqs, qs, amps, output, pans;
+    var numBands = 256;
+    var scaling = 1/numBands.sqrt;  // Compensate for band summation
+
+    input = In.ar(in,1);
+
+    freqs = \pitcharray.kr(60!numBands).midicps;
+    qs = \qarray.kr(1!numBands, 1/30, fixedLag:true);
+    amps = \amparray.kr(1!numBands, 1/30, fixedLag:true);
+    pans = \panarray.kr(0!numBands, 1/30, fixedLag:true);
+
+    bands = Array.fill(numBands, { |i|
+        var bpf1 = BPF.ar(input, freqs[i], qs[i]);
+        var bpf2 = BPF.ar(bpf1, freqs[i], qs[i]);
+        Pan2.ar(bpf2 * amps[i], pans[i])
+    });
+
+    output = Mix(bands) * scaling;
+
+    Out.ar(out, output);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\bandpass32_13, {
+    arg in=0, out=0;
+    var input, bands, freqs, qs, amps, output, levels;
+    var numBands = 32;
+    var numChannels = 13;
+    var scaling = 1/numBands.sqrt;
+
+    input = In.ar(in, numChannels);
+
+    freqs = \pitcharray.kr(60!numBands).midicps;
+    qs = \qarray.kr(1!numBands, 1/30, fixedLag:true);
+    amps = \amparray.kr(1!numBands, 1/30, fixedLag:true);
+	levels = \levels.kr(1!numChannels, 1/30, fixedLag:true);
+
+    output = Array.fill(numChannels, { |chanNum|
+        var chanInput = input[chanNum];
+        var chanBands = Array.fill(numBands, { |i|
+            var bpf1 = BPF.ar(chanInput, freqs[i], qs[i]);
+            var bpf2 = BPF.ar(bpf1, freqs[i], qs[i]);
+            bpf2 * amps[i]
+        });
+        Mix(chanBands) * scaling
+    });
+
+    Out.ar(out, output*levels);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\bandpass256_13, {
+    arg in=0, out=0;
+    var input, bands, freqs, qs, amps, output, pans,nch,levels;
+    var numBands = 256;
+    var scaling = 1/numBands.sqrt;  // Compensate for band summation
+	nch=13;
+    input = In.ar(in,1); //mono input
+
+    freqs = \pitcharray.kr(60!numBands).midicps;
+    qs = \qarray.kr(1!numBands, 1/30, fixedLag:true);
+    amps = \amparray.kr(1!numBands, 1/30, fixedLag:true);
+    pans = \panarray.kr(0!numBands, 1/30, fixedLag:true);
+	levels = \levels.kr(1!nch, 1/30, fixedLag:true);
+
+    bands = Array.fill(numBands, { |i|
+        var bpf1 = BPF.ar(input, freqs[i], qs[i]);
+        var bpf2 = BPF.ar(bpf1, freqs[i], qs[i]);
+        PanAz.ar(nch, bpf2 * amps[i], pans[i])
+    });
+
+    output = Mix(bands) * scaling;
+
+    Out.ar(out, output*levels);
+}).writeDefFile(d);
+)
