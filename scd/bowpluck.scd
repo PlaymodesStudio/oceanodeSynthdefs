@@ -36,7 +36,7 @@ SynthDef(\pluck13, {
     var nch=13;
     var freq=\pitch.kr(36!nch, 1/30, fixedLag:true).midicps,
     amp=\amp.kr(1!nch, 1/30, fixedLag:true),
-    rawTrig=\trigg.tr(0!nch),  // Back to trigger rate
+    rawTrig=\trigg.kr(0!nch),  // Back to trigger rate
     pos=\pos.kr(0.1!nch, 1/30, fixedLag:true),
     c1=\invdec.kr(1!nch, 1/30, fixedLag:true),
     c3=\highloss.kr(3000!nch, 1/30, fixedLag:true),
