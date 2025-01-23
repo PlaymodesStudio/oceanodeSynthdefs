@@ -97,6 +97,59 @@ SynthDef(\sampler13,
 }).writeDefFile(d);
 )
 
+
+(// samples
+SynthDef(\sampler13,
+	{
+		arg out=0;
+		var t, signal, spd, buf,bucle, start, gain;
+		t=\trigger.kr(0!13);
+		gain=\levels.kr(0!13, 1/30, fixedLag:true);
+		buf=\bufnum.kr(0!13);
+		spd=\speed.kr(1!13);
+		bucle=\loop.kr(0!13);
+		start=\startpos.kr(0!13)*BufFrames.kr(buf);
+		signal=PlayBuf.ar(1, buf, spd, t, start,bucle)*gain;
+		Out.ar(out, signal);
+}).writeDefFile(d);
+)
+
+(
+SynthDef(\sampler13, {
+    arg out = 0;
+    // 1) Detectem flanc de pujada
+    var trig       = \trigger.kr(0!13);
+    var trigEdge   = HPZ1.kr(trig) > 0;
+
+    // 2) Llegim valors d’entrada
+    var buf        = \bufnum.kr(0!13);
+    var spd        = \speed.kr(1!13);
+    var bucle      = \loop.kr(0!13);
+    var startPos   = \startpos.kr(0!13) * BufFrames.kr(buf);
+    var gain       = \levels.kr(0!13, 1/30, fixedLag: true);
+
+    // 3) Llatxejar (només s’actualitza en el flanc 0→1)
+    var latchedBuf     = Latch.kr(buf,       trigEdge);
+    var latchedSpd     = Latch.kr(spd,       trigEdge);
+    var latchedStart   = Latch.kr(startPos,  trigEdge);
+
+    // 4) PlayBuf amb “flanc” com a paràmetre trigger
+    var signal = PlayBuf.ar(
+        numChannels: 1,
+        bufnum:      latchedBuf,
+        rate:        latchedSpd,
+        trigger:     trigEdge,
+        startPos:    latchedStart,
+        loop:        bucle
+    ) * gain;
+
+    Out.ar(out, signal);
+	}).writeDefFile(d);
+)
+
+d = thisProcess.nowExecutingPath.dirname;
+
+
 (// samples
 SynthDef(\samplermono,
 	{

@@ -34,6 +34,25 @@ SynthDef(\karpluspluck6, {
 }).writeDefFile(d);
 )
 
+(
+SynthDef(\karpluspluck13, {
+	arg out=0;
+	var trig = \trig.kr(1!13, 1/30, fixedLag: true);
+	var sustain = \sustain.kr(1!13);
+	var dur=\pulsedur.kr(0.01!13, 1/30, fixedLag: true);
+	var amp = \levels.kr(1!13, 1/30, fixedLag: true);
+	var freq = \pitch.kr(36!13, 1/30, fixedLag: true).midicps;
+	var accent = \accent.kr(0.75!13, 1/30, fixedLag: true);
+	var brightness = \brightness.kr(0.15!13, 1/30, fixedLag: true);
+	var damping = \damping.kr(0.25!13, 1/30, fixedLag: true);
+	var env = Env.perc.kr(gate: trig, timeScale:dur);
+
+    var sig = StringVoice.ar(env, structure: 0.5, infsustain: sustain, freq: freq, accent: accent, brightness: brightness, damping: damping);
+
+    Out.ar(out, sig*amp)
+}).writeDefFile(d);
+)
+
 d = thisProcess.nowExecutingPath.dirname;
 
 (

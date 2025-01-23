@@ -65,6 +65,33 @@ SynthDef(\forms6, {
 }).writeDefFile(d);
 )
 
+(
+SynthDef(\forms13, {
+    arg out=0;
+    var partials = 1080;
+    var chans = 13;  // Number of output channels
+    var freqs = \freqarray.kr(220!partials);
+    var pitch = \pitcharray.kr(36!partials).midicps;
+    var amps = \amparray.kr(0.0!partials, 1/30, fixedLag:true);
+    var pans = \panarray.kr(0.0!partials, 1/30, fixedLag:true);
+    var levels = \levels.kr(1!chans, 1/30, fixedLag:true);
+    var usedpartials = \partials.kr(1080);
+
+    var sigArray = Array.fill(partials, { |i|
+        var baseFreq = freqs[i] + pitch[i];
+        var amp = amps[i] * (i < usedpartials);  // Multiply amplitude by 0 if index >= usedpartials
+        var pan = pans[i];
+        PanAz.ar(chans, SinOsc.ar(baseFreq, Rand(-25, 25), amp), pan);
+    });
+
+    var mixedSig = Array.fill(chans, { |chan|
+        Mix.new(sigArray.collect { |sig| sig[chan] }) * levels[chan];
+    });
+
+    Out.ar(out, mixedSig/100);
+}).writeDefFile(d);
+)
+
 
 d = thisProcess.nowExecutingPath.dirname;
 

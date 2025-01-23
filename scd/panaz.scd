@@ -134,6 +134,35 @@ SynthDef.new(\panaz78to6, {
 )
 
 (
+SynthDef.new(\panaz78to13, {
+    arg in=0, out=0;
+    var signals, pannedSignals, summedSignals, positions, wdth;
+
+    // Read 78 channels from the input
+    signals = In.ar(in, 78);
+
+    // Define panning positions for 78 inputs across 6 outputs
+    positions = \position.kr(0!78, 1/4, fixedLag:true);
+    wdth = \width.kr(2!78, 1/30, fixedLag:true);  // Control the width of the panning
+
+    // Pan each of the 78 input channels
+    pannedSignals = Array.fill(78, { |i|
+		PanAz.ar(13, signals[i], positions[i], 1, wdth[i])
+    });
+
+    // Sum the signals for each of the 6 output channels
+    summedSignals = Array.fill(13, { |chan|
+        pannedSignals.collect({ |sig|
+            sig[chan]
+        }).sum;
+    });
+
+    // Output the summed signals to the output bus
+    Out.ar(out, summedSignals);
+}).writeDefFile(d);
+)
+
+(
 SynthDef.new(\panaz13to6, {
     arg in=0, out=0;
     var signals, pannedSignals, summedSignals, positions, wdth;
@@ -162,25 +191,23 @@ SynthDef.new(\panaz13to6, {
 }).writeDefFile(d);
 )
 
-
 (
 SynthDef.new(\panaz13multiar, {
     arg in=0, in2=0, out=0;
     var signals, pannedSignals, summedSignals, positions, wdth;
-
-
     wdth = \width.kr(2!13, 1/30, fixedLag: true);
-
     signals = In.ar(in, 13);
-	positions = In.ar(in2, 13);
-	positions=(positions*2)-1;
+    positions = In.ar(in2, 13);
+    positions = (positions*2)-1;
 
-    // Pan each channel independently
+    // Add equal-power compensation
     pannedSignals = Array.fill(13, { |i|
-		PanAz.ar(13, signals[i], positions[i], 1, wdth[i])
+        var compensated;
+        compensated = PanAz.ar(13, signals[i], positions[i], 1, wdth[i]);
+        compensated = compensated * (wdth[i].sqrt.reciprocal);  // Compensate for width
+        compensated;
     });
 
-    // Sum the signals channel-wise
     summedSignals = Array.fill(13, { |chan|
         pannedSignals.collect({ |sig|
             sig[chan]

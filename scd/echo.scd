@@ -61,6 +61,67 @@ SynthDef(\echo13,{
 }).writeDefFile(d);
 )
 
+(
+SynthDef(\echospat13, {
+    arg in=0, out=0;
+    var filters=0, fb, del, cut, res, selfilt, sig, mx, dry, feedback, wet, ing;
+    var panPos, totalCycleTime, smoothRands;
+    fb = \feed.kr(0.5!13);
+    del = \delay.kr(0.2!13, 1/30, fixedLag:true);
+    cut = \cutoff.kr(60!13, 1/30, fixedLag:true).midicps;
+    res = \resonance.kr(0.2!13);
+    selfilt = \filtertype.kr(0!13);
+    mx = \mix.kr(0!13);
+    ing = \inputgain.kr(1!13, 1/30, fixedLag:true);
+
+    totalCycleTime = del.mean * 13;
+
+    smoothRands = Array.fill(13, {|i|
+        LFNoise2.kr(6.5/totalCycleTime, mul: 1, add: 1)
+    });
+
+    panPos = Select.kr(\pattern.kr(0), [
+        // Circular pattern with bipolar sawtooth (-1 to +1)
+        Array.fill(13, {|i|
+            LFSaw.kr(1/totalCycleTime, iphase: i/13).range(-1, 1)
+        }),
+        // Reverse circular
+        Array.fill(13, {|i|
+            LFSaw.kr(1/totalCycleTime, iphase: i/13).range(1, -1)
+        }),
+        // Star pattern adjusted for bipolar range
+        Array.fill(13, {|i|
+            var sawPhase = (LFSaw.kr(1/totalCycleTime, iphase: i/13) * 13).floor % 13;
+            Select.kr(sawPhase, Array.fill(13, {|j| -1 + ((j / 6.5) * 2)}))
+        }),
+        // Reverse star
+        Array.fill(13, {|i|
+            var sawPhase = (LFSaw.kr(1/totalCycleTime, iphase: i/13) * 13).floor % 13;
+            Select.kr(sawPhase, Array.fill(13, {|j| 1 - ((j / 6.5) * 2)}))
+        })
+    ]);
+
+    dry = In.ar(in, 13);
+    feedback = LocalIn.ar(13);
+    wet = fb * DelayC.ar(feedback, 2, del);
+
+    wet = Array.fill(13, {|i|
+        PanAz.ar(13, wet[i], panPos[i], orientation: 0.5)
+    }).sum;
+
+    filters = Select.ar(selfilt[0], [
+        RLPF.ar(wet, cut, 1-res),
+        RHPF.ar(wet, cut, 1-res),
+        BPF.ar(wet, cut, 1-res),
+        BPeakEQ.ar(wet, cut, 1, res*12)
+    ]);
+
+    LocalOut.ar(filters + (dry * ing));
+    sig = XFade2.ar(dry, filters, mx*2-1);
+    Out.ar(out, sig);
+}).writeDefFile(d);
+)
+
 d = thisProcess.nowExecutingPath.dirname;
 
 (// echofeed 2ch
