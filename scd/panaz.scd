@@ -79,6 +79,83 @@ SynthDef.new(\panaz13multi, {
 )
 
 (
+SynthDef.new(\xpanaz13, {
+    arg in=0, out=0;
+    var numChans=13;
+    var signals, frontSignals, backSignals, summedSignals;
+    var x, widths, rotation;
+    var frontPos, backPos;
+
+    x = \x.kr(0.5!numChans, 1/30, fixedLag:true);
+	x=x/2;
+    widths = \width.kr(2!numChans, 1/30, fixedLag:true);
+	rotation = 0.4188; //cuidado! hardcoded per al cas de 13ch de astres (amb indexat de speaker cw)
+
+    signals = In.ar(in, numChans);
+
+    frontSignals = Array.fill(numChans, { |i|
+        frontPos = x[i] * 2 - 1;  // x: 0->-1, 0.5->0, 1->1
+        frontPos = (frontPos + rotation).wrap(-1, 1);
+        PanAz.ar(numChans, signals[i], frontPos, 1, widths[i]);
+    });
+
+    backSignals = Array.fill(numChans, { |i|
+        backPos = x[i] * -2 + 1;  // x: 0->1, 0.5->0, 1->-1
+        backPos = (backPos + rotation).wrap(-1, 1);
+        PanAz.ar(numChans, signals[i], backPos, 1, widths[i]);
+    });
+
+    summedSignals = Array.fill(numChans, { |chan|
+        var front = frontSignals.collect({ |sig| sig[chan] }).sum;
+        var back = backSignals.collect({ |sig| sig[chan] }).sum;
+        (front + back) * 0.5;
+    });
+
+    Out.ar(out, summedSignals);
+}).writeDefFile(d);
+)
+
+
+d = thisProcess.nowExecutingPath.dirname;
+
+(
+SynthDef.new(\panaz13multihaas, {
+    arg in=0, out=0;
+    var signals, delayedSignals, pannedSignals, summedSignals, positions, wdth, haasAmount;
+
+    positions = \position.kr(0!13, 1/30, fixedLag:true);
+    wdth = \width.kr(2!13, 1/30, fixedLag:true);
+    haasAmount = \haas.kr(0!13, 1/30, fixedLag:true);
+
+    signals = In.ar(in, 13);
+
+    delayedSignals = if(
+        haasAmount.sum < 0.000001, // Check if all haas values are effectively zero
+        signals,
+        Array.fill(13, { |i|
+            var delayTimes = Array.fill(13, { |j|
+                var distance = (positions[i] - (j/13)).abs;
+                distance * haasAmount[i];
+            });
+            DelayC.ar(signals[i], 0.05, delayTimes);
+        })
+    );
+
+    pannedSignals = Array.fill(13, { |i|
+        PanAz.ar(13, delayedSignals[i], positions[i], 1, wdth[i])
+    });
+
+    summedSignals = Array.fill(13, { |chan|
+        pannedSignals.collect({ |sig|
+            sig[chan]
+        }).sum;
+    });
+
+    Out.ar(out, summedSignals);
+}).writeDefFile(d);
+)
+
+(
 SynthDef.new(\panaz6multi, {
     arg in=0, out=0;
     var signals, pannedSignals, summedSignals, positions, wdth;
