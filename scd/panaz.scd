@@ -115,6 +115,43 @@ SynthDef.new(\xpanaz13, {
 }).writeDefFile(d);
 )
 
+(
+SynthDef.new(\xpanaz78to13, {
+    arg in=0, out=0;
+    var numChans=13;
+    var signals, frontSignals, backSignals, summedSignals;
+    var x, widths, rotation;
+    var frontPos, backPos;
+
+    x = \x.kr(0.5!78, 1/30, fixedLag:true);
+	x=x/2;
+    widths = \width.kr(2!78, 1/30, fixedLag:true);
+	rotation = 0.4188; //cuidado! hardcoded per al cas de 13ch de astres (amb indexat de speaker cw)
+
+    signals = In.ar(in, 78);
+
+    frontSignals = Array.fill(78, { |i|
+        frontPos = x[i] * 2 - 1;  // x: 0->-1, 0.5->0, 1->1
+        frontPos = (frontPos + rotation).wrap(-1, 1);
+        PanAz.ar(numChans, signals[i], frontPos, 1, widths[i]);
+    });
+
+    backSignals = Array.fill(78, { |i|
+        backPos = x[i] * -2 + 1;  // x: 0->1, 0.5->0, 1->-1
+        backPos = (backPos + rotation).wrap(-1, 1);
+        PanAz.ar(numChans, signals[i], backPos, 1, widths[i]);
+    });
+
+    summedSignals = Array.fill(numChans, { |chan|
+        var front = frontSignals.collect({ |sig| sig[chan] }).sum;
+        var back = backSignals.collect({ |sig| sig[chan] }).sum;
+        (front + back) * 0.5;
+    });
+
+    Out.ar(out, summedSignals);
+}).writeDefFile(d);
+)
+
 
 d = thisProcess.nowExecutingPath.dirname;
 
