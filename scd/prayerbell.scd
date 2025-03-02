@@ -81,7 +81,7 @@ SynthDef(\prayerbell13, {
 	var sig, input, first, freqscale, mallet, sing, levelsArray, sigArray;
 
 	// Define arrays for controls
-	t_trigArray = \trigger.kr(1!13);
+	t_trigArray = \trigger.kr(0!13);
 	decayscaleArray = \decay.kr(1!13, 1/30, fixedLag: true);
 	levelsArray = \levels.kr(1!13, 1/30, fixedLag: true);
 	freqArray = \pitch.kr(60!13, 1/30, fixedLag: true).midicps;
