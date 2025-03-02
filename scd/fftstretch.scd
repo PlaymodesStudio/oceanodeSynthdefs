@@ -27,7 +27,7 @@ SynthDef(\fftstretch, {
 
     // Outputting the audio
     Out.ar(out, chain*levels);
-}).writeDefFile(d);
+}).draw;
 )
 
 
@@ -63,3 +63,84 @@ SynthDef(\fftstretch2, {
     Out.ar(out, chain * levels);
 }).writeDefFile(d);
 )
+
+(
+SynthDef(\fftstretch2rate, {
+    arg out=0;
+    var buf=\bufnum.kr(0!2), overlaps=2, fftSize=16384;
+    var chains, pos, fftBuf, levels=\levels.kr(1!2, 1/30, fixedLag: true);
+    var rate = \rate.kr(1!2, 1/30, fixedLag: true);
+
+    pos=\pos.kr(0!2, 1/30, fixedLag: true)*BufFrames.kr(buf);
+
+    chains = 2.collect({ |i|
+        var chain;
+        fftBuf = LocalBuf(fftSize!overlaps);
+        chain = BufFFTTrigger(fftBuf, 1/overlaps, (0..(overlaps-1)), overlaps);
+        chain = BufFFT_BufCopy(chain, buf[i], pos[i], rate[i]*BufRateScale.kr(buf[i]));
+        chain = BufFFT(chain);
+        chain = PV_Diffuser(chain, chain > -1);
+        Mix(BufIFFT(chain, 0)) * 0.8 * levels[i];
+    });
+
+    Out.ar(out, chains);
+}).draw;
+)
+
+(
+SynthDef(\fftstretch6, {
+    arg out=0;
+    var buf=\bufnum.kr(0), overlaps=2, fftSize=16384;
+    var chains, pos, numChan=6;
+    var levels=\levels.kr(1!numChan, 1/30, fixedLag: true);
+    var rate = \rate.kr(1!numChan, 1/30, fixedLag: true);
+
+    pos=\pos.kr(0!numChan, 1/30, fixedLag: true)*BufFrames.kr(buf);
+
+    chains = Array.fill(numChan, { |i|
+        var fftBuf = LocalBuf(fftSize!overlaps);
+        var chain = BufFFTTrigger(fftBuf, 1/overlaps, [0,1], overlaps);
+        chain = BufFFT_BufCopy(chain, buf, pos[i], rate[i]*BufRateScale.kr(buf));
+        chain = BufFFT(chain);
+        chain = PV_Diffuser(chain, 1);
+        chain = BufIFFT(chain, 0);
+        Mix.ar(chain) * 0.8 * levels[i];
+    });
+
+    Out.ar(out, chains);
+}).writeDefFile(d);
+)
+
+//this one needs blocksize >=128
+(
+SynthDef(\fftstretch13, {
+    arg out=0;
+    var buf=\bufnum.kr(0), overlaps=2, fftSize=16384;
+    var chains, pos, numChan=13;
+    var levels=\levels.kr(1!numChan, 1/30, fixedLag: true);
+    var rate = \rate.kr(1!numChan, 1/30, fixedLag: true);
+
+    pos=\pos.kr(0!numChan, 1/30, fixedLag: true)*BufFrames.kr(buf);
+
+    chains = Array.fill(numChan, { |i|
+        var fftBuf = LocalBuf(fftSize!overlaps);
+        var chain = BufFFTTrigger(fftBuf, 1/overlaps, [0,1], overlaps);
+        chain = BufFFT_BufCopy(chain, buf, pos[i], rate[i]*BufRateScale.kr(buf));
+        chain = BufFFT(chain);
+        chain = PV_Diffuser(chain, 1);
+        chain = BufIFFT(chain, 0);
+        Mix.ar(chain) * 0.8 * levels[i];
+    });
+
+    Out.ar(out, chains);
+}).writeDefFile(d);
+)
+
+
+
+
+
+
+
+
+
