@@ -1,133 +1,20 @@
 (
-SynthDef.new(\analog, {
-	arg out;
-	var p,vib,trem,finalP,x,waves,pulsew,finalSig,fm,fmp,fma;
-	p=\pitch.kr(36!78);
-	pulsew=\pw.kr(0!78);
-	vib=SinOsc.ar(\vibf.kr(0!78),0,\viba.kr(0!78),0);
-	trem=1-((SinOsc.ar(\tremf.kr(0!78),0,1,1)/2)*\trema.kr(0!78));
-	finalP=p+vib;
-	fmp=\fmpitch.kr(48!78);
-	fma=\fmamp.kr(0!78);
-	fm=SinOsc.ar(fmp.midicps,0)*fma;
+~synthCreator.value("Analog", {|n|
+	var p,pulsew,finalSig, waves;
+	p = OceanodeParameter.ar(\pitch, 36, n, 0, 127, "vf");
+	pulsew = OceanodeParameter.ar(\pw, 0, n, 0, 1, "vf");
 
 	waves=[
-		Saw.ar(finalP.midicps+fm,1,0),
-		LFTri.ar(finalP.midicps+fm,0),
-		Pulse.ar(finalP.midicps+fm,(pulsew+0.5)%1,1),
-		SinOsc.ar(finalP.midicps+fm,0)
+		Saw.ar(p.midicps,1,0),
+		LFTri.ar(p.midicps,0),
+		Pulse.ar(p.midicps,(pulsew+0.5)%1,1),
+		SinOsc.ar(p.midicps,0)
 	];
 
-	finalSig=Select.ar(\type.kr(0!78),waves);
-	finalSig=finalSig*(\levels.kr(0!78, 1/30, fixedLag:true))*trem;
-	Out.ar(out, finalSig);
-}).writeDefFile(d);
+	finalSig=Select.ar(OceanodeParameterDropdown.kr(\type, 0, n, "Saw:Triangle:Pulse:Sine"),waves);
+	finalSig=finalSig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
+	Out.ar(OceanodeOutput.kr(\out), finalSig);
+
+}, description: "Analog synth with diferent wave types", category: "Source/Oscillator"
+);
 )
-
-d = thisProcess.nowExecutingPath.dirname;
-
-(
-SynthDef.new(\analog48, {
-	arg out;
-	var p,vib,trem,finalP,x,waves,pulsew,finalSig,fm,fmp,fma;
-	p=\pitch.kr(36!48);
-	pulsew=\pw.kr(0!48);
-	vib=SinOsc.ar(\vibf.kr(0!48),0,\viba.kr(0!48),0);
-	trem=1-((SinOsc.ar(\tremf.kr(0!48),0,1,1)/2)*\trema.kr(0!48));
-	finalP=p+vib;
-	fmp=\fmpitch.kr(48!48);
-	fma=\fmamp.kr(0!48);
-	fm=SinOsc.ar(fmp.midicps,0)*fma;
-
-	waves=[
-		Saw.ar(finalP.midicps+fm,1,0),
-		LFTri.ar(finalP.midicps+fm,0),
-		Pulse.ar(finalP.midicps+fm,(pulsew+0.5)%1,1),
-		SinOsc.ar(finalP.midicps+fm,0)
-	];
-
-	finalSig=Select.ar(\type.kr(0!48),waves);
-	finalSig=finalSig*(\levels.kr(0!48, 1/30, fixedLag:true))*trem;
-	Out.ar(out, finalSig);
-}).writeDefFile(d);
-)
-
-(
-SynthDef.new(\analog13, {
-	arg out;
-	var p,vib,trem,finalP,x,waves,pulsew,finalSig,fm,fmp,fma;
-	p=\pitch.kr(36!13);
-	pulsew=\pw.kr(0!13);
-	vib=SinOsc.ar(\vibf.kr(0!13),0,\viba.kr(0!13),0);
-	trem=1-((SinOsc.ar(\tremf.kr(0!13),0,1,1)/2)*\trema.kr(0!13));
-	finalP=p+vib;
-	fmp=\fmpitch.kr(48!13);
-	fma=\fmamp.kr(0!13);
-	fm=SinOsc.ar(fmp.midicps,0)*fma;
-
-	waves=[
-		Saw.ar(finalP.midicps+fm,1,0),
-		LFTri.ar(finalP.midicps+fm,0),
-		Pulse.ar(finalP.midicps+fm,(pulsew+0.5)%1,1),
-		SinOsc.ar(finalP.midicps+fm,0)
-	];
-
-	finalSig=Select.ar(\type.kr(0!13),waves);
-	finalSig=finalSig*(\levels.kr(0!13, 1/30, fixedLag:true))*trem;
-	Out.ar(out, finalSig);
-}).writeDefFile(d);
-)
-
-(
-SynthDef.new(\analogmono, {
-	arg out;
-	var p,vib,trem,finalP,x,waves,pulsew,finalSig,fm,fmp,fma;
-	p=\pitch.kr(36!1);
-	pulsew=\pw.kr(0!1);
-	vib=SinOsc.ar(\vibf.kr(0!1),0,\viba.kr(0!1),0);
-	trem=1-((SinOsc.ar(\tremf.kr(0!1),0,1,1)/2)*\trema.kr(0!1));
-	finalP=p+vib;
-	fmp=\fmpitch.kr(48!1);
-	fma=\fmamp.kr(0!1);
-	fm=SinOsc.ar(fmp.midicps,0)*fma;
-
-	waves=[
-		Saw.ar(finalP.midicps+fm,1,0),
-		LFTri.ar(finalP.midicps+fm,0),
-		Pulse.ar(finalP.midicps+fm,(pulsew+0.5)%1,1),
-		SinOsc.ar(finalP.midicps+fm,0)
-	];
-
-	finalSig=Select.ar(\type.kr(0!1),waves);
-	finalSig=finalSig*(\levels.kr(0!1, 1/30, fixedLag:true))*trem;
-	Out.ar(out, finalSig);
-}).writeDefFile(d);
-)
-
-(
-SynthDef.new(\analog13ar, {
-	arg out=0,in=0;
-	var p,vib,trem,finalP,x,waves,pulsew,finalSig,fm,fmp,fma,input;
-	p=\pitch.kr(36!13);
-	pulsew=\pw.kr(0!13);
-	vib=SinOsc.ar(\vibf.kr(0!13),0,\viba.kr(0!13),0);
-	trem=1-((SinOsc.ar(\tremf.kr(0!13),0,1,1)/2)*\trema.kr(0!13));
-	finalP=p+vib;
-	fmp=\fmpitch.kr(48!13);
-	fma=\fmamp.kr(0!13);
-	fm=SinOsc.ar(fmp.midicps,0)*fma;
-	input = In.ar(in, 13);
-
-	waves=[
-		Saw.ar(finalP.midicps+fm,1,0),
-		LFTri.ar(finalP.midicps+fm,0),
-		Pulse.ar(finalP.midicps+fm,(pulsew+0.5)%1,1),
-		SinOsc.ar(finalP.midicps+fm,0)
-	];
-
-	finalSig=Select.ar(\type.kr(0!13),waves);
-	finalSig=finalSig*input*trem;
-	Out.ar(out, finalSig);
-}).writeDefFile(d);
-)
-d = thisProcess.nowExecutingPath.dirname;
