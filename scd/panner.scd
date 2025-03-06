@@ -1,28 +1,13 @@
-(//Panner 13chan
-SynthDef.new(\panner13, {
-	arg in, out=0;
-	var sig, pos=1,lvl=1,wdth=2,orient=0.5;
-	pos=\position.kr(0, 1/30, fixedLag:true); //rang 0-26
-	lvl=\level.kr(1);
-	wdth=\width.kr(2);
-	// orient=\orientation.kr(0.5);
-	sig = In.ar(in, 1);
-	sig=PanX.ar(13,sig,pos,lvl,wdth);
-	Out.ar(out, sig);
-}).writeDefFile(d);
+(
+~synthCreator.value("Panner", {|n, variables|
+	var source, signal, position, level, width, numSpeakers;
+	numSpeakers = variables[0];
+	position = OceanodeParameterLag.ar(\position, 0, n, 0, 1, "vf", 1/30, true);
+	level = OceanodeParameter.ar(\level, 1, n, 0, 1, "vf");
+	width = OceanodeParameter.ar(\width, 2, n, 0, 2, "vf");
+	source = In.ar(OceanodeInput(\in), n);
+	source = source.asArray;
+	signal = PanX.ar(numSpeakers, source, position, level, width).flop.collect(Mix(_));
+	Out.ar(OceanodeOutput.kr(\out), signal);
+}, category: "Effect/Downmixer", variables: ["NumSpeakers"], variableDimensions: [64]);
 )
-
-(//Panner 13chan
-SynthDef.new(\panner6, {
-	arg in, out=0;
-	var sig, pos=1,lvl=1,wdth=2,orient=0.5;
-	pos=\position.kr(0, 1/30, fixedLag:true); //rang 0-26
-	lvl=\level.kr(1);
-	wdth=\width.kr(2);
-	// orient=\orientation.kr(0.5);
-	sig = In.ar(in, 1);
-	sig=PanX.ar(13,sig,pos,lvl,wdth);
-	Out.ar(out, sig);
-}).writeDefFile(d);
-)
-
