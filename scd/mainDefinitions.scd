@@ -36,7 +36,7 @@ OceanodeParameterLag {
 }
 
 OceanodeParameterDropdown {
-	*ar {arg name, default, size, options, units;
+	*ar {arg name, default, size, options;
 		^Select.ar(
 			(name ++ "_sel").asSymbol.kr(0),
 			[
@@ -45,10 +45,26 @@ OceanodeParameterDropdown {
 			]
 		)
 	}
-	*kr {arg name, default, size, options, units;
+	*kr {arg name, default, size, options;
 		^name.asSymbol.kr(default!size, spec: ControlSpec(default: default, units: "d:"++options));
 	}
 }
+
+OceanodeParameterFloatDropdown {
+	*ar {arg name, default, size, options;
+		^Select.ar(
+			(name ++ "_sel").asSymbol.kr(0),
+			[
+				K2A.ar(name.asSymbol.kr(default!size, spec: ControlSpec(default: default, units: "adf:"++options))),
+				(name ++ "_ar").asSymbol.ar(default!size);
+			]
+		)
+	}
+	*kr {arg name, default, size, options;
+		^name.asSymbol.kr(default!size, spec: ControlSpec(default: default, units: "df:"++options));
+	}
+}
+
 
 OceanodeInput{
 	*kr {arg name;
