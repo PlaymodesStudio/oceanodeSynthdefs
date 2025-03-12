@@ -131,6 +131,7 @@ SynthDef.new(\output, {
 	("Writing Synth " ++ name ++ " --------------------------").postln;
 	File.mkdir(d ++ "/" ++ name);
 	description = description.replace(" ", "_");
+	description = description.replace(",", "|");
 	if(variables.size == 0){
 		variableNames = "";
 		variableDimensionString = "";
