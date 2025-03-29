@@ -106,7 +106,9 @@ File Tree, showing synth categories:
 │   │   ├── PV_RectComb.scd
 │   │   ├── blur.scd
 │   │   ├── freqblur.scd
+│   │   ├── monoSpectralDelay512.scd
 │   │   ├── pitchFilter.scd
+│   │   ├── spectraldelay.scd
 │   │   └── vocoder.scd
 │   └── Time
 │       ├── Delay
@@ -122,7 +124,6 @@ File Tree, showing synth categories:
 │       │   ├── overdub.scd
 │       │   ├── pingpongecho.scd
 │       │   ├── pitchdelay.scd
-│       │   ├── spectraldelay.scd
 │       │   ├── tapedelay.scd
 │       │   └── triggeredGrainDelay.scd
 │       ├── Freeze
