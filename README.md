@@ -95,7 +95,6 @@ File Tree, showing synth categories:
 │   │   ├── stringResonator.scd
 │   │   ├── templeBlockResonator.scd
 │   │   └── woodBlockResonator.scd
-│   ├── Spatial
 │   ├── Spectral
 │   │   ├── PV_BinShift.scd
 │   │   ├── PV_Blur.scd
