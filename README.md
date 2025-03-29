@@ -129,7 +129,6 @@ File Tree, showing synth categories:
 │       │   ├── freeze.scd
 │       │   ├── freezish.scd
 │       │   └── grainfreeze.scd
-│       ├── Granular
 │       ├── Looping
 │       │   ├── BeatRepeat.scd
 │       │   ├── CircularBuffer.scd
