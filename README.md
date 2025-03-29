@@ -7,7 +7,7 @@ This collection includes adaptations of "classic" synthdefs found on the interne
 as well as a huge collection of custom synths created by Playmodes. Feel free to re-use this codes for your own purposes!
 
 File Tree, showing synth categories:
-
+```
 ├── Effect
 │   ├── Distortion
 │   │   ├── asymparsat.scd
