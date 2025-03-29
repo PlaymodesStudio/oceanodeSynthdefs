@@ -1,0 +1,50 @@
+├── Effect
+│   ├── Distortion
+│   ├── Dynamics
+│   ├── Eq
+│   ├── Filter
+│   ├── Modulation
+│   ├── Pitch
+│   ├── Resonators
+│   ├── Spectral
+│   └── Time
+│       ├── Delay
+│       ├── Freeze
+│       ├── Granular
+│       ├── Looping
+│       ├── Phase
+│       └── Reverb
+├── InOut
+├── Mixing
+├── Modulation
+│   ├── Envelope
+│   ├── LFO
+│   └── Random
+├── Routing
+├── Source
+│   ├── Additive
+│   ├── Analog
+│   ├── FM
+│   ├── Feedback
+│   ├── Formants
+│   ├── Granular
+│   ├── Neural
+│   ├── Noise
+│   ├── Percussion
+│   ├── PhysicalModelling
+│   ├── Pulsar
+│   ├── Sampler
+│   ├──	Sync
+│   ├── Special
+│   ├── Vector
+│   └── WaveTable
+├── Spatial
+│   ├── MidSide
+│   ├── Panning
+│   └── Perceptual
+└── Utilities
+    ├── Analysis
+    ├── Conversion
+    ├── Math
+    ├── Other
+    └── Voicing
