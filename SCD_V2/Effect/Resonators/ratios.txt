@@ -1,0 +1,61 @@
+# Create a text file containing all previously generated modal ratio lists
+
+modal_ratios_text = """\
+# Modal Ratio Functions Database
+
+## 1. Strings & String-Like Instruments
+Ideal String: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+Real String (Stiffness Considered): 1, 2.02, 3.05, 4.10, 5.17, 6.25, 7.35, 8.47
+Piano Wire (Highly Inharmonic): 1, 2.008, 3.021, 4.038, 5.059, 6.084, 7.113, 8.145
+Rubber Band (Nonlinear Stretching): 1, 1.95, 2.80, 3.60, 4.30, 5.00
+Nylon Guitar String: 1, 2.01, 3.03, 4.06, 5.11, 6.18
+Steel Guitar String: 1, 2.02, 3.06, 4.12, 5.19, 6.27
+Sitar String: 1, 2.01, 3.03, 4.07, 5.13, 6.22, 7.33, 8.48
+Elastic Band: 1, 1.8, 2.4, 3.1, 3.7, 4.2
+
+## 2. Bars & Plates
+Metal Bar: 1, 2.756, 5.404, 8.933, 13.3, 18.6
+Marimba Bar: 1, 3, 6, 10, 15
+Wooden Xylophone Bar: 1, 3.15, 6.25, 10.4, 15.7
+Glass Bar: 1, 2.85, 5.6, 9.1, 13.5
+Carillon Bell Bar: 1, 2.7, 5.1, 8.3, 12.6
+Thin Aluminum Plate: 1, 2.55, 4.69, 7.65, 11.42
+Brass Bar: 1, 2.62, 5.28, 8.78, 13.18
+Tuned Vibraphone Bar: 1, 3.01, 5.95, 9.82, 14.63
+Slate Rock Plate: 1, 2.1, 3.9, 5.4, 7.6, 9.8
+
+## 3. Circular & Polygonal Plates (Drums, Gongs, Cymbals)
+Circular Drumhead: 1, 1.59, 2.14, 2.30, 2.65, 2.92, 3.16, 3.65, 4.15
+Square Drumhead: 1, 2.07, 3.23, 4.58, 6.01, 7.55
+Gong: 1, 2.24, 2.92, 4.19, 5.85, 7.12
+Cymbal: 1, 2.1, 2.85, 3.75, 4.90, 6.25
+
+## 4. Bells & Singing Bowls
+Church Bell: 1, 2.1, 2.7, 3.8, 4.9, 6.2
+Handbell: 1, 2.2, 3.4, 5.1, 7.3
+Singing Bowl: 1, 2.3, 3.6, 5.1, 6.8
+Orchestral Chimes: 1, 2.76, 5.43, 8.93, 13.34
+Large Temple Bell: 1, 2.1, 3.7, 5.5, 7.9, 10.2
+
+## 5. Wind & Air Columns
+Open Pipe: 1, 2, 3, 4, 5
+Closed Pipe: 1, 3, 5, 7, 9
+Brass Instruments: 1, 2, 3, 4, 5
+Helmholtz Resonator: 1, 3, 5, 7, 9
+Didgeridoo: 1, 2.3, 3.7, 5.1, 6.8
+
+## 6. Hybrid & Exotic Resonators
+Waterphone: 1, 2.45, 3.98, 5.62, 7.30
+Spring Reverb: 1, 1.7, 2.3, 3.0, 3.6, 4.1
+Mbira: 1, 2.6, 4.2, 5.8, 7.4
+Steel Drum: 1, 1.95, 2.76, 3.81, 4.98
+Water Drums: 1, 1.8, 2.6, 3.3, 4.1, 5.2
+Cymatics Surface Waves: 1, 1.85, 2.63, 3.42, 4.21
+
+## 7. Parametric Modal Interpolations
+General Formula: f_n = (1 + a n^b) * f_0
+String to Metal Bar: a = 1, b = 1.7
+Membrane to Gong: a = 1.3, b = 1.9
+Bell to Singing Bowl: a = 1.5, b = 2.2
+"""
+

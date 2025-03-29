@@ -1,0 +1,130 @@
+(
+~synthCreator.value("Stutter", {|n|
+	var input, buffer, output, loopOutput;
+	var bufferSize, numChannels;
+	var writePos, readPos, bufFrames, offsetSamples, loopSamples;
+	var recording, declickEnv, gateEnv;
+	var mix, play, wetGate, mixedOutput;
+	var loopDur, loopReset, loopPhase, gatePhase;
+	var envtime, effectiveRate;
+	var combinedResetTrig, delayedOnoff, onoffTrig;
+	var gatedDrySignal, gatedWetSignal, transitionOutput;
+	var onoffDelay, transitionEnv, fadeEnv;
+	var recordTrig, recordReset, resetTrig;
+
+	// Parameters
+	var on = OceanodeParameter.kr(\on, 0, n, 0, 1, "vi");
+	var pitch = OceanodeParameter.kr(\pitch, 12, n, 0, 128, "vf");
+	var offset = OceanodeParameter.kr(\offset, 0, n, 0, 1000, "vf") / 1000.0;
+	var gateWidth = OceanodeParameter.kr(\gatepw, 1, n, 0, 1, "vf");
+	var declick = OceanodeParameter.kr(\declick, 0.005, n, 0, 0.1, "vf");
+	var reverse = OceanodeParameter.kr(\reverse, 0, n, 0, 1, "vi");
+	var reset = OceanodeParameter.kr(\reset, 0, n, 0, 1, "vi");
+	var drywet = OceanodeParameter.kr(\mix, 1, n, 0, 1, "vf");
+	var levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/50, true).lincurve(0, 1, 0, 1, 4);
+
+	// Calculate loop duration from MIDI pitch
+	loopDur = pitch.midicps.reciprocal;
+
+	// Setup
+	bufferSize = 8; // 8 seconds buffer should be enough
+	numChannels = n;
+	bufFrames = (bufferSize * SampleRate.ir).max(1);
+	buffer = LocalBuf(bufFrames, numChannels).clear;
+	input = In.ar(OceanodeInput.kr(\in), numChannels);
+
+	// Initialize timing control signals
+	onoffTrig = Trig.kr(on);
+	onoffDelay = loopDur * on;
+	delayedOnoff = DelayN.kr(on, loopDur, onoffDelay);
+
+	// Reset detection
+	 resetTrig = Trig.kr(reset);
+
+	// Reset trigger for combined operations
+	combinedResetTrig = Trig1.ar(K2A.ar(delayedOnoff) + K2A.ar(reset), ControlDur.ir);
+
+	// Recording logic
+	recordTrig = 1 - on;
+	recordReset = Trig.kr(on) + resetTrig; // Also reset recording on reset trigger
+
+	// Enable recording when not in stutter mode or when reset is triggered
+	recording = (1 - delayedOnoff) + Trig1.kr(recordTrig, loopDur) + Trig1.kr(resetTrig, loopDur);
+
+	writePos = Phasor.ar(recordReset, BufRateScale.kr(buffer) * recording, 0, BufFrames.kr(buffer));
+	BufWr.ar(input, buffer, writePos);
+
+	// Phases for loop management
+	loopPhase = Phasor.ar(combinedResetTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
+	gatePhase = Phasor.ar(onoffTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
+
+	loopReset = Trig1.ar((loopPhase - Delay1.ar(loopPhase)) > 0, ControlDur.ir);
+
+	// Calculate effective rate (normal or reverse)
+	effectiveRate = 1 * (1 - (reverse * 2));
+
+	loopSamples = (loopDur * SampleRate.ir).round(1).max(1);
+
+	// Quantize parameters at loop reset points
+	gateWidth = Latch.kr(gateWidth, loopReset);
+	offsetSamples = Latch.kr((offset * SampleRate.ir).round(1), loopReset);
+
+	// Create read position for buffer playback
+	readPos = Phasor.ar(
+		trig: loopReset,
+		rate: BufRateScale.kr(buffer) * effectiveRate,
+		start: reverse * loopSamples,
+		end: (1 - reverse) * loopSamples,
+		resetPos: reverse * loopSamples
+	);
+	readPos = writePos - offsetSamples - loopSamples + readPos;
+	readPos = readPos.wrap(0, BufFrames.kr(buffer) - 1);
+
+	mix = delayedOnoff;
+	wetGate = delayedOnoff;
+	play = delayedOnoff;
+
+	// Create declicking envelope
+	envtime = (loopDur - (2 * declick)).max(0);
+	declickEnv = EnvGen.ar(
+		Env(
+			levels: [0, 1, 1, 0],
+			times: [declick, envtime, declick],
+			curve: [\sin, \step, \sin]
+		),
+		gate: loopReset
+	);
+
+	gateEnv = (gatePhase < gateWidth).lag(declick.min(loopDur / 4));
+
+	// Read from buffer and apply envelopes
+	loopOutput = BufRd.ar(numChannels, buffer, readPos, loop: 1);
+	loopOutput = loopOutput * play * declickEnv;
+
+	gatedDrySignal = input * gateEnv;
+	gatedWetSignal = loopOutput * gateEnv;
+
+	fadeEnv = EnvGen.ar(
+		Env.asr(declick, 1, declick, 'sine'),
+		gate: on
+	);
+
+	transitionEnv = EnvGen.ar(
+		Env.asr(declick, 1, declick, 'sine'),
+		gate: delayedOnoff
+	);
+
+	transitionOutput = XFade2.ar(
+		gatedDrySignal,
+		gatedWetSignal,
+		transitionEnv * 2 - 1
+	);
+
+	// Final output with dry/wet control
+	output = SelectX.ar(fadeEnv, [input, transitionOutput]);
+	output = XFade2.ar(input, output, drywet * 2 - 1);
+
+	Out.ar(OceanodeOutput.kr(\out), output * levels);
+
+}, description: "Beat repeater effect with variable pitch control", category: "Effect/Time/Looping");
+)

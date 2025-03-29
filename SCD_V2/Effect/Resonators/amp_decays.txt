@@ -1,0 +1,67 @@
+# Create a text file containing an extensive list of amplitude and decay functions
+
+amplitude_decay_text = """\
+# Modal Amplitude & Decay Functions Database
+
+## 1. Amplitude Functions (Relative Loudness of Each Mode)
+### Harmonic Distributions
+- **Harmonic Decay**: A_n = A_0 / n  (Strings, Wind Instruments)
+- **Exponential Decay**: A_n = A_0 * e^(-k n)  (Drums, Membranes)
+- **Power Law Decay**: A_n = A_0 * n^(-p)  (Brass Instruments)
+- **Gaussian Centered**: A_n = A_0 * e^(-((n - μ)^2 / 2σ^2))  (Bells, Singing Bowls)
+- **Logarithmic Drop-off**: A_n = A_0 / log(n + 1)  (Membranes with Mild Damping)
+- **Sigmoidal Drop-off**: A_n = A_0 / (1 + e^(k(n - n0)))  (Smooth transition between strong and weak modes)
+
+### Nonlinear & Irregular Distributions
+- **Bessel Function Scaling**: A_n = A_0 * J_n(α)  (Cymbals, Metal Plates)
+- **Chirp Scaling**: A_n = A_0 * sin(n * π/2)  (Wave-like propagation modes)
+- **Randomized**: A_n = A_0 * (1 + rand(-α, α))  (Natural variation in nonlinear structures)
+- **Clustered Peaks**: A_n = A_0 if n in {favored set}, otherwise A_n = A_0 * 0.1  (Bowed instruments with strong formants)
+- **Perceptual Loudness Matching**: A_n = A_0 * (1 / (n^p + b))  (Psychoacoustically tuned)
+
+---
+
+## 2. Decay Time Functions (How Fast Modes Fade Out)
+### Basic Decay Models
+- **Linear Decay**: T_n = T_0 - k n  (Simple damping)
+- **Exponential Decay**: T_n = T_0 * e^(-k n)  (Strings, Metal Bars)
+- **Inverse Frequency Decay**: T_n = T_0 / n  (Drums, Highly Damped Membranes)
+- **Gaussian Envelope**: T_n = T_0 * e^(-((n - μ)^2 / 2σ^2))  (Bells, Cymbals)
+- **Logarithmic Decay**: T_n = T_0 / log(n + 1)  (Some string damping)
+
+### Material-Specific Decay Models
+- **Membrane Lossy Decay**: T_n = T_0 * (1 - α n)  (Timpani, Large Drums)
+- **Viscoelastic Material Decay**: T_n = T_0 * e^(-β sqrt(n))  (Rubber-like or polymer resonators)
+- **Modal Coupling Decay**: T_n = T_0 * (1 / (1 + Σ coupling(n, m)))  (Complex coupled structures like gongs)
+- **Energy Redistribution**: T_n = T_0 * e^(-γ Σ (nearby modes))  (Resonators with energy transfer)
+
+---
+
+## 3. Advanced Interpolations & Hybrid Models
+- **Power Law Decay with Offset**: T_n = (T_0 / (n^p + c))  (Generalized damping model)
+- **Sigmoid Drop-off**: T_n = T_0 / (1 + e^(k(n - n0)))  (Damping curves in organic resonators)
+- **Random Perturbation**: T_n = T_0 * (1 + rand(-ε, ε))  (Modeling realistic inconsistencies)
+- **Multiple Regimes**: T_n = { T_fast for low n, T_slow for high n }  (Material transitions)
+
+---
+
+## 4. Application-Specific Decay Models
+### Drums & Percussion
+- **Drum Membrane Loss**: T_n = T_0 / (n + α)  (Tuned percussion with decay spreading)
+- **Metallic Percussion**: T_n = T_0 * e^(-kn^2)  (Rapidly decaying upper modes)
+
+### Strings & Bars
+- **Piano String**: T_n = T_0 * e^(-k n)  (Gradual decay over harmonics)
+- **Vibraphone Bar**: T_n = T_0 * e^(-α n^2)  (Selective damping for tuned bars)
+
+### Wind Instruments
+- **Brass Tube Resonator**: T_n = T_0 / (n^2 + β)  (Natural damping in resonating tubes)
+- **Helmholtz Resonator**: T_n = T_0 / sqrt(n)  (Energy dissipation in cavities)
+
+---
+
+## Notes
+- Parameters **k, p, α, β, γ, μ, σ** can be tuned for different materials.
+- Many of these decay functions can be mixed for hybrid effects.
+"""
+
