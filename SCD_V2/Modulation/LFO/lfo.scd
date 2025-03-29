@@ -1,75 +1,72 @@
 (
 ~synthCreator.value("LFO", {|n|
-	var p, ph, waves, pulsew, finalSig, poww, bipow;
-	var k1, k2, k3, bip;
+	var freq, phaseOffset, pulseWidth, invert, shape, minVal, maxVal, reset;
+	var phasor, linPhase, val, invVal, finalSig;
+	var pow, quant, randomAdd;
 
 	// Basic LFO controls
-	ph = OceanodeParameterLag.ar(\phoff, 0, n, 0, 1, "vf", 1/30, true);
-	p = OceanodeParameterLag.ar(\freq, 1, n, 0.01, 20, "vf", 1/30, true);
-	pulsew = OceanodeParameterLag.ar(\pw, 0.5, n, 0, 1, "vf", 1/30, true);
-	poww = OceanodeParameterLag.ar(\pow, 1, n, 0.1, 4, "vf", 1/30, true);
-	bipow = OceanodeParameterLag.ar(\bipow, 0, n, 0, 1, "vf", 1/30, true);
+	freq = OceanodeParameterLag.ar(\freq, 1, n, 0.01, 20, "vf", 1/30, true);
+	phaseOffset = OceanodeParameterLag.ar(\phoff, 0, n, 0, 1, "vf", 1/30, true);
+	pulseWidth = OceanodeParameterLag.ar(\pw, 0.5, n, 0, 1, "vf", 1/30, true);
+	minVal = OceanodeParameterLag.ar(\min, 0, n, -1, 1, "vf", 1/30, true);
+	maxVal = OceanodeParameterLag.ar(\max, 1, n, -1, 1, "vf", 1/30, true);
+	invert = OceanodeParameterLag.ar(\invert, 0, n, 0, 1, "vf", 1/30, true);
+	pow = OceanodeParameterLag.ar(\pow, 0, n, -1, 1, "vf", 1/30, true);
+	quant = OceanodeParameter.ar(\quant, 0, n, 0, 64, "vi");
+	randomAdd = OceanodeParameterLag.ar(\rndmadd, 0, n, 0, 1, "vf", 1/30, true);
+	shape = OceanodeParameterFloatDropdown.kr(\shape, 0, n, "Saw:Sine:Triangle:Pulse:Noise");
+	reset = OceanodeParameter.ar(\reset, 0, n, 0, 1, "vi");
 
-	// Create different waveforms
-	waves = [
-		// Saw wave
-		(((((LFSaw.ar(p)+1)/2)+ph)%1)*2)-1,
-		// Sine wave
-		SinOsc.ar(p, ph * 2pi),
-		// Triangle wave
-		LFTri.ar(p, ph),
-		// Pulse wave
-		LFPulse.ar(p, ph, pulsew) * 2 - 1,
-		// Noise
-		LFDNoise3.ar(p)
-	];
+	// Create phasor that runs from 0 to 1 with reset control
+	phasor = Phasor.ar(Trig.ar(reset, 0.001), freq * SampleDur.ir, 0, 1);
 
-	// Select or interpolate between waveforms
-	finalSig = SelectX.ar(OceanodeParameterFloatDropdown.kr(\shape, 0, n, "Saw:Sine:Triangle:Pulse:Noise"), waves);
+	// Apply phase offset
+	linPhase = (phasor + phaseOffset).wrap(0, 1);
 
-	// Convert to unipolar [0,1] range for processing
-	finalSig = (finalSig + 1) / 2;
+	// Generate waveforms from the phase - all in 0-1 range
+	val = SelectX.ar(shape, [
+		// Saw (0 to 1 ramp)
+		linPhase,
+		// Sine
+		(sin(linPhase * 2pi - pi) * 0.5) + 0.5,
+		// Triangle
+		(linPhase < 0.5) * (linPhase * 2) + (linPhase >= 0.5) * (2 - (linPhase * 2)),
+		// Pulse
+		(linPhase < pulseWidth) * 1.0,
+		// Noise (different approach, not phase-based)
+		LFDNoise3.ar(freq).range(0, 1)
+	]);
 
-	// Apply power transformation
-	finalSig = finalSig.pow(poww);
+	// Apply random noise (corrected to match original)
+	val = (val + (randomAdd * WhiteNoise.ar(0.5,0.5))).clip(0, 1);
 
-	// Apply bipolar power transformation if needed
-	finalSig = (finalSig * 2) - 1; // Convert to bipolar range [-1, 1]
-	k1 = 2 * bipow * 0.99999;
-	k2 = k1 / ((bipow * -1 * 0.999999) + 1);
-	k3 = k2 * abs(finalSig) + 1;
-	finalSig = finalSig * (k2 + 1) / k3; // Apply the non-linear transformation
-	finalSig = (finalSig + 1) * 0.5; // Convert back to unipolar range [0, 1]
+	// Apply power transformation with proper scaling
+	val = Select.ar(pow.abs > 0.01, [
+		val,
+		Select.ar(pow < 0, [
+			// Positive pow: map 0-1 to 1-128
+			val ** pow.linlin(0, 1, 1, 16),
+			// Negative pow: map -1-0 to 0-1
+			val ** pow.linlin(-1, 0, 0, 1)
+		])
+	]);
 
-	// Handle bipolar output option
-	bip=OceanodeParameter.ar(\bipolar, 0, n, 0, 1, "vi");
-	finalSig = SelectX.ar(
-		bip,
-		[
-			finalSig, // Unipolar [0,1]
-			finalSig * 2 - 1 // Bipolar [-1,1]
-		]
-	);
+	// Apply quantization (corrected to match original)
+	val = Select.ar(quant > 1, [
+		val,
+		(val * (quant - 1)).round / (quant - 1)
+	]);
 
-	// Apply inversion option
-	finalSig = SelectX.ar(
-		OceanodeParameter.ar(\invert, 0, n, 0, 1, "vf"),
-		[
-			finalSig, // Normal
-			SelectX.ar( // Inverted based on bipolar setting
-				bip,
-				[
-					1 - finalSig, // Unipolar inversion
-					finalSig * -1  // Bipolar inversion
-				]
-			)
-		]
-	);
+	// Create inverted version
+	invVal = 1 - val;
 
-	// Apply level control
-	finalSig = finalSig * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	// Crossfade between normal and inverted with linear interpolation
+	val = val * (1 - invert) + (invVal * invert);
+
+	// Scale from 0-1 range to min-max range
+	finalSig = val * (maxVal - minVal) + minVal;
 
 	// Output signal
 	Out.ar(OceanodeOutput.kr(\out), finalSig);
-}, description: "Low frequency oscillator with multiple waveforms and shaping options", category: "Modulation/LFO");
+}, description: "Low frequency oscillator with multiple waveforms and effects", category: "Modulation/LFO");
 )

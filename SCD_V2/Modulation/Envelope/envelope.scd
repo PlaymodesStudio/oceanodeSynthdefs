@@ -1,23 +1,79 @@
 (
 ~synthCreator.value("Envelope", {|n|
-    var type, gate, att, dec, sus, rel, curv, lev, sig, types;
-    // Parameters using OceanodeParameter
-    type = OceanodeParameterDropdown.kr(\type, 0, n, "ADSR:Perc");
-    gate = OceanodeParameter.ar(\trigger, 0, n, 0, 1, "vi");
-    att = OceanodeParameterLag.ar(\att, 10, n, 0, 5000, "vf", 1/30, true) / 1000.0;
-    dec = OceanodeParameterLag.ar(\dec, 10, n, 0, 5000, "vf", 1/30, true) / 1000.0;
-    sus = OceanodeParameterLag.ar(\sus, 1, n, 0, 1, "vf", 1/30, true);
-    rel = OceanodeParameterLag.ar(\rel, 1000, n, 0, 10000, "vf", 1/30, true) / 1000.0;
-    curv = OceanodeParameter.ar(\curve, -4, n, -8, 8, "vf", 1/30, true);
-    lev = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);
-    // Define envelope types
-    types = [
-        EnvGen.ar(Env.adsr(att, dec, sus, rel, lev, curv), gate),
-        EnvGen.ar(Env.perc(att, rel, lev, curv), gate)
-    ];
-    // Select envelope type
-    sig = Select.ar(type, types);
-    // Output the signal
-    Out.ar(OceanodeOutput.kr(\out), sig);
-}, description: "Envelope generator with ADSR and Perc modes", category: "Modulation/Envelope");
+	var type, gate, att, dec, sus, rel, curv, lev, hold, peak, sig;
+
+	// Parameters using OceanodeParameter
+	type = OceanodeParameterDropdown.kr(\type, 0, n, "ADSR:ASR:Perc:Triangle:Sine:Linen:Cutoff");
+	gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
+	att = OceanodeParameter.kr(\att, 10, n, 0, 1000, "vf") / 1000.0;
+	dec = OceanodeParameter.kr(\dec, 100, n, 0, 5000, "vf") / 1000.0;
+	sus = OceanodeParameter.kr(\sus, 0.5, n, 0, 1, "vf");
+	rel = OceanodeParameter.kr(\rel, 500, n, 0, 10000, "vf") / 1000.0;
+	hold = OceanodeParameter.kr(\hold, 1000, n, 0, 10000, "vf") / 1000.0;
+	peak = OceanodeParameter.kr(\peak, 1, n, 0, 1, "vf");
+	curv = OceanodeParameter.kr(\curve, -4, n, -10, 10, "vf");
+	lev = OceanodeParameter.kr(\level, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+
+	// Define envelopes based on type
+	sig = Select.ar(type, [
+		// ADSR envelope - explicitly define for proper behavior
+		EnvGen.ar(
+			Env([0, peak, peak * sus, 0], [att, dec, rel], curv, 2),
+			gate,
+			levelScale: lev,
+			doneAction: 0
+		),
+
+		// ASR envelope
+		EnvGen.ar(
+			Env([0, peak, 0], [att, rel], curv, 1),
+			gate,
+			levelScale: lev,
+			doneAction: 0
+		),
+
+		// Percussive envelope
+		EnvGen.ar(
+			Env.perc(att, rel, peak, curv),
+			Trig.kr(gate, 0.001),
+			levelScale: lev,
+			doneAction: 0
+		),
+
+		// Triangle envelope
+		EnvGen.ar(
+			Env.triangle(att + rel, peak),
+			Trig.kr(gate, 0.001),
+			levelScale: lev,
+			doneAction: 0
+		),
+
+		// Sine envelope
+		EnvGen.ar(
+			Env.sine(att + rel, peak),
+			Trig.kr(gate, 0.001),
+			levelScale: lev,
+			doneAction: 0
+		),
+
+		// Linen envelope
+		EnvGen.ar(
+			Env.linen(att, hold, rel, peak, curv),
+			Trig.kr(gate, 0.001),
+			levelScale: lev,
+			doneAction: 0
+		),
+
+		// Cutoff envelope
+		EnvGen.ar(
+			Env([peak, 0], [rel], curv),
+			gate,
+			levelScale: lev,
+			doneAction: 0
+		)
+	]);
+
+	// Output the signal
+	Out.ar(OceanodeOutput.kr(\out), sig);
+}, description: "Envelope generator with multiple envelope types", category: "Modulation/Envelope");
 )
