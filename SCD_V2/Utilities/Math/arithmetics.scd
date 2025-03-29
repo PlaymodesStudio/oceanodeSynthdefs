@@ -21,3 +21,5 @@
 	Out.ar(OceanodeOutput.kr(\out), output);
 }, description: "Performs arithmetic operations between two audio signals", category: "Utilities/Math");
 )
+
+gendy
