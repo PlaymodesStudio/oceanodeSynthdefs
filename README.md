@@ -338,7 +338,6 @@ File Tree, showing synth categories:
 │   │   ├── quantize.scd
 │   │   ├── trigonometry.scd
 │   │   └── unaryop.scd
-│   ├── Other
 │   └── Voicing
 │       └── impulsecounter.scd
 └── reference_scd
