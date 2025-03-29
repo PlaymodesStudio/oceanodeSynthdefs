@@ -6,6 +6,8 @@ and it is capable of comunicating with synthdefs through custom graphic nodes.
 This collection includes adaptations of "classic" synthdefs found on the internet, either at scccode.org and scsynth.org, github and online blogs,
 as well as a huge collection of custom synths created by Playmodes. Feel free to re-use this codes for your own purposes!
 
+Last and better commented and organized synthdefs are found at the SCD_V2 folder
+
 File Tree, showing synth categories:
 ```
 ├── Effect
