@@ -55,5 +55,5 @@
 
 	// Output signal
 	Out.ar(OceanodeOutput.kr(\out), finalSig);
-}, description: "AudioRate Morphing oscillator with triangle trapezoid and sine shapes", category: "Analog/Source");
+}, description: "AudioRate Morphing oscillator with triangle trapezoid and sine shapes", category: "Source/Analog");
 )

@@ -40,5 +40,5 @@
 	// Output signals
 	Out.ar(OceanodeOutput.kr(\out), signals);
 
-}, description: "Buffer looper with crossfade and variable duration", category: "Effect/Looping");
+}, description: "Buffer looper with crossfade and variable duration", category: "Source/Sampler");
 )
