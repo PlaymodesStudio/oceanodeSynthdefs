@@ -6,6 +6,8 @@ and it is capable of comunicating with synthdefs through custom graphic nodes.
 This collection includes adaptations of "classic" synthdefs found on the internet, either at scccode.org and scsynth.org, github and online blogs,
 as well as a huge collection of custom synths created by Playmodes. Feel free to re-use this codes for your own purposes!
 
+Last and better commented and organized synthdefs are found at the SCD_V2 folder
+
 File Tree, showing synth categories:
 ```
 ├── Effect
@@ -93,7 +95,6 @@ File Tree, showing synth categories:
 │   │   ├── stringResonator.scd
 │   │   ├── templeBlockResonator.scd
 │   │   └── woodBlockResonator.scd
-│   ├── Spatial
 │   ├── Spectral
 │   │   ├── PV_BinShift.scd
 │   │   ├── PV_Blur.scd
@@ -104,7 +105,9 @@ File Tree, showing synth categories:
 │   │   ├── PV_RectComb.scd
 │   │   ├── blur.scd
 │   │   ├── freqblur.scd
+│   │   ├── monoSpectralDelay512.scd
 │   │   ├── pitchFilter.scd
+│   │   ├── spectraldelay.scd
 │   │   └── vocoder.scd
 │   └── Time
 │       ├── Delay
@@ -120,14 +123,12 @@ File Tree, showing synth categories:
 │       │   ├── overdub.scd
 │       │   ├── pingpongecho.scd
 │       │   ├── pitchdelay.scd
-│       │   ├── spectraldelay.scd
 │       │   ├── tapedelay.scd
 │       │   └── triggeredGrainDelay.scd
 │       ├── Freeze
 │       │   ├── freeze.scd
 │       │   ├── freezish.scd
 │       │   └── grainfreeze.scd
-│       ├── Granular
 │       ├── Looping
 │       │   ├── BeatRepeat.scd
 │       │   ├── CircularBuffer.scd
@@ -337,7 +338,6 @@ File Tree, showing synth categories:
 │   │   ├── quantize.scd
 │   │   ├── trigonometry.scd
 │   │   └── unaryop.scd
-│   ├── Other
 │   └── Voicing
 │       └── impulsecounter.scd
 └── reference_scd
