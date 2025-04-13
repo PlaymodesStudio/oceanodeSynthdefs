@@ -25,5 +25,5 @@
 	// Output to the specified bus
 	Out.ar(OceanodeOutput.kr(\out), finalSig);
 
-}, description: "Noise generator with different noise types", category: "Source/Oscillator");
+}, description: "Noise generator with different noise types", category: "Source/Noise");
 )

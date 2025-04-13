@@ -1,50 +1,46 @@
 (
-~synthCreator.value("Quantize", {|n|
-	var source, output;
-	var qValues, numActive;
-	var qSize = 128; // Maximum size for the quantization list
+~synthCreator.value("Quantizer", {|n|
+	var source, signal, qValues, qSize, output;
 
-	// Get the input signal
+	// Input signal to be quantized
 	source = In.ar(OceanodeInput.kr(\in), n);
 
-	// Get the quantization list as a single array parameter
-	qValues = OceanodeParameter.ar(\qvalues, Array.fill(qSize, {|i| i / (qSize - 1)}), n, 0, 1, "vf");
+	// Get quantization values list
+	qValues = OceanodeParameter.ar(\qlist, 0, n, -100, 100, "vf");
 
-	// Get the number of active values to use
-	// Limited to a range of 2-128 (need at least 2 values for meaningful quantization)
-	 numActive = OceanodeParameter.kr(\numvalues, 5, n, 2, qSize, "i");
+	// Get size of quantization list (with default of 1)
+	qSize = OceanodeParameter.kr(\qsize, 1, n, 1, 32, "i");
 
-	// This is a more efficient approach without array operations
-	// For each channel, we'll quantize using a fold/reduce pattern
-	output = n.collect({ |channel|
-		var inputSample = source[channel];
-		var result = 0;
-		var bestDist = 2; // Start with a value larger than maximum possible distance
+	// Mapping strength - 1.0 means full quantization, 0.0 means pass-through
+	signal = OceanodeParameter.ar(\amount, 1, n, 0, 1, "vf");
 
-		// We'll iterate through all possible quantization values
-		qSize.do({ |i|
-			var currentValue = qValues[i];
-			var dist = (currentValue - inputSample).abs;
-			var isActive = i < numActive;
+	// Process one sample at a time, finding the closest value in qValues
+	output = n.collect({|i|
+		var inSample = source[i];
+		var quantizedSample;
+		var minDist = inf;
+		var closestVal = inSample;
 
-			// If this value is active and closer than our current best,
-			// update the result and best distance
-			var shouldUpdate = isActive * (dist < bestDist);
-			result = (shouldUpdate * currentValue) + ((1-shouldUpdate) * result);
-			bestDist = (shouldUpdate * dist) + ((1-shouldUpdate) * bestDist);
+		// Iterate through qValues to find closest match
+		qSize[i].do({|j|
+			var qVal = qValues[i * 32 + j]; // Allow up to 32 quantization values per channel
+			var dist = (inSample - qVal).abs;
+
+			if(dist < minDist, {
+				minDist = dist;
+				closestVal = qVal;
+			});
 		});
 
-		result;
+		// Mix between original and quantized based on amount parameter
+		inSample * (1 - signal[i]) + (closestVal * signal[i]);
 	});
 
 	// Apply level control with proper dB scaling
 	output = output * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
 
-	// Mix control between original and quantized signal
-	output = (output * OceanodeParameter.ar(\amount, 1, n, 0, 1, "vf")) +
-	         (source * (1 - OceanodeParameter.ar(\amount, 1, n, 0, 1, "vf")));
-
-	// Output the signal
+	// Output the processed signal
 	Out.ar(OceanodeOutput.kr(\out), output);
-}, description: "Quantizes a signal to the nearest values in a list of up to 128 values", category: "Effects/Quantization");
+
+}, description: "Quantizes input signal to nearest values in qlist", category: "Effect/Quantization");
 )

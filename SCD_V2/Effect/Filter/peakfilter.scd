@@ -3,11 +3,11 @@
 	var out_level, pitch, rq, db, sig, dry, mix, wet;
 
 	// Parameters
-	out_level = OceanodeParameter.ar(\levels, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
-	pitch = OceanodeParameter.ar(\pitch, 60, n, 20, 135, "vf");
-	rq = OceanodeParameter.ar(\rq, 1, n, 0.01, 1, "vf");
-	db = OceanodeParameter.ar(\db, 0, n, -1, 1, "vf") * 60;  // Scale -1 to 1 to -60 to 60 dB
-	mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
+	out_level = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 0.05, true).lincurve(0, 1, 0, 1, 4);
+	pitch = OceanodeParameterLag.ar(\pitch, 60, n, 20, 135, "vf",  0.05, true);
+	rq = OceanodeParameterLag.kr(\rq, 1, n, 0.01, 1, "vf", 0.05, true);
+	db = OceanodeParameterLag.kr(\db, 0, n, -1, 1, "vf",  0.05, true) * 60;  // Scale -1 to 1 to -60 to 60 dB
+	mix = OceanodeParameterLag.ar(\mix, 1, n, 0, 1, "vf",  0.05, true);
 
 	// Input stage
 	sig = In.ar(OceanodeInput.kr(\in), n);

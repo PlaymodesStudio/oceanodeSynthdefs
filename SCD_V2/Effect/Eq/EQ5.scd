@@ -16,11 +16,11 @@ var width,wet,sig,source,loshw,p1w,p2w,p3w,hisw;
 	band4=OceanodeParameterLag.ar(\peak3db, 0, n, -30, 30, "vf", 1/30, true);
 	band5=OceanodeParameterLag.ar(\hishelfdb, 0, n, -30, 30, "vf", 1/30, true);
 
-	loshw=OceanodeParameterLag.ar(\lowshelf_width, 1, n, 0, 1, "vf", 1/30, true);
-	p1w=OceanodeParameterLag.ar(\peak1_width, 1, n, 0, 1, "vf", 1/30, true);
-	p2w=OceanodeParameterLag.ar(\peak2_width, 1, n, 0, 1, "vf", 1/30, true);
-	p3w=OceanodeParameterLag.ar(\peak3_width, 1, n, 0, 1, "vf", 1/30, true);
-	hisw=OceanodeParameterLag.ar(\hishelf_width, 1, n, 0, 1, "vf", 1/30, true);
+	loshw=OceanodeParameterLag.kr(\lowshelf_width, 1, n, 0, 1, "vf", 1/30, true);
+	p1w=OceanodeParameterLag.kr(\peak1_width, 1, n, 0, 1, "vf", 1/30, true);
+	p2w=OceanodeParameterLag.kr(\peak2_width, 1, n, 0, 1, "vf", 1/30, true);
+	p3w=OceanodeParameterLag.kr(\peak3_width, 1, n, 0, 1, "vf", 1/30, true);
+	hisw=OceanodeParameterLag.kr(\hishelf_width, 1, n, 0, 1, "vf", 1/30, true);
 
 	source = In.ar(OceanodeInput.kr(\in), n);
 
