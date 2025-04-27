@@ -6,7 +6,7 @@
 	// Parameters
 	freq = OceanodeParameter.ar(\pitch, 36, n, 24, 96, "vf").midicps;
 	wave = OceanodeParameterDropdown.kr(\wavetype, 0, n, "Saw:Pulse");
-	ctf = OceanodeParameter.ar(\cutoff, 48, n, 20, 135, "vf").midicps;
+	ctf = OceanodeParameter.ar(\cutoff, 48, n, 1, 135, "vf").midicps;
 	res = 1-(OceanodeParameter.ar(\resonance, 0.2, n, 0, 0.99, "vf"));
 	sus = OceanodeParameter.ar(\sustain, 0, n, 0, 4, "vf");
 	dec = OceanodeParameter.ar(\decay, 1, n, 0.01, 4, "vf");

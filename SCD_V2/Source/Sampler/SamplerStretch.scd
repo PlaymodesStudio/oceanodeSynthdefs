@@ -35,3 +35,5 @@
     Out.ar(OceanodeOutput.kr(\out), signal);
 }, description: "Time-stretching sampler with granular capabilities", category: "Source/Sampler");
 )
+
+warp1

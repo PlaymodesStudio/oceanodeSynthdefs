@@ -12,7 +12,7 @@
 	hold = OceanodeParameter.kr(\hold, 1000, n, 0, 10000, "vf") / 1000.0;
 	peak = OceanodeParameter.kr(\peak, 1, n, 0, 1, "vf");
 	curv = OceanodeParameter.kr(\curve, -4, n, -10, 10, "vf");
-	lev = OceanodeParameter.kr(\level, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	lev = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Define envelopes based on type
 	sig = Select.ar(type, [
