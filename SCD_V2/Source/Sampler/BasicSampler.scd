@@ -1,18 +1,42 @@
 (
 ~synthCreator.value("BasicSampler", {|n|
-    var t, signal, spd, buf, bucle, start, gain;
+    // Variables declarations
+    var trig, k_trig, trigEdge, buf, spd, bucle, startPos, gain, latchSpd;
+    var latchedBuf, latchedSpd, latchedStart, finalSpd, signal;
 
-    // Controls
-    t = OceanodeParameter.ar(\trigger, 0, n, 0, 1, "vi");
-    gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    // 1) Get trigger as audio rate, but convert to control rate for edge detection
+    trig = OceanodeParameter.ar(\trigger, 0, n, 0, 1, "vi");
+    k_trig = K2A.ar(A2K.kr(trig)); // Convert to control rate for processing, then back to audio
+    trigEdge = Trig.kr(A2K.kr(trig), 0.001); // Edge detector at control rate
+
+    // 2) Read input values
     buf = OceanodeBuffer.kr(\bufnum);
-    spd = OceanodeParameter.ar(\speed, 1, n, 0.25, 4, "vf");
+    spd = OceanodeParameter.kr(\speed, 1, n, -32, 32, "vf");
+    latchSpd = OceanodeParameter.kr(\latchspeed, 1, n, 0, 1, "vi"); // 0=false, 1=true
     bucle = OceanodeParameter.kr(\loop, 0, n, 0, 1, "vi");
-    start = OceanodeParameter.ar(\startpos, 0, n, 0, 1, "vf") * BufFrames.kr(buf);
+    startPos = OceanodeParameter.kr(\startpos, 0, n, 0, 1, "vf") * BufFrames.kr(buf);
+    gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
 
-    // Play the sample
-    signal = PlayBuf.ar(1, buf, spd, t, start, bucle) * gain;
-    
+    // 3) Latch values (only updates on the 0→1 edge)
+    latchedBuf = Latch.kr(buf, trigEdge);
+    latchedSpd = Latch.kr(spd, trigEdge);
+    latchedStart = Latch.kr(startPos, trigEdge);
+
+    // 4) Decide whether to use latched speed or current speed based on latchSpd parameter
+    finalSpd = Select.kr(latchSpd, [spd, latchedSpd]);
+
+    // 5) PlayBuf with edge as trigger parameter
+    signal = PlayBuf.ar(
+        numChannels: 1,
+        bufnum: latchedBuf,
+        rate: finalSpd,
+        trigger: trigEdge,
+        startPos: latchedStart,
+        loop: bucle
+    ) * gain;
+
+    // Output
     Out.ar(OceanodeOutput.kr(\out), signal);
-}, description: "Basic sample player with loop functionality", category: "Source/Sampler");
+
+}, description: "Basic sample player with optional speed latching", category: "Source/Sampler");
 )
