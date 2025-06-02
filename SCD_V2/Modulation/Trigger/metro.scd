@@ -1,30 +1,62 @@
-(
 ~synthCreator.value("Metro", {|n|
-	var trig, reset_trig, hz, chance, duplicate, signal, reset;
+    var hz, reset, chance, duplicate;
+    var resetTrig, phase, trig, signal;
 
-	// Define parameters
-	hz = OceanodeParameterLag.ar(\hz, 1, n, 0.01, 60, "vf", 1/30, true);
-	reset = OceanodeParameter.ar(\reset, 0, n, 0, 1, "vi");
-	chance = OceanodeParameter.kr(\chance, 1, n, 0, 1, "vf");
-	duplicate = OceanodeParameterDropdown.kr(\duplicate, 0, n, "Individual:Shared");
+    // ————— 1) parameters —————
+    hz = OceanodeParameterLag.ar(
+        \hz, 1, n,       // name, channels
+        0.01, 60,        // min/max (Hz)
+        "vf", 1/30,      // type=“float”, default=1/30 (≈0.033Hz)
+        true             // lag enabled
+    );
 
-	// Create base trigger signal at audio rate
-	trig = Impulse.ar(hz);
+    // Use Ar-rate here only so we can turn it into a Kr trigger below.
+    // “vi” means integer; when you click it, it jumps 0→1 for exactly one control‐cycle.
+    reset = OceanodeParameter.ar(
+        \reset, 0, n,    // name, default=0, channels
+        0, 1,            // min/max
+        "vi"             // integer (i.e. a bang)
+    );
 
-	// Add reset trigger functionality
-	reset_trig = Trig.ar(K2A.ar(reset), SampleDur.ir);
-	trig = trig + reset_trig;
+    chance = OceanodeParameter.ar(
+        \chance, 1, n,   // default = 1 (always pass)
+        0, 1,            // min/max
+        "vf"             // float
+    );
 
-	// Apply probabilistic behavior
-	signal = Select.ar(duplicate, [
-		// Individual mode: each channel has its own random behavior
-		trig * (chance.at(0) > Array.fill(n, { TRand.ar(0.0, 1.0, trig) })),
+    duplicate = OceanodeParameterDropdown.kr(
+        \duplicate, 0, n,
+        "Individual:Shared"
+    );
 
-		// Shared mode: same random behavior for all channels
-		trig * (chance.at(0) > TRand.ar(0.0, 1.0, trig)).dup(n)
-	]);
+    // ————— 2) turn “reset” into a single‐sample control trigger —————
+    // Trig.kr sees the control‐rate param flip from ≤0 to >0, and makes one sample‐long gate.
+    resetTrig = Trig.kr(reset, SampleDur.ir);
 
-	// Output the signal at audio rate
-	Out.ar(OceanodeOutput.kr(\out), signal);
-}, description: "Metro trigger generator with chance parameter", category: "Modulation/Trigger");
-)
+    // ————— 3) build a Phasor that resets its phase whenever resetTrig fires —————
+    // increment = hz / SampleRate => one full cycle takes exactly (SampleRate/hz) samples.
+    phase = Phasor.ar(
+        resetTrig,           // reset gate: forces phase back to “start” (=0)
+        hz / SampleRate.ir,   // how much phase advances each sample
+        0,                    // phase start
+        1                     // phase end “wrap” (Phasor goes 0→1, then jumps back to 0)
+    );
+
+    // When phase < incr, that means we’re in the first sample of each new cycle.
+    // That single‐sample window is our “trig”.
+    trig = (phase < (hz / SampleRate.ir));
+
+    // ————— 4) apply your probabilistic “chance” and “duplicate” logic —————
+    signal = Select.ar(duplicate, [
+        // Individual mode: each channel gets its own random draw
+        trig * (TRand.ar(0.0, 1.0, trig) < chance.at(0)),
+
+        // Shared mode: one random draw, duped to all channels
+        trig * (TRand.ar(0.0, 1.0, trig).at(0) < chance.at(0)).dup(n)
+    ]);
+
+    // ————— 5) output —————
+    Out.ar(OceanodeOutput.kr(\out), signal);
+},
+description: "Metro trigger generator with an immediately‐resettable Phasor",
+category: "Modulation/Trigger");

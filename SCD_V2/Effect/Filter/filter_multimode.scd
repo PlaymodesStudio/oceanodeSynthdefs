@@ -5,7 +5,7 @@
     input = In.ar(OceanodeInput.kr(\in), n);
     // Control parameters
     freq = OceanodeParameterLag.ar(\pitch, 60, n, 0, 127, "vf", 0.05, true).midicps;
-    res = 1-(OceanodeParameter.kr(\q, 0, n, 0, 0.99999, "vf"));
+    res = 1-(OceanodeParameterLag.ar(\q, 0, n, 0, 0.99999, "vf"));
     filterType = OceanodeParameterDropdown.ar(\type, 0, n, "LowPass:HighPass:BandPass:BandReject:PeakEQ:Moog:Resonator:Formant");
     // Use Select.ar with integer filter type to conditionally process only the selected filter
     filtered = Select.ar(filterType, [

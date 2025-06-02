@@ -28,3 +28,4 @@
     Out.ar(OceanodeOutput.kr(\out), signal);
 }, description: "Basic granular sampler with trigger control", category: "Source/Sampler");
 )
+
