@@ -8,8 +8,8 @@
 	// Duration parameter in milliseconds
 	duration = OceanodeParameter.ar(\duration, 100, n, 1, 10000, "vf");
 
-	// Detect impulses (triggers when input goes from 0 to 1)
-	trig = Trig1.ar(input, 0.001);
+	// Detect impulses with better pulse detection - use > 0.1 threshold first
+	trig = Trig1.ar(input > 0.1, 0.001);
 
 	// Create envelope generator that sustains for the duration
 	env = EnvGen.ar(
