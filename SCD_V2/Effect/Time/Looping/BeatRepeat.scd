@@ -4,15 +4,15 @@
 	var bufferSize, numChannels;
 	var writePos, readPos, bufFrames, offsetSamples, loopSamples;
 	var recording, declickEnv, gateEnv;
-	var mix, play, wetGate, mixedOutput;
-	var loopDur, adaptiveLoopDur, loopReset, loopPhase, gatePhase;
-	var envtime, effectiveRate, loopCount, currentRate, basePitchShift;
-	var combinedResetTrig, delayedOnoff, onoffTrig;
-	var gatedDrySignal, gatedWetSignal, transitionOutput;
-	var onoffDelay, transitionEnv, fadeEnv;
-	var recordTrig, recordReset;
+	var loopDur, loopReset, loopPhase, gatePhase;
+	var envtime, effectiveRate, loopCount, basePitchShift;
+	var onoffTrig, resetTrig, resetPulse, resetGate;
 	var pitchCounter, accumulatedPitch;
-	var baseRate, adaptedRate;
+	var gatedDrySignal, gatedWetSignal, transitionOutput;
+	var transitionEnv, fadeEnv;
+	var recordReset, combinedResetTrig;
+	var delayedResetTrig, delayedGoTrig, immediateLoopReset, delayedLoopReset;
+	var recordingNewSegment, initialRecording, anyRecording, effectiveLoopOutput, resetPulseCount, resetCountChanged;
 
 	// Parameters
 	var onoff = OceanodeParameter.ar(\go, 0, n, 0, 1, "vi");
@@ -37,107 +37,118 @@
 	buffer = LocalBuf(bufFrames, numChannels).clear;
 	input = In.ar(OceanodeInput.kr(\in), numChannels);
 
-	// Calculate basic timing parameters
+	// Calculate loop duration from repms parameter
 	loopDur = recms / 1000;
+	loopSamples = (loopDur * SampleRate.ir).round(1).max(1);
 
-	// Initialize timing control signals
+	// Reset detection - FIXED: detect each individual "1" value, including consecutive ones
+	// Count pulses and detect when count changes = new pulse received
+	 resetPulseCount = PulseCount.ar(reset > 0.5);
+	 resetCountChanged = Changed.ar(resetPulseCount);
+	resetTrig = resetCountChanged;
+
+	// Timing triggers
 	onoffTrig = Trig.kr(onoff);
-	onoffDelay = loopDur * onoff;
-	delayedOnoff = DelayN.kr(onoff, loopDur, onoffDelay);
+	combinedResetTrig = onoffTrig + resetTrig;
 
-	// Reset trigger for combined operations
-	combinedResetTrig = Trig1.ar(K2A.ar(delayedOnoff) + K2A.ar(reset), ControlDur.ir);
+	// FIXED: Recording logic - ensure we capture fresh audio when go=1 is triggered
+	// Record when go=0 OR when go trigger fires OR when reset is triggered
+	recording = (1 - onoff) + Trig1.kr(onoffTrig, loopDur) + Trig1.ar(resetTrig, loopDur);
+	recordReset = onoffTrig + A2K.kr(resetTrig);
 
-	// Recording logic
-	recordTrig = 1 - onoff;
-	recordReset = Trig.kr(onoff);
-	recording = (1 - delayedOnoff) + Trig1.kr(recordTrig, loopDur);
-
+	// Write position - continuous writing when recording
 	writePos = Phasor.ar(recordReset, BufRateScale.kr(buffer) * recording, 0, BufFrames.kr(buffer));
 	BufWr.ar(input, buffer, writePos);
 
-	// Phases for loop management
-	loopPhase = Phasor.ar(combinedResetTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
-	gatePhase = Phasor.ar(onoffTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
+	// FIXED: When go first goes from 0->1, we need to ensure there's audio to play
+	// Delay the initial go trigger by loopDur to allow initial recording
+	delayedGoTrig = DelayN.kr(onoffTrig, loopDur, loopDur);
 
-	loopReset = Trig1.ar((loopPhase - Delay1.ar(loopPhase)) > 0, ControlDur.ir);
+	// FIXED: Loop management - handle both initial go and reset differently
+	// For initial go trigger: delay to allow recording first
+	// For reset trigger: delay the loop reset by loopDur to allow recording to complete
+	delayedResetTrig = DelayN.kr(resetTrig, loopDur, loopDur);
+	immediateLoopReset = delayedGoTrig; // Changed from onoffTrig
+	delayedLoopReset = delayedResetTrig;
 
-	// Calculate pitch accumulation
-	pitchCounter = PulseCount.ar(loopReset, combinedResetTrig);
-	loopCount = pitchCounter % numsteps;
+	loopReset = Trig1.ar(K2A.ar(immediateLoopReset + delayedLoopReset), ControlDur.ir);
 
-	// Calculate accumulated pitch shift
-	accumulatedPitch = (loopCount * pitchstep) % (numsteps * pitchstep.abs.max(1));
+	// Phase for timing loop cycles
+	loopPhase = Phasor.ar(loopReset, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
+
+	// Detect loop boundaries for continuous cycling
+	loopReset = loopReset + Trig1.ar((loopPhase - Delay1.ar(loopPhase)) > 0, ControlDur.ir);
+
+	// FIXED: Track when we're in "recording new segment" mode
+	recordingNewSegment = Trig1.ar(resetTrig, loopDur);
+
+	// FIXED: Also track when we're in initial recording mode (go just triggered)
+	initialRecording = Trig1.kr(onoffTrig, loopDur) * onoff;
+
+	// Pitch accumulation - use the corrected loop reset timing
+	pitchCounter = PulseCount.ar(loopReset, K2A.ar(delayedGoTrig));
+	loopCount = pitchCounter % K2A.ar(numsteps);
+	accumulatedPitch = loopCount * K2A.ar(pitchstep);
 	basePitchShift = 2 ** (accumulatedPitch / 12);
 
-	// Calculate base and adapted rates
-	baseRate = rate;
-	currentRate = baseRate * basePitchShift;
+	// Rate calculation - FIXED: much simpler approach
+	effectiveRate = K2A.ar(rate) * basePitchShift;
 
-	// Apply rate direction (reverse or forward)
-	effectiveRate = currentRate * (1 - (reverse * 2));
+	// Apply reverse - simple conditional
+	effectiveRate = Select.ar(reverse, [effectiveRate, effectiveRate * (-1)]);
 
-	// Calculate adaptive loop duration
-	adaptiveLoopDur = Select.kr(adapt, [
-		loopDur,                   // When adapt=0: fixed loop duration
-		loopDur / basePitchShift   // When adapt=1: duration adjusted for pitch
-	]);
-
-	loopSamples = (adaptiveLoopDur * SampleRate.ir).round(1).max(1);
-
-	// Quantize parameters at loop reset points
-	currentRate = Latch.kr(currentRate, loopReset);
+	// Quantize at loop boundaries
 	effectiveRate = Latch.kr(effectiveRate, loopReset);
-	adaptiveLoopDur = Latch.kr(adaptiveLoopDur, loopReset);
-	loopSamples = Latch.kr(loopSamples, loopReset);
+	offsetSamples = Latch.kr((offset * SampleRate.ir).round(1), loopReset);
 	gate = Latch.kr(gate, loopReset);
 	grainamp = Latch.kr(grainamp, loopReset);
 
-	offsetSamples = Latch.kr((offset * SampleRate.ir).round(1), loopReset);
-
-	// Create read position for buffer playback
+	// Read position - MUCH simpler, following Stutter pattern exactly
 	readPos = Phasor.ar(
 		trig: loopReset,
-		rate: BufRateScale.kr(buffer) * effectiveRate,
-		start: reverse * loopSamples,
-		end: (1 - reverse) * loopSamples,
-		resetPos: reverse * loopSamples
+		rate: BufRateScale.kr(buffer) * K2A.ar(effectiveRate),
+		start: K2A.ar(reverse) * K2A.ar(loopSamples),
+		end: (1 - K2A.ar(reverse)) * K2A.ar(loopSamples),
+		resetPos: K2A.ar(reverse) * K2A.ar(loopSamples)
 	);
-	readPos = writePos - offsetSamples - loopSamples + readPos;
-	readPos = readPos.wrap(0, BufFrames.kr(buffer) - 1);
 
-	mix = delayedOnoff;
-	wetGate = delayedOnoff;
-	play = delayedOnoff;
+	// FIXED: Simple offset - read from recorded segment
+	readPos = (writePos - K2A.ar(loopSamples) - K2A.ar(offsetSamples) + readPos).wrap(0, BufFrames.kr(buffer) - 1);
 
-	// Create declicking envelope
-	envtime = (adaptiveLoopDur - (2 * declick)).max(0);
+	// Gate control
+	gatePhase = Phasor.ar(K2A.ar(onoffTrig), 1 / (SampleRate.ir * loopDur), 0, 1, 0);
+
+	// Envelope - simplified
 	declickEnv = EnvGen.ar(
 		Env(
 			levels: [0, 1, 1, 0],
-			times: [declick, envtime, declick],
+			times: [K2A.ar(declick), K2A.ar(loopDur - (2 * declick)).max(0), K2A.ar(declick)],
 			curve: [\sin, \step, \sin]
 		),
 		gate: loopReset
 	);
 
-	gateEnv = (gatePhase < gate).lag(declick.min(adaptiveLoopDur / 4));
+	gateEnv = (gatePhase < K2A.ar(gate)).lag(K2A.ar(declick.min(loopDur / 4)));
 
-	// Read from buffer and apply envelopes
+	// Audio processing - FIXED: play realtime input during any recording phase
 	loopOutput = BufRd.ar(numChannels, buffer, readPos, loop: 1);
-	loopOutput = loopOutput * play * declickEnv * grainamp;
+	loopOutput = loopOutput * K2A.ar(onoff) * declickEnv * K2A.ar(grainamp);
+
+	// FIXED: During any recording phase (initial or reset), play realtime input
+	anyRecording = recordingNewSegment + initialRecording;
+	effectiveLoopOutput = Select.ar(K2A.ar(anyRecording > 0), [loopOutput, input]);
 
 	gatedDrySignal = input * gateEnv;
-	gatedWetSignal = loopOutput * gateEnv;
+	gatedWetSignal = effectiveLoopOutput * gateEnv;
 
 	fadeEnv = EnvGen.ar(
-		Env.asr(declick, 1, declick, 'sine'),
-		gate: onoff
+		Env.asr(K2A.ar(declick), 1, K2A.ar(declick), 'sine'),
+		gate: K2A.ar(onoff)
 	);
 
 	transitionEnv = EnvGen.ar(
-		Env.asr(declick, 1, declick, 'sine'),
-		gate: delayedOnoff
+		Env.asr(K2A.ar(declick), 1, K2A.ar(declick), 'sine'),
+		gate: K2A.ar(onoff)
 	);
 
 	transitionOutput = XFade2.ar(
@@ -146,7 +157,7 @@
 		transitionEnv * 2 - 1
 	);
 
-	// Final output with dry/wet control
+	// Final output
 	output = SelectX.ar(fadeEnv, [input, transitionOutput]);
 	output = XFade2.ar(input, output, drywet * 2 - 1);
 

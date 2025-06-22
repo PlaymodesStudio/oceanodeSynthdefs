@@ -10,17 +10,18 @@
 	var combinedResetTrig, delayedOnoff, onoffTrig;
 	var gatedDrySignal, gatedWetSignal, transitionOutput;
 	var onoffDelay, transitionEnv, fadeEnv;
-	var recordTrig, recordReset, resetTrig;
+	var recordTrig, recordReset, resetTrig, resetPulse, resetGate, processedInput;
 
 	// Parameters
-	var on = OceanodeParameter.kr(\on, 0, n, 0, 1, "vi");
-	var pitch = OceanodeParameter.kr(\pitch, 12, n, 0, 128, "vf");
-	var offset = OceanodeParameter.kr(\offset, 0, n, 0, 1000, "vf") / 1000.0;
-	var gateWidth = OceanodeParameter.kr(\gatepw, 1, n, 0, 1, "vf");
-	var declick = OceanodeParameter.kr(\declick, 0.005, n, 0, 0.1, "vf");
-	var reverse = OceanodeParameter.kr(\reverse, 0, n, 0, 1, "vi");
-	var reset = OceanodeParameter.kr(\reset, 0, n, 0, 1, "vi");
-	var drywet = OceanodeParameter.kr(\mix, 1, n, 0, 1, "vf");
+	var on = OceanodeParameter.ar(\on, 0, n, 0, 1, "vi");
+	var pitch = OceanodeParameterLag.ar(\pitch, 12, n, 0, 128, "vf");
+	var offset = OceanodeParameterLag.ar(\offset, 0, n, 0, 1000, "vf") / 1000.0;
+	var gateWidth = OceanodeParameterLag.ar(\gatepw, 1, n, 0, 1, "vf");
+	var declick = OceanodeParameterLag.ar(\declick, 0.005, n, 0, 0.1, "vf");
+	var reverse = OceanodeParameter.ar(\reverse, 0, n, 0, 1, "vi");
+	var reset = OceanodeParameter.ar(\reset, 0, n, 0, 1, "vi");
+	var send = OceanodeParameterLag.ar(\send, 1, n, 0, 4, "vf", 1/30, true); // New send parameter
+	var drywet = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
 	var levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/50, true).lincurve(0, 1, 0, 1, 4);
 
 	// Calculate loop duration from MIDI pitch
@@ -38,8 +39,13 @@
 	onoffDelay = loopDur * on;
 	delayedOnoff = DelayN.kr(on, loopDur, onoffDelay);
 
-	// Reset detection
-	 resetTrig = Trig.kr(reset);
+	// Reset detection - Use EnvGen approach like GateDuration to handle audio-rate pulses
+	resetPulse = Trig1.ar(reset > 0.5, 0.001); // Detect brief audio pulses
+	resetGate = EnvGen.ar(
+		Env.new([0, 1, 1, 0], [0, 0.01, 0], \lin), // 10ms sustained gate
+		gate: resetPulse
+	);
+	resetTrig = Trig.kr(A2K.kr(resetGate)); // Now convert the sustained gate to control-rate
 
 	// Reset trigger for combined operations
 	combinedResetTrig = Trig1.ar(K2A.ar(delayedOnoff) + K2A.ar(reset), ControlDur.ir);
@@ -51,8 +57,11 @@
 	// Enable recording when not in stutter mode or when reset is triggered
 	recording = (1 - delayedOnoff) + Trig1.kr(recordTrig, loopDur) + Trig1.kr(resetTrig, loopDur);
 
+	// Apply send gain to input before processing
+	processedInput = input * send;
+
 	writePos = Phasor.ar(recordReset, BufRateScale.kr(buffer) * recording, 0, BufFrames.kr(buffer));
-	BufWr.ar(input, buffer, writePos);
+	BufWr.ar(processedInput, buffer, writePos);
 
 	// Phases for loop management
 	loopPhase = Phasor.ar(combinedResetTrig, 1 / (SampleRate.ir * loopDur), 0, 1, 0);
@@ -101,7 +110,7 @@
 	loopOutput = BufRd.ar(numChannels, buffer, readPos, loop: 1);
 	loopOutput = loopOutput * play * declickEnv;
 
-	gatedDrySignal = input * gateEnv;
+	gatedDrySignal = processedInput * gateEnv;
 	gatedWetSignal = loopOutput * gateEnv;
 
 	fadeEnv = EnvGen.ar(
