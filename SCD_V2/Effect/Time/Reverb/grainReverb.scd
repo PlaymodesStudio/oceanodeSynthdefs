@@ -5,19 +5,20 @@
 	var t, bufFrames;
 
 	// Main parameters with lag for smooth transitions
-	var tFreq = OceanodeParameterLag.ar(\tfreq, 26.6, n, 1, 400, "vf", 1/30, true);
+	var tFreq = OceanodeParameterLag.ar(\trig_hz, 26.6, n, 1, 400, "vf", 1/30, true);
 	var overlap = OceanodeParameterLag.ar(\overlap, 5.3, n, 0.01, 100, "vf", 1/30, true);
 	var offset = OceanodeParameterLag.ar(\offset, 0.031, n, 0, 1, "vf", 1/30, true);
 	var rate = OceanodeParameterLag.ar(\rate, 1.0, n, -2, 2, "vf", 1/30, true);
 	var feedback = OceanodeParameterLag.ar(\feedback, 0.44, n, 0, 2, "vf", 1/30, true);
+	var send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Modulation parameters
-	var tFreqMF = OceanodeParameter.ar(\tfreqmf, 25.0, n, 0, 200, "vf");
-	var tFreqMD = OceanodeParameter.ar(\tfreqmd, 0.0, n, 0, 200, "vf");
-	var rateMF = OceanodeParameter.ar(\ratemf, 19.8, n, 0, 200, "vf");
-	var rateMD = OceanodeParameter.ar(\ratemd, 0.0, n, 0, 1, "vf");
-	var offsetMF = OceanodeParameter.ar(\offsetmf, 94.0, n, 0, 10000, "vf");
-	var offsetMD = OceanodeParameter.ar(\offsetmd, 0.106, n, 0, 1, "vf");
+	var tFreqMF = OceanodeParameter.ar(\trig_fmod, 25.0, n, 0, 200, "vf");
+	var tFreqMD = OceanodeParameter.ar(\trig_phmod, 0.0, n, 0, 200, "vf");
+	var rateMF = OceanodeParameter.ar(\rate_fmod, 19.8, n, 0, 200, "vf");
+	var rateMD = OceanodeParameter.ar(\rate_phmod, 0.0, n, 0, 1, "vf");
+	var offsetMF = OceanodeParameter.ar(\offset_fmod, 94.0, n, 0, 10000, "vf");
+	var offsetMD = OceanodeParameter.ar(\offset_phmod, 0.106, n, 0, 1, "vf");
 
 	// Filter parameters
 	var hpf = OceanodeParameter.ar(\hpf, 93, n, 20, 5000, "vf");
@@ -79,7 +80,7 @@
 
 		// Write to buffer with feedback
 		BufWr.ar(
-			chan_grained * feedback[i] + chan_input,
+			(chan_grained * feedback[i] + chan_input) * send[i],
 			buf,
 			writePos
 		);
