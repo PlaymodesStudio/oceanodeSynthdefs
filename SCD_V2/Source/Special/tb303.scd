@@ -12,6 +12,7 @@
 	dec = OceanodeParameter.ar(\decay, 1, n, 0.01, 4, "vf");
 	env = OceanodeParameter.ar(\envelope, 1000, n, 0, 5000, "vf");
 	gate = OceanodeParameter.ar(\trigger, 0, n, 0, 1, "vi");
+	gate = Trig.ar(gate, 0.001);
 	vol = OceanodeParameter.ar(\level, 0, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
 
 	// Envelopes with explicit gate parameter for proper triggering
