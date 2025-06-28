@@ -1,6 +1,7 @@
 ~synthCreator.value("Choose", {|n|
 	var trigger, values, weights, size, duplicate, output, randomValue, cumulativeWeights, totalWeight, selectedValue;
 	var seed, reseed, normalRandom, seededRandom, instanceID;
+	var reseedTrig, combinedTrigger, sequenceCounter;
 	var maxSize = 24;
 
 	// Parameters
@@ -21,23 +22,37 @@
 	// Create cumulative weights for selection
 	cumulativeWeights = weights.integrate / totalWeight;
 
+	// Create reseed trigger - detects any reseed button press
+	reseedTrig = reseed.sum > 0;
+
+	// Combined trigger: normal trigger OR reseed trigger
+	combinedTrigger = Array.fill(n, {|i|
+		trigger[i] + reseedTrig
+	});
+
 	// Generate normal random (truly random, each synth gets unique generator)
 	normalRandom = Array.fill(n, {|i|
 		// Use instance ID for unseeded mode to ensure different synths are different
 		RandID.ir(instanceID + (i * 1000));
-		TRand.ar(0, 1, trigger[i]);
+		TRand.ar(0, 1, combinedTrigger[i]);
 	});
 
-	// FIX: Generate seeded random with synchronized reseeding
+	// Generate deterministic seeded sequence
 	seededRandom = Array.fill(n, {|i|
-		// Use seed + channel index as random ID for related but different sequences per channel
-		RandID.ir(seed + i); // Each channel gets seed+0, seed+1, seed+2, etc.
-		// FIXED: Synchronize reseeding across all channels - any reseed triggers all
+		var resetTrig;
+
+		// Reset seed when reseed is pressed or seed changes - same as MetroSequential
+		resetTrig = reseedTrig + Changed.kr(seed) + Impulse.kr(0);
+
+		// Use the same approach as MetroSequential - simple RandSeed + TRand
+		RandID.ir(seed + (i * 100)); // Give each channel separation
 		RandSeed.kr(
-			(seed > 0) * (Changed.kr(seed) + (reseed.sum > 0) + Impulse.kr(0)),
-			(seed + i).max(1)
+			(seed > 0) * resetTrig,
+			(seed + (i * 100)).max(1)
 		);
-		TRand.ar(0, 1, trigger[i]);
+
+		// Use TRand.ar - this actually works with seeding properly
+		TRand.ar(0, 1, combinedTrigger[i]);
 	});
 
 	// Handle single vs multiple random selection with seeding
@@ -72,11 +87,12 @@
 		);
 	});
 
-	// Hold the value until next trigger (per channel)
+	// Hold the value until next trigger or reseed (per channel)
 	selectedValue = Array.fill(n, {|i|
-		Latch.ar(selectedValue[i], trigger[i]);
+		Latch.ar(selectedValue[i], combinedTrigger[i]);
 	});
 
 	// Output the selected values
 	Out.ar(OceanodeOutput.kr(\out), selectedValue);
-}, description: "Weighted random selection with synchronized seed resets for consistent sequences", category: "Modulation/Random");
+
+}, description: "Weighted random selection with immediate reseed output", category: "Modulation/Random");
