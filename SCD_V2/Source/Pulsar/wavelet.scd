@@ -1,15 +1,44 @@
 ~synthCreator.value("Wavelet", {|n|
     var sig, shape, duration, trigger;
     var phase, wavelet, running;
-    var minVal, maxVal, range;
-    var triggerPulse;
+    var minVal, maxVal, triggerPulse;
+    var skew, pow, invert, quant, level;
+
+    // Morphable LFO functions
+    var getTriangle = { |phase, skew|
+        phase = phase.linlin(0, 1, skew.neg, 1 - skew);
+        phase.bilin(0, skew.neg, 1 - skew, 1, 0, 0);
+    };
+    var getSine = { |phase|
+        1 - cos(phase * pi) / 2;
+    };
+    var getTrapezoid = { |phase, duty, shape, skew|
+        var offset = phase - (1 - duty);
+        var steepness = 1 / (1 - shape);
+        var trapezoid = (offset * steepness + (1 - duty)).clip(0, 1);
+        var pulse = offset > 0;
+        Select.ar((shape |==| 1).asInteger, [trapezoid, pulse]);
+    };
+    var getMultiLFO = { |phase, skew, shape|
+        var triangle = getTriangle.(phase, skew);
+        var trapezoidShape = shape.linlin(0, 1, 0, 1);  // Map shape to trapezoid internal shape
+        var lfoMix = shape.linlin(0, 1, 0, 1);  // Map shape to sine mix amount
+        var trapezoid = getTrapezoid.(triangle, 1.0, trapezoidShape);  // Always use full width (1.0)
+        var sine = getSine.(trapezoid);
+        trapezoid * (1 - lfoMix) + (sine * lfoMix);
+    };
 
     // Parameters
-    trigger = OceanodeParameter.ar(\trigger, 0, n, 0, 1, "vi");  // Changed to .ar
+    trigger = OceanodeParameter.ar(\trigger, 0, n, 0, 1, "vi");
     duration = OceanodeParameterLag.ar(\duration, 50, n, 1, 200, "vf", 1/30, true);  // Duration in ms
-    shape = OceanodeParameterLag.ar(\shape, 0.5, n, 0, 1, "vf", 1/30, true);         // 0: steep, 0.5: bell, 1: square
-    minVal = OceanodeParameterLag.ar(\min, 0, n, -1, 1, "vf", 1/30, true);          // Minimum value in range
-    maxVal = OceanodeParameterLag.ar(\max, 1, n, -1, 1, "vf", 1/30, true);           // Maximum value in range
+    shape = OceanodeParameterLag.ar(\shape, 0.5, n, 0, 1, "vf", 1/30, true);         // 0: triangle, 0.5: mixed, 1: sine
+    skew = OceanodeParameterLag.ar(\skew, 0.5, n, 0, 1, "vf", 1/30, true);           // Asymmetry control
+    pow = OceanodeParameterLag.ar(\pow, 1, n, 0.1, 4, "vf", 1/30, true);             // Power shaping
+    invert = OceanodeParameterLag.ar(\invert, 0, n, 0, 1, "vf", 1/30, true);         // Inversion
+    quant = OceanodeParameter.ar(\quant, 0, n, 0, 64, "vi");                         // Quantization
+    level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);          // Amplitude
+    minVal = OceanodeParameterLag.ar(\min, 0, n, -1, 1, "vf", 1/30, true);          // Minimum value
+    maxVal = OceanodeParameterLag.ar(\max, 1, n, -1, 1, "vf", 1/30, true);          // Maximum value
 
     // Convert duration from ms to seconds
     duration = duration * 0.001;
@@ -29,57 +58,30 @@
     // Apply the latch to the phase - keep it at 1 when cycle is complete
     phase = phase.clip(0, 1);
 
-    // Simple wavelet generation based on shape parameter
-    wavelet = Select.ar(
-        (shape * 10).clip(0, 9).round, // 10 discrete shapes, 0-9
-        // Array of 10 different wavelet shapes from steep to square
-        [
-            // Shape 0: Very steep power curve (exponent 10)
-            (phase < 0.5) * (phase * 2).pow(10) +
-            (phase >= 0.5) * (1 - ((phase - 0.5) * 2)).pow(10),
-            // Shape 1: Steep power curve (exponent 6)
-            (phase < 0.5) * (phase * 2).pow(6) +
-            (phase >= 0.5) * (1 - ((phase - 0.5) * 2)).pow(6),
-            // Shape 2: Medium-steep power curve (exponent 4)
-            (phase < 0.5) * (phase * 2).pow(4) +
-            (phase >= 0.5) * (1 - ((phase - 0.5) * 2)).pow(4),
-            // Shape 3: Gentle power curve (exponent 3)
-            (phase < 0.5) * (phase * 2).pow(3) +
-            (phase >= 0.5) * (1 - ((phase - 0.5) * 2)).pow(3),
-            // Shape 4: Quadratic curve (power 2)
-            (phase < 0.5) * (phase * 2).pow(2) +
-            (phase >= 0.5) * (1 - ((phase - 0.5) * 2)).pow(2),
-            // Shape 5: Bell curve (sine based)
-            sin(phase * pi),
-            // Shape 6: Blend of sine and trapezoid
-            (phase < 0.3) * (phase / 0.3) +
-            (phase >= 0.3) * (phase <= 0.7) * 1 +
-            (phase > 0.7) * (1 - ((phase - 0.7) / 0.3)),
-            // Shape 7: Trapezoid with steeper sides
-            (phase < 0.2) * (phase / 0.2) +
-            (phase >= 0.2) * (phase <= 0.8) * 1 +
-            (phase > 0.8) * (1 - ((phase - 0.8) / 0.2)),
-            // Shape 8: Near-square (trapezoid with very steep sides)
-            (phase < 0.1) * (phase / 0.1) +
-            (phase >= 0.1) * (phase <= 0.9) * 1 +
-            (phase > 0.9) * (1 - ((phase - 0.9) / 0.1)),
-            // Shape 9: Square-like (trapezoid with extremely steep sides)
-            (phase < 0.05) * (phase / 0.05) +
-            (phase >= 0.05) * (phase <= 0.95) * 1 +
-            (phase > 0.95) * (1 - ((phase - 0.95) / 0.05))
-        ]
-    );
+    // Generate morphable wavelet using our LFO functions
+    wavelet = getMultiLFO.(phase, skew, shape);
+
+    // Apply power transformation
+    wavelet = wavelet.pow(pow);
+
+    // Apply quantization
+    wavelet = Select.ar(quant > 1, [
+        wavelet,
+        (wavelet * (quant - 1)).round / (quant - 1)
+    ]);
+
+    // Apply inversion
+    wavelet = (wavelet * (1 - invert)) + ((1 - wavelet) * invert);
 
     // Gate the wavelet so it only outputs during the ramp
     wavelet = wavelet * running;
 
-    // Adjust amplitude with natural curve
-    sig = wavelet * OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    // Apply level control with natural curve
+    sig = wavelet * level.lincurve(0, 1, 0, 1, 4);
 
     // Scale normalized signal (0-1) to the requested min-max range
-    range = maxVal - minVal;
-    sig = (sig * range) + minVal;
+    sig = sig.linlin(0, 1, minVal, maxVal);
 
     // Output
     Out.ar(OceanodeOutput.kr(\out), sig);
-}, description: "Generates a single cycle wavelet with variable shape and amplitude range", category: "Source/Pulsar");
+}, description: "Enhanced wavelet generator with morphable shape (triangle/sine/square), skew for asymmetry, power shaping, inversion, quantization, and amplitude range control", category: "Source/Pulsar");
