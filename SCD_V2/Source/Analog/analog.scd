@@ -1,6 +1,6 @@
 (
 ~synthCreator.value("Analog", {|n|
-	var p, pulsew, finalSig, waves, freq, vib, trem, tremRate, tremAmount, vibRate, vibAmount;
+	var p, pulsew, finalSig, waves, freq, vib, trem, tremRate, tremAmount, vibRate, vibAmount,fma,fmratio,fm;
 
 	// Main pitch control with lag for smooth transitions
 	p = OceanodeParameterLag.ar(\pitch, 36, n, 0, 127, "vf", 1/30, true);
@@ -11,6 +11,10 @@
 	tremAmount = OceanodeParameterLag.ar(\trema, 0, n, 0, 1, "vf", 1/30, true);
 	vibRate = OceanodeParameterLag.ar(\vibf, 0, n, 0, 8, "vf", 1/30, true);
 	vibAmount = OceanodeParameterLag.ar(\viba, 0, n, 0, 1, "vf", 1/30, true);
+	fma = OceanodeParameterLag.ar(\fmamp, 0, n, 0, 1000, "vf", 1/30, true);
+	fmratio = OceanodeParameterLag.ar(\fmratio, 1, n, 0, 16, "vf", 1/30, true);
+
+	fm=SinOsc.ar(p.midicps*fmratio)*fma;
 
 	// Apply vibrato to pitch
 	vib = SinOsc.ar(vibRate, 0, vibAmount, 0);
@@ -18,11 +22,11 @@
 
 	// Define waveforms including the new impulse oscillator
 	waves = [
-		Saw.ar(p, 1, 0),
-		LFTri.ar(p, 0),
-		Pulse.ar(p, (pulsew+0.5)%1, 1),
-		SinOsc.ar(p, 0),
-		Impulse.ar(p, 0)  // Added Impulse oscillator
+		Saw.ar(p+fm, 1, 0),
+		LFTri.ar(p+fm, 0),
+		Pulse.ar(p+fm, (pulsew+0.5)%1, 1),
+		SinOsc.ar(p+fm, 0),
+		Impulse.ar(p+fm, 0)  // Added Impulse oscillator
 	];
 
 	// Updated dropdown options to include Impulse
