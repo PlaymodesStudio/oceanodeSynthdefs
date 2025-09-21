@@ -9,7 +9,7 @@
 	var loopCount, loopPhase, readPos;
 	var windowSize, pitchRatio;
 	var minFreq, maxFreq, lpFreq, hpFreq;
-	var normalRate, slicePlaybackPhase;
+	var normalRate, slicePlaybackPhase, sampleRateCorrection;
 
 	// Maximum value for divisions (slices/steps)
 	maxSlices = 32;
@@ -37,6 +37,9 @@
 	grainpitchValues = OceanodeParameter.ar(\grainpitch, 0, maxSteps, -24, 24, "vf");
 	filterValues = OceanodeParameter.ar(\filter, 0, maxSteps, -1, 1, "vf"); // Range -1 to 1
 
+	// Sample rate correction
+	sampleRateCorrection = BufSampleRate.kr(buf) / SampleRate.ir;
+
 	// Calculate buffer properties
 	bufFrames = BufFrames.kr(buf);
 	sliceSize = bufFrames / numSlices.max(1); // Divide buffer into equal slices
@@ -44,7 +47,7 @@
 	// Create a phasor for the overall sequence
 	phaseIndex = Phasor.ar(
 		trigger,
-		numSteps / (duration * SampleRate.ir), // Rate to complete sequence in 'duration' seconds
+		numSteps / (duration * BufSampleRate.kr(buf)) * sampleRateCorrection, // Rate to complete sequence in 'duration' seconds
 		0,
 		numSteps
 	);
@@ -69,7 +72,7 @@
 	sliceStart = sliceIndex * sliceSize;
 
 	// Define normal rate as the rate to play through a slice at regular speed
-	normalRate = SampleRate.ir / sliceSize; // Playback rate that covers the slice in 1 second
+	normalRate = BufSampleRate.kr(buf) / sliceSize; // Playback rate that covers the slice in 1 second
 
 	// Create a trigger signal that pulses at the start of each step
 	// This resets our slice playback phasor
@@ -77,7 +80,7 @@
 		// Reset phasor when step changes
 		Trig1.ar(HPZ1.ar(currentStep), SampleDur.ir),
 		// Progress at normalRate * pitchRatio
-		normalRate * pitchRatio / SampleRate.ir,
+		normalRate * pitchRatio / BufSampleRate.kr(buf) * sampleRateCorrection,
 		0,
 		1
 	);

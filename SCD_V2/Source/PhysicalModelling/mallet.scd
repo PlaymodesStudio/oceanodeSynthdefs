@@ -57,4 +57,3 @@
 	Out.ar(OceanodeOutput.kr(\out), Limiter.ar(sig * 0.1));
 
 }, description: "Resonant mallet percussion with trigger gate drone and input modes", category: "Source/PhysicalModelling");
-)

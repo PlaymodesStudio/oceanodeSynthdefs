@@ -1,8 +1,9 @@
 ~synthCreator.value("MetroSequential", {|n|
 	var signals, trig, reset_trig, index_seq, current_index, rand_val;
-	var hz, chance, reset, seed, reseed;
+	var hz, chance, reset, seed, reseed, fixednum;
 	var normalRand, seededRand, instanceID, combinedReset;
 	var perChannelRand, perChannelSeeded; // Per-channel random values
+	var triggerCounter, shouldTrigger, totalTriggersSent;
 
 	// Parameters with proper unit tags
 	hz = OceanodeParameterLag.ar(\hz, 1, n, 0.01, 60, "vf", 1/30, true);
@@ -10,6 +11,7 @@
 	reset = OceanodeParameter.ar(\reset, 0, n, 0, 1, "vi");
 	seed = OceanodeParameter.kr(\seed, 0, 1, 0, 65536, "i"); // Single seed for all channels
 	reseed = OceanodeParameter.ar(\reseed, 0, 1, 0, 1, "vi"); // Single reseed trigger
+	fixednum = OceanodeParameter.ar(\fixednum, 0, 1, 0, 1000, "vi"); // New fixed number parameter
 
 	// Create a deterministic instance ID - only use time-based ID for unseeded mode
 	// For seeded mode, we want pure determinism
@@ -20,6 +22,20 @@
 
 	// Combine reset and reseed - reseed forces a reset to sync timing
 	combinedReset = Trig.ar(K2A.ar(reset[0]) + (reseed > 0.5), SampleDur.ir);
+
+	// Counter for tracking total triggers sent (resets on combinedReset)
+	totalTriggersSent = PulseCount.ar(trig, combinedReset);
+
+	// Determine if we should trigger based on fixednum
+	shouldTrigger = Select.ar(K2A.ar(fixednum > 0), [
+		// fixednum = 0: always trigger (original behavior)
+		K2A.ar(1),
+		// fixednum > 0: only trigger if we haven't sent fixednum triggers yet
+		K2A.ar(totalTriggersSent <= K2A.ar(fixednum))
+	]);
+
+	// Apply shouldTrigger to the base trigger
+	trig = trig * shouldTrigger;
 
 	// Define a demand-rate sequence that cycles through indices
 	index_seq = Dseq((0..(n-1)), inf);
@@ -51,16 +67,13 @@
 	signals = Array.fill(n, {|i|
 		// Use BinaryOpUGen.new to ensure we get a UGen, not a Boolean
 		var index_match = BinaryOpUGen.new('==', current_index, i);
-
 		// FIX: Use the random value that corresponds to THIS channel
 		// Select between normal and seeded random for this specific channel
 		var thisChannelRand = Select.ar(
 			(seed > 0), // If seed > 0, use seeded, else normal
 			[perChannelRand[i], perChannelSeeded[i]]
 		);
-
 		var chance_test = BinaryOpUGen.new('<', thisChannelRand, chance.asArray[i]);
-
 		// Output a trigger only when index matches and passes chance test
 		trig * index_match * chance_test;
 	});

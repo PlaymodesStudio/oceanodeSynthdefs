@@ -2,7 +2,7 @@
 ~synthCreator.value("LFO", {|n|
 	var freq, phaseOffset, pulseWidth, invert, shape, minVal, maxVal, reset;
 	var phasor, linPhase, val, invVal, finalSig;
-	var pow, quant, randomAdd;
+	var pow, quant, randomAdd, externalph, extphinput;
 
 	// Basic LFO controls
 	freq = OceanodeParameterLag.ar(\freq, 1, n, 0.01, 20, "vf", 1/30, true);
@@ -17,8 +17,17 @@
 	shape = OceanodeParameterFloatDropdown.kr(\shape, 0, n, "Saw:Sine:Triangle:Pulse:Noise");
 	reset = OceanodeParameter.ar(\reset, 0, n, 0, 1, "vi");
 
-	// Create phasor that runs from 0 to 1 with reset control
-	phasor = Phasor.ar(Trig.ar(reset, 0.001), freq * SampleDur.ir, 0, 1);
+	// New external phase control
+	externalph = OceanodeParameter.ar(\externalph, 0, n, 0, 1, "vi");
+	extphinput = OceanodeParameterLag.ar(\extphinput, 0, n, 0, 1, "vf", 1/30, true);
+
+	// Create phasor that runs from 0 to 1 with reset control or use external input
+	phasor = Select.ar(externalph, [
+		// Internal phasor
+		Phasor.ar(Trig.ar(reset, 0.001), freq * SampleDur.ir, 0, 1),
+		// External phasor input
+		extphinput
+	]);
 
 	// Apply phase offset
 	linPhase = (phasor + phaseOffset).wrap(0, 1);
@@ -68,5 +77,6 @@
 
 	// Output signal
 	Out.ar(OceanodeOutput.kr(\out), finalSig);
+
 }, description: "Low frequency oscillator with multiple waveforms and effects", category: "Modulation/LFO");
 )
