@@ -13,7 +13,7 @@
 	amp = OceanodeParameterLag.ar(\amp, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Level control with proper dB scaling
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Apply two BPFs in series for steeper filtering
 	output = input;

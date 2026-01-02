@@ -6,7 +6,7 @@
 
 	// Main parameters with lag for smooth transitions
 	freq = OceanodeParameterLag.ar(\pitch, 36, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
+	amp = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 	trig = OceanodeParameter.ar(\trigg, 0, n, 0, 1, "vi");
 
 	// String characteristics
@@ -67,7 +67,7 @@
 		snd = (snd * dry[chan]) + (gourd * wet[chan]);
 
 		// Apply amplitude with curve
-		snd * amp[chan].lincurve(0, 1, 0, 1, 4)
+		snd * amp[chan]
 	});
 
 	// Output the signal

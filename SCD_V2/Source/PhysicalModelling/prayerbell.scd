@@ -11,13 +11,11 @@
 
 	// Generate signal for each channel
 	sig = n.collect({ |chan|
-		var freq, t_trig, decayscale, levels;
-
-		// Get parameters for this channel - fixed indexing
-		freq = freqArray.at(chan);
-		t_trig = t_trigArray.at(chan);
-		decayscale = decayscaleArray.at(chan);
-		levels = levelsArray.at(chan);
+		// Get parameters for this channel
+		var freq = freqArray[chan];
+		var t_trig = t_trigArray[chan];
+		var decayscale = decayscaleArray[chan];
+		var levels = levelsArray[chan];
 
 		// Calculate frequency scaling
 		freqscale = freq / 2434;
@@ -34,7 +32,7 @@
 		) * LFNoise1.kr(0.5).range(-45, -30).dbamp;
 
 		// Combine excitation sources
-		input = mallet * levels.lincurve(0, 1, 0, 1, 4);
+		input = mallet * levels[chan];
 
 		// Resonator bank with modal frequencies
 		DynKlank.ar(`[
@@ -80,7 +78,7 @@
 				0.4,
 				0.6
 			] * freqscale.reciprocal.pow(0.5)
-		], input, freqscale, 0, decayscale) * -15.dbamp
+		], input, freqscale, 0, decayscale[chan]) * -15.dbamp
 	});
 
 	// Output the signal

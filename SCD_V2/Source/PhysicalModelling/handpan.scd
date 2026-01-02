@@ -1,6 +1,6 @@
 (
 ~synthCreator.value("Handpan", {|n|
-	var freq, amp, strikePos, strikeCurve, coupling, damping, stiffness, brightness, decayTime, gate;
+	var freq, levels, strikePos, strikeCurve, coupling, damping, stiffness, brightness, decayTime, gate;
 	var exciter, modes, highModes, coupledModes, sig;
 	var nModes = 6;
 	var nHighModes = 4;
@@ -10,7 +10,7 @@
 	// Parameters with proper ranges
 	gate = OceanodeParameter.kr(\gate, 0, n, 0, 1, "vi");
 	freq = OceanodeParameter.kr(\pitch, 60, n, 0, 130, "vf").midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 	strikePos = OceanodeParameter.kr(\strikepos, 0.3, n, 0, 1, "vf");
 	strikeCurve = OceanodeParameter.kr(\strikecurve, 0.7, n, 0, 1, "vf");
 	coupling = OceanodeParameter.kr(\coupling, 0.3, n, 0, 1, "vf");
@@ -168,7 +168,7 @@
 	sig = FreeVerb.ar(sig, 0.15, 0.6, 0.1);
 
 	// Apply amplitude and sanitize
-	sig = Sanitize.ar(Limiter.ar(sig * amp, 0.95));
+	sig = Sanitize.ar(Limiter.ar(sig * levels, 0.95));
 
 	// Output the signals
 	Out.ar(OceanodeOutput.kr(\out), sig);

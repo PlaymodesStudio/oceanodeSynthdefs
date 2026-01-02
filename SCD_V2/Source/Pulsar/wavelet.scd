@@ -77,7 +77,7 @@
     wavelet = wavelet * running;
 
     // Apply level control with natural curve
-    sig = wavelet * level.lincurve(0, 1, 0, 1, 4);
+    sig = wavelet * level;
 
     // Scale normalized signal (0-1) to the requested min-max range
     sig = sig.linlin(0, 1, minVal, maxVal);

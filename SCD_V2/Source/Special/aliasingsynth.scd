@@ -44,5 +44,5 @@
 	
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), finalsig * levels);
-}, description: "Aliasing synthesizer based on buffer read/write with modulated phasors", category: "Sources/Special");
+}, description: "Aliasing synthesizer based on buffer read/write with modulated phasors", category: "Source/Special");
 )

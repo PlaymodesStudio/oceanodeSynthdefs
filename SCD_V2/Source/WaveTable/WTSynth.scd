@@ -5,7 +5,7 @@
     // Parameters
     buf = OceanodeParameter.ar(\bufnum, 0, n, 0, 100, "vi");
     pos = OceanodeParameterLag.ar(\wtpos8, 0, n, 0, 7, "vf", 1/30, true);
-    amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
     freq = OceanodeParameterLag.ar(\pitch, 36, n, 0, 127, "vf", 1/30, true);
 
     // Convert MIDI note to frequency ratio (2^((note-38)/12))
@@ -42,5 +42,5 @@
     // Output
     Out.ar(OceanodeOutput.kr(\out), sig);
 
-}, description: "Advanced wavetable oscillator with 8 buffer interpolation", category: "Source/WaveTable");
+}, description: "Advanced wavetable oscillator with 8 buffer interpolation", category: "Source/Wavetable");
 )

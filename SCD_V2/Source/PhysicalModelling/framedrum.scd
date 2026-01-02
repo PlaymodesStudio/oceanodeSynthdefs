@@ -1,12 +1,12 @@
 (
 ~synthCreator.value("FrameDrum", {|n|
-	var t_gate, freq, amp, att, dec, rel, crv, decCoef, position, thumpAmp, thumpDec, exBlend;
+	var t_gate, freq, levels, att, dec, rel, crv, decCoef, position, thumpAmp, thumpDec, exBlend;
 	var exciter, freqArray, ampRowArray, ampArray, decArray, snd, trig;
 
 	// Control parameters
 	t_gate = OceanodeParameter.kr(\gate, 0, n, 0, 1, "vi");
 	freq = OceanodeParameterLag.ar(\pitch, 50, n, 12, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
+	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 	att = OceanodeParameterLag.ar(\att, 0.0025, n, 0, 0.1, "vf", 1/30, true);
 	dec = OceanodeParameterLag.ar(\dec, 0.0025, n, 0, 0.1, "vf", 1/30, true);
 	rel = OceanodeParameterLag.ar(\rel, 5, n, 0, 10, "vf", 1/30, true);
@@ -125,7 +125,7 @@
 	});
 
 	// Mix, limit, and output
-	snd = Mix.ar(snd) * amp;
+	snd = Mix.ar(snd) * levels;
 	snd = Limiter.ar(snd);
 
 	Out.ar(OceanodeOutput.kr(\out), snd);

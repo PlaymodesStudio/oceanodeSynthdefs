@@ -25,13 +25,13 @@
 		IFFT(chain);
 	});
 
-	// Apply dry/wet mixing
+	// Apply mix mixing
 	finalSig = Array.fill(n, {|i|
 		XFade2.ar(sig[i], processedSig[i], dryWet * 2 - 1);
 	});
 
 	// Apply level control
-	finalSig = finalSig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	finalSig = finalSig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Output the signal
 	Out.ar(OceanodeOutput.kr(\out), finalSig);

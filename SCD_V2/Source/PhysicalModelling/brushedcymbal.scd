@@ -4,15 +4,15 @@
 	var maxResonators, freqs, lodriver, hidriver, res, sig;
 
 	// Continuous control parameters
-	amp = OceanodeParameter.ar(\levels, 0.1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
-	locut = OceanodeParameter.ar(\locut, 4000, n, 200, 20000, "vf");
-	hicut = OceanodeParameter.ar(\hicut, 8000, n, 100, 20000, "vf");
-	excitation = OceanodeParameter.ar(\excitation, 0.2, n, 0, 1, "vf");
-	time = OceanodeParameter.kr(\time, 1.2, n, 0.1, 10, "vf");
-	resolevel = OceanodeParameter.kr(\resolevel, 2.0, n, 0, 5, "vf");
-	shimmer = OceanodeParameter.ar(\shimmer, 0.9, n, 0, 1, "vf");
-	resonum = OceanodeParameter.ar(\resonum, 200, n, 0, 200, "vf");
-	transpose = OceanodeParameter.ar(\transpose, 0, n, -1000, 1000, "vf");
+	amp = OceanodeParameterLag.ar(\levels, 0.1, n, 0, 1, "vf", 1/30, true);
+	locut = OceanodeParameterLag.ar(\locut, 4000, n, 200, 20000, "vf", 1/30, true);
+	hicut = OceanodeParameterLag.ar(\hicut, 8000, n, 100, 20000, "vf", 1/30, true);
+	excitation = OceanodeParameterLag.ar(\excitation, 0.2, n, 0, 1, "vf", 1/30, true);
+	time = OceanodeParameterLag.kr(\time, 1.2, n, 0.1, 10, "vf", 1/30, true);
+	resolevel = OceanodeParameterLag.kr(\resolevel, 2.0, n, 0, 5, "vf", 1/30, true);
+	shimmer = OceanodeParameterLag.ar(\shimmer, 0.9, n, 0, 1, "vf", 1/30, true);
+	resonum = OceanodeParameterLag.ar(\resonum, 200, n, 0, 200, "vf", 1/30, true);
+	transpose = OceanodeParameterLag.ar(\transpose, 0, n, -1000, 1000, "vf", 1/30, true);
 
 	maxResonators = (200/n).asInteger;  // Fixed maximum
 
@@ -51,7 +51,7 @@
 	);
 
 	// Apply amplitude curve for natural level control
-	sig = sig * amp.lincurve(0, 1, 0, 1, 4) * 0.1;
+	sig = sig * amp * 0.1;
 
 	Out.ar(OceanodeOutput.kr(\out), sig);
 }, description: "Brushed cymbal with resonant frequencies and shimmer control", category: "Source/PhysicalModelling");

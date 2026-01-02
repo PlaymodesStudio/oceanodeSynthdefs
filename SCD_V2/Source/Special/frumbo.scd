@@ -8,7 +8,7 @@
 
 	// Basic parameters
 	freq = OceanodeParameterLag.ar(\pitch, 24, n, 12, 96, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 	gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
 
 	// Amplitude envelope parameters

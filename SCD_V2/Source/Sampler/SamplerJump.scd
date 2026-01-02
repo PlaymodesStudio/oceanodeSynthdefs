@@ -8,7 +8,7 @@
     t         = OceanodeParameter.ar(\trigger,  0,    n, 0, 1,    "vi");
     gain      = OceanodeParameterLag.ar(\levels, 0,    n, 0, 1,    "vf", 1/30, true)
                     .lincurve(0,1,0,1,4);
-    buf       = OceanodeBuffer.kr(\bufnum);
+    buf       = OceanodeParameter.kr(\bufnum, 0, n, 0, 1000, "vi");
     spd       = OceanodeParameter.ar(\speed,    1,    n, 0.25,4,   "vf");
     loop      = OceanodeParameter.kr(\loop,     0,    n, 0, 1,    "vi");
     start     = OceanodeParameter.ar(\startpos, 0,    n, 0, 1,    "vf")

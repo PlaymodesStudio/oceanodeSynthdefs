@@ -62,7 +62,7 @@
     // Master amplitude envelope with variable decay
     envMaster = EnvGen.ar(Env.perc(0.001, decay), trigEnvs);
 
-    snd = snd * envMaster * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    snd = snd * envMaster * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
     snd = RLPF.ar(snd, cutoff, rq);
     snd = Sanitize.ar(snd);
 

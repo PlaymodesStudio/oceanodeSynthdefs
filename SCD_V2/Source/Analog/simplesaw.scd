@@ -16,7 +16,7 @@
 	signal = (phase * 2 - 1);
 
 	// Apply level control with proper dB scaling
-	ampControl = OceanodeParameterLag.ar(\amp, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	ampControl = OceanodeParameterLag.ar(\amp, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Apply amplitude
 	signal = signal * ampControl;
@@ -26,7 +26,3 @@
 
 }, description: "Sawtooth oscillator with phase reset for hard sync effects", category: "Source/Analog");
 )
-
-fold
-
-{ Fold.ar(SinOsc.ar(440, 0, 0.2), -0.1, 0.1) }.scope;

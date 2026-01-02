@@ -46,5 +46,5 @@
 	// Output the signal
 	Out.ar(OceanodeOutput.kr(\out), outSig);
 
-}, description: "Flanger effect with variable LFO shape", category: "Effect/Phase");
+}, description: "Flanger effect with variable LFO shape", category: "Effect/Time/Phase");
 )

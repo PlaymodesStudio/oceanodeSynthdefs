@@ -37,5 +37,5 @@
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), snd);
-}, description: "Feedback network with delay and pitch shifting", category: "feedback");
+}, description: "Feedback network with delay and pitch shifting", category: "Source/Feedback");
 )

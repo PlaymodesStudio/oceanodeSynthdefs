@@ -12,7 +12,7 @@
     skew = OceanodeParameterLag.ar(\skew, 0, n, 0, 1, "vf", 1/30, true);
     lfoFreq = OceanodeParameterLag.ar(\lfofreq, 1, n, 0.1, 10, "vf", 1/30, true);
     lfoAmount = OceanodeParameterLag.ar(\lfoamp, 1, n, 0, 8, "vf", 1/30, true);
-    level = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    level = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
     
     // Main phase and slope
     measurePhase = (Phasor.ar(0, freq * SampleDur.ir) - SampleDur.ir).wrap(0, 1);

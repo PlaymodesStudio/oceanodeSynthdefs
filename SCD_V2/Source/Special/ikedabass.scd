@@ -7,7 +7,7 @@
 
 	// Parameters
 	freq = OceanodeParameterLag.ar(\pitch, 36, n, 24, 96, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 	harmonic = OceanodeParameter.ar(\harm, 8, n, 1, 20, "vf");
 
 	// Generate sound using phase modulation technique

@@ -12,7 +12,7 @@
 	attack = OceanodeParameter.ar(\attack, 0.005, n, 0, 0.01, "vf");
 	release = OceanodeParameter.ar(\release, 0.01, n, 0, 0.05, "vf");
 	makeup = OceanodeParameter.ar(\makeup, 1, n, 1, 8, "vf");
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// Input signal
 	source = In.ar(OceanodeInput.kr(\in), n);

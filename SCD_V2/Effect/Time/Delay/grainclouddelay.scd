@@ -7,14 +7,14 @@
 	var bufFrames, grainTrig;
 	
 	// Parameters
-	amp = OceanodeParameter.ar(\levels, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameter.ar(\levels, 1, n, 0, 1, "vf");
 	delayTime = OceanodeParameter.ar(\delay, 1, n, 0.1, 5, "vf");
 	trigRate = OceanodeParameter.ar(\trigrate, 10, n, 1, 50, "vf");
 	grainDur = OceanodeParameter.ar(\graindur, 0.35, n, 0.01, 1, "vf");
 	rate = OceanodeParameter.ar(\pitch, 0, n, -24, 24, "vf").midiratio;
 	grainOffset = OceanodeParameter.ar(\grainoffset, 0.1, n, 0, 1, "vf");
 	dryWet = OceanodeParameter.ar(\mix, 0.5, n, 0, 1, "vf");
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// Allocate buffer within the SynthDef
 	circularBuf = LocalBuf(SampleRate.ir * bufferSize, 1).clear;

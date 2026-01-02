@@ -3,7 +3,7 @@
 	var source, signal, position, level, width, rotation, numSpeakers, frontPos, backPos, frontSignals, backSignals;
 	numSpeakers = variables[0];
 	position = OceanodeParameterLag.kr(\position, 0.5, n, 0, 1, "vf", 1/30, true);
-	level = OceanodeParameterLag.kr(\level, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	level = OceanodeParameterLag.kr(\level, 1, n, 0, 1, "vf", 1/30, true);
 	width = OceanodeParameter.kr(\width, 2, n, 0, 2, "vf");
 	rotation = OceanodeParameter.kr(\rotation, 0, n, -1, 1, "vf");
 

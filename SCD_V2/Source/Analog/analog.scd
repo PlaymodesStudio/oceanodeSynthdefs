@@ -35,8 +35,8 @@
 	// Apply tremolo to amplitude
 	trem = 1 - ((SinOsc.ar(tremRate, 0, 1, 1) / 2) * tremAmount);
 
-	// Apply level control with proper dB scaling
-	finalSig = finalSig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4) * trem;
+	// Apply level control
+	finalSig = finalSig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true) * trem;
 
 	// Output the signal
 	Out.ar(OceanodeOutput.kr(\out), finalSig);

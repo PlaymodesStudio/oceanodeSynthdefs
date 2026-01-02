@@ -49,5 +49,5 @@
 	// Send to output
 	Out.ar(OceanodeOutput.kr(\out), sig);
 
-}, description: "Chain of extreme distortions applied in series with separate mix controls", category: "Effects/Distortion");
+}, description: "Chain of extreme distortions applied in series with separate mix controls", category: "Effect/Distortion");
 )

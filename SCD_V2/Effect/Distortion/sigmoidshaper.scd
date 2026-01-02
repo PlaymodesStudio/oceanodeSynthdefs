@@ -5,7 +5,7 @@
 	// Parameters
 	steep = OceanodeParameterLag.ar(\steep, 0.5, n, -1, 1, "vf", 1/30, true);
 	inflec = OceanodeParameterLag.ar(\inflec, 0.5, n, -1, 1, "vf", 1/30, true);
-	level = OceanodeParameter.ar(\level, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	level = OceanodeParameter.ar(\level, 1, n, 0, 1, "vf");
 	mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
 
 	// Input stage

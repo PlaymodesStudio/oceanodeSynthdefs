@@ -5,7 +5,7 @@
     var vowel, freq, index, vibratoSpeed, vibratoDepth;
     
     // Main parameters with lag for smooth transitions
-    amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
     freq = OceanodeParameterLag.ar(\pitch, 36, n, 0, 127, "vf", 1/30, true).midicps;
     vowel = OceanodeParameterLag.ar(\vowel, 0, n, 0, 3.9999, "vf", 1/30, true);
     index = OceanodeParameterLag.ar(\fmindex, 1.44, n, 0.001, 32, "vf", 1/30, true);

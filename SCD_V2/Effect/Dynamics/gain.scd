@@ -23,5 +23,3 @@
 
 }, description: "Gain control with exponential curve for natural level control", category: "Effect/Dynamics");
 )
-
-LeakDC.ar(((x * 5 - 13) * x + 3) / (x * 2 + 3)).neg

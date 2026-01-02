@@ -10,7 +10,7 @@
 	lo = OceanodeParameterLag.ar(\lo, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Output level with proper curve scaling
-	level = OceanodeParameterLag.ar(\level, 0.1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	level = OceanodeParameterLag.ar(\levels, 0.1, n, 0, 1, "vf", 1/30, true);
 
 	// Generate noise sources
 	lodriver = LPF.ar(WhiteNoise.ar(0.1), locut);

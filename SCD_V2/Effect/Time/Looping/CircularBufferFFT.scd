@@ -8,7 +8,7 @@
 	// Parameters
 	numActiveReaders = OceanodeParameter.ar(\numreaders, 4, n, 1, 8, "vf");
 	pos = OceanodeParameter.ar(\pos, 0, n, 0, 1, "vf");
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// Setup
 	bufferSize = 20;  // 20 seconds buffer

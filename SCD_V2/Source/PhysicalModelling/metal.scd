@@ -11,7 +11,7 @@
 	var t60 = OceanodeParameter.ar(\decay, 2.0, n, 0, 10, "vf");
 	var bright = OceanodeParameter.ar(\bright, 0.90, n, 0, 1, "vf");
 	var damp = OceanodeParameter.ar(\damp, 0.1, n, 0, 1, "vf");
-	var amp = OceanodeParameter.ar(\amp, 0.05, n, 0, 1, "vf");
+	var amp = OceanodeParameter.ar(\levels, 0.05, n, 0, 1, "vf");
 	var gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
 	var maxFreq = OceanodeParameter.ar(\maxfreq, 12000, n, 100, 20000, "vf");
 
@@ -72,7 +72,7 @@
 		chanModes * EnvGen.ar(
 			Env.perc(0.001, t60[chan] * 1.5, 1, -4),
 			trig,
-			amp[chan].lincurve(0, 1, 0, 1, 4)
+			amp[chan]
 		)
 	});
 

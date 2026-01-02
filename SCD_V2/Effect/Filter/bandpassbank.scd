@@ -29,7 +29,7 @@
 	});
 
 	// Apply level control with proper dB scaling
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	output = output * levels;
 
 	// Apply dry/wet mix using XFade2

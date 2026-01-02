@@ -6,7 +6,7 @@
 	// Main parameters
 	t_gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
 	freq = OceanodeParameterLag.ar(\pitch, 60, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
+	amp = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 
 	// Sound shaping parameters
 	rel = OceanodeParameter.ar(\rel, 2, n, 0.1, 10, "vf");
@@ -76,7 +76,7 @@
 		);
 
 		// Mix down and apply amplitude curve with conditional envelope
-		Mix.ar(snd/7) * amp[chan].lincurve(0, 1, 0, 1, 4) *
+		Mix.ar(snd/7) * amp[chan] *
 		Select.kr(exmode[chan], [
 			// For internal mode: apply envelope
 			env,

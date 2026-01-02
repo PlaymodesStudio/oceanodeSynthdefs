@@ -1,6 +1,6 @@
 (
 ~synthCreator.value("PingPongEcho", {|n, variables|
-	var filters, fb, del, cut, res, selfilt, sig, mx, dry, feedbackL, feedbackR, wetL, wetR, ing, spread;
+	var filters, fb, del, cut, res, selfilt, sig, mx, dry, feedbackL, feedbackR, wetL, wetR, send, spread;
 	
 	// Parameters
 	fb = OceanodeParameter.ar(\feed, 0.5, n, 0, 1, "vf");
@@ -9,7 +9,7 @@
 	res = OceanodeParameter.ar(\resonance, 0.2, n, 0, 1, "vf");
 	selfilt = OceanodeParameterDropdown.kr(\filtertype, 0, n, "LowPass:HighPass:BandPass:PeakEQ");
 	mx = OceanodeParameterLag.ar(\mix, 0, n, 0, 1, "vf", 1/30, true);
-	ing = OceanodeParameterLag.ar(\inputgain, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 	spread = OceanodeParameterLag.ar(\spread, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// This synth requires exactly 2 channels
@@ -25,8 +25,8 @@
 	#feedbackL, feedbackR = LocalIn.ar(2);
 	
 	// Cross-feedback (ping-pong effect)
-	wetL = LeakDC.ar(feedbackR * fb + (dry[0] * ing));
-	wetR = LeakDC.ar(feedbackL * fb + (dry[1] * ing));
+	wetL = LeakDC.ar(feedbackR * fb + (dry[0] * send));
+	wetR = LeakDC.ar(feedbackL * fb + (dry[1] * send));
 	
 	// Filter options
 	filters = [

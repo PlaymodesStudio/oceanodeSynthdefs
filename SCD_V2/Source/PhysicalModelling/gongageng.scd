@@ -1,12 +1,12 @@
 (
 ~synthCreator.value("GongAgeng", {|n|
-	var freq, amp, thickness, damping, brightness, mallet, strikePos;
+	var freq, levels, thickness, damping, brightness, mallet, strikePos;
 	var shimmerSpeed, shimmerDepth, gate, sig, chanSig, exciter, modes;
 	var nModes, modeRatios, adjustedRatios, modeDecays, modeAmps;
 
 	// Main parameters with lag for smooth transitions
 	freq = OceanodeParameterLag.ar(\pitch, 36, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
+	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 
 	// Sound shaping parameters
 	thickness = OceanodeParameter.ar(\thickness, 0.8, n, 0, 1, "vf");
@@ -42,15 +42,16 @@
 			var shimmer = SinOsc.kr(
 				shimmerSpeed[chan] * (i + 1) * 0.1,
 				0,
-				shimmerDepth[chan] * i/nModes
-			).range(1-shimmerDepth[chan], 1);
+				shimmerDepth[chan] * i/nModes * 0.5,
+				1 - (shimmerDepth[chan] * 0.5)
+			);
 			posAmp * exp(-0.7 * i * (1 - brightness[chan])) * shimmer
 		});
 
 		// Excitation signal
 		exciter = EnvGen.ar(
 			Env.perc(0.005, 0.1),
-			levelScale: amp[chan],
+			levelScale: levels[chan],
 			gate: gate[chan]
 		) * Mix([
 			Impulse.ar(0) * mallet[chan] * 0.7,
@@ -81,7 +82,7 @@
 		]);
 
 		// Apply limiting and final amplitude shaping
-		Limiter.ar(chanSig, 0.95) * amp[chan].lincurve(0, 1, 0, 1, 4)
+		Limiter.ar(chanSig, 0.95) * levels[chan]
 	});
 
 	// Output the signal

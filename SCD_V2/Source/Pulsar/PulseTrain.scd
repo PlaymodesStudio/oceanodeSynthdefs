@@ -11,7 +11,7 @@
     overlap = OceanodeParameterLag.ar(\overlap, 30, n, 1, 100, "vi", 1/30, true);
     pmRatio = OceanodeParameterLag.ar(\phmod, 3, n, 1, 40, "vf", 1/30, true);
     pmIndex = OceanodeParameterLag.ar(\phmodidx, 2, n, 0, 20, "vi", 1/30, true);
-    amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
     
     // Additional parameters for multi-waveform version
     waveform = OceanodeParameterLag.ar(\waveform, 0, n, 0, 4, "vf", 1/30, true);

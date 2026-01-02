@@ -5,7 +5,7 @@
 	var chanInput, wet;
 
 	// Continuous control parameters
-	amp = OceanodeParameter.ar(\levels, 0.1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameter.ar(\levels, 0.1, n, 0, 1, "vf");
 	locut = OceanodeParameter.ar(\locut, 4000, n, 200, 20000, "vf");
 	hicut = OceanodeParameter.ar(\hicut, 8000, n, 100, 20000, "vf");
 	time = OceanodeParameter.kr(\time, 1.2, n, 0.1, 10, "vf");
@@ -16,7 +16,7 @@
 	
 	// Mix and send parameters
 	mix = OceanodeParameter.ar(\mix, 0.5, n, 0, 1, "vf");
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 
 	maxResonators = (200/n).asInteger;  // Fixed maximum
 

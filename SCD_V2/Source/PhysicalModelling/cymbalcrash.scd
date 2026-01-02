@@ -14,14 +14,14 @@
 	thwackLevel = OceanodeParameterLag.ar(\thwacklevel, 1, n, 0, 1, "vf", 1/30, true);
 	resoLevel = OceanodeParameterLag.ar(\resolevel, 1, n, 0, 1, "vf", 1/30, true);
 	loDriveLevel = OceanodeParameterLag.ar(\lodrivelevel, 2, n, 0, 4, "vf", 1/30, true);
-	resonNum = OceanodeParameter.kr(\resonum, 100, n, 1, 100, "vi");
-	gate = OceanodeParameter.kr(\gate, 0, n, 0, 1, "vi");
+	resonNum = OceanodeParameterLag.kr(\resonum, 100, n, 1, 100, "vi", 1/30, true);
+	gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
 
 	// Output level with proper curve scaling
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 
 	// Detect gate onset
-	gate = Trig.kr(gate, 0.001);
+	gate = Trig.ar(gate, 0.01);
 
 	// Generate resonator frequencies when gate triggers
 	freqs = { TExpRand.kr(minFreq, maxFreq, gate) } ! maxResonators;
@@ -51,5 +51,5 @@
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), res);
-}, description: "Physical model of a cymbal with controllable resonators", category: "Source/Physical Modeling");
+}, description: "Physical model of a cymbal with controllable resonators", category: "Source/PhysicalModelling");
 )

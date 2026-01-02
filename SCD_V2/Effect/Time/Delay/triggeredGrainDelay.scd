@@ -14,7 +14,7 @@
 	var dryWet = OceanodeParameterLag.ar(\mix, 0.5, n, 0, 1, "vf", 1/30, true);
 	var grainAmp = OceanodeParameterLag.ar(\grainamp, 1, n, 0, 1, "vf", 1/30, true);
 	var grainAmpJitter = OceanodeParameterLag.ar(\grainampjitter, 0, n, 0, 1, "vf", 1/30, true);
-	var outputAmp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	var outputAmp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	var spreadAmount = OceanodeParameterLag.ar(\delayjitter, 0, n, 0, 0.5, "vf", 1/30, true);
 	var envBuf = OceanodeBuffer.kr(\envbuf);
 
@@ -65,7 +65,7 @@
 
 		// Apply amplitude with jitter
 		wetSignal = wetSignal *
-		            grainAmp[i].lincurve(0, 1, 0, 1, 4) *
+		            grainAmp[i] *
 		            (1 + TRand.ar(grainAmpJitter[i].neg, grainAmpJitter[i], grainTrig));
 
 		// Mix dry and wet signals

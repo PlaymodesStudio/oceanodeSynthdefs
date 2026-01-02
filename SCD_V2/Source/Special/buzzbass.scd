@@ -6,7 +6,7 @@
 	freq = OceanodeParameterLag.ar(\pitch, 28, n, 24, 60, "vf", 1/30, true).midicps;
 	noisef = OceanodeParameterLag.ar(\noise, 8210, n, 100, 15000, "vf", 1/30, true);
 	hif = OceanodeParameterLag.ar(\hif, 800, n, 100, 5000, "vf", 1/30, true);
-	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 	distortion = OceanodeParameter.ar(\distortion, 5, n, 0, 20, "vf");
 
 	// Basic sine oscillator

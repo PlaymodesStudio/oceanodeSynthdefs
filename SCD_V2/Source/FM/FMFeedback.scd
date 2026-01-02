@@ -33,7 +33,7 @@
 	sig = SinOsc.ar(p.midicps, pm1 + pm2 + pm3 + pm4);
 
 	// Apply level control with proper scaling
-	finalSig = sig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	finalSig = sig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Output the signal
 	Out.ar(OceanodeOutput.kr(\out), finalSig);

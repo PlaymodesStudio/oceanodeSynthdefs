@@ -36,5 +36,5 @@ var width,wet,sig,source,loshw,p1w,p2w,p3w,hisw;
 
 	Out.ar(OceanodeOutput.kr(\out), sig);
 
-}, description: "5 Band EQ", category: "Effect/EQ");
+}, description: "5 Band EQ", category: "Effect/Eq");
 )

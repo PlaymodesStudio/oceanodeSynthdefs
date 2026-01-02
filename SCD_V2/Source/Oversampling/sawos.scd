@@ -10,7 +10,7 @@
 
 	signal = VarSawOS.ar(freq+fmin,phase,width,4);
 
-	ampControl = OceanodeParameterLag.ar(\amp, 0, n, 0, 1, "vf", 1/30, true);
+	ampControl = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Apply amplitude
 	signal = signal * ampControl;

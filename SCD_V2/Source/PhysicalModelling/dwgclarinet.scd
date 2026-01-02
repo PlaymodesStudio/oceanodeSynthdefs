@@ -6,7 +6,7 @@
 	// Control parameters
 	freq = OceanodeParameterLag.ar(\pitch, 60, n, 0, 128, "vf", 1/30, true).midicps;
 	contour = OceanodeParameterLag.ar(\contour, 1, n, 0, 2, "vf", 1/30, true);
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
+	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true); // Keep as \amp since it's used for the instrument model
 	closePressure = OceanodeParameterLag.ar(\closepressure, 1, n, 0, 2, "vf", 1/30, true);
 	slopeOpening = OceanodeParameterLag.ar(\slopeopening, 1.2, n, 0, 4, "vf", 1/30, true);
 	inverseDecay = OceanodeParameterLag.ar(\inversedecay, 0.2, n, 0, 1, "vf", 1/30, true);
@@ -15,7 +15,7 @@
 	vibF = OceanodeParameterLag.ar(\vibf, 4, n, 0, 10, "vf", 1/30, true);
 
 	// Output level with proper curve scaling
-	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Scale amplitude for better response
 	amp = LinLin.kr(amp, 0, 1, 0.76, 1);

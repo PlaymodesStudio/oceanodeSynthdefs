@@ -5,7 +5,7 @@
 
 	// Main parameters with lag for smooth transitions
 	freq = OceanodeParameterLag.ar(\pitch, 60, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.83, n, 0, 1, "vf", 1/30, true);
+	amp = OceanodeParameterLag.ar(\levels, 0.83, n, 0, 1, "vf", 1/30, true);
 
 	// Bow control parameters
 	bowPressure = OceanodeParameterLag.ar(\bowpressure, 0.5, n, 0, 1, "vf", 1/30, true);
@@ -56,7 +56,7 @@
 		) * 0.1;
 
 		// Final channel output with amplitude curve
-		modes * amp[chan].lincurve(0, 1, 0, 1, 4)
+		modes * amp[chan]
 	});
 
 	// Output with limiter

@@ -34,7 +34,7 @@
     highcut = OceanodeParameterLag.ar(\hicut, 8000, n, 1000, 20000, "vf", 1/30, true);
     modDepth = OceanodeParameterLag.ar(\moddepth, 0.1, n, 0, 1, "vf", 1/30, true);
     modFreq = OceanodeParameterLag.ar(\modfreq, 2, n, 0.1, 10, "vf", 1/30, true);
-    mx = OceanodeParameterLag.ar(\mix, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    mx = OceanodeParameterLag.ar(\mix, 0.5, n, 0, 1, "vf", 1/30, true);
 
     // Improved envelope follower for auto-triggering
     envFollow = Amplitude.ar(source, 0.001, 0.05);

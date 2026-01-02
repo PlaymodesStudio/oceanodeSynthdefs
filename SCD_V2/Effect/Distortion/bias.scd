@@ -26,5 +26,5 @@
 
 	// Output the processed signal
 	Out.ar(OceanodeOutput.kr(\out), output);
-}, description: "Bias effect with bottom clipping", category: "Effects/Distortion");
+}, description: "Bias effect with bottom clipping", category: "Effect/Distortion");
 )

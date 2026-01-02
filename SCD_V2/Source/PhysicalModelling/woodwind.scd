@@ -72,5 +72,5 @@
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), output);
-}, description: "Physical model of a woodwind instrument with breath and reed controls", category: "Sources/PhysicalModelling");
+}, description: "Physical model of a woodwind instrument with breath and reed controls", category: "Source/PhysicalModelling");
 )

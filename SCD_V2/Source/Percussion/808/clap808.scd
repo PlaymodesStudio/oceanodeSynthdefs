@@ -3,7 +3,7 @@
 	var amp, gate, atkenv, atk, decay, sum, denv, decayTime;
 	
 	// Parameters with appropriate ranges
-	amp = OceanodeParameter.ar(\amp, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameter.ar(\amp, 1, n, 0, 1, "vf");
 	gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
 	decayTime = OceanodeParameter.ar(\decay, 6, n, 1, 16, "vf");
 	

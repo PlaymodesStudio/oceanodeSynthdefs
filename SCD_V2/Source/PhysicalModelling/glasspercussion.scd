@@ -2,12 +2,12 @@
 
 (
 ~synthCreator.value("GlassPercussion", {|n|
-	var freq, amp, pos, size, damping, gate, sig;
+	var freq, levels, pos, size, damping, gate, sig;
 	var exciter, modes, nModes, modeRatios, baseDecay;
 
 	// Main parameters
 	freq = OceanodeParameterLag.ar(\pitch, 60, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
+	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 	pos = OceanodeParameter.ar(\pos, 0.3, n, 0, 1, "vf");
 	size = OceanodeParameter.ar(\size, 1.0, n, 0.1, 2, "vf");
 	damping = OceanodeParameter.ar(\damping, 0.5, n, 0, 1, "vf");
@@ -41,7 +41,7 @@
 		});
 
 		// Envelope and output
-		modes * amp[chan].lincurve(0, 1, 0, 1, 4) * EnvGen.kr(
+		modes * levels[chan] * EnvGen.kr(
 			Env.perc(0.001, baseDecay),
 			gate: gate[chan],
 			doneAction: 0

@@ -9,14 +9,14 @@
 	var bufFrames, grainTrig, envBuf;
 
 	// Parameters
-	amp = OceanodeParameter.ar(\levels, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameter.ar(\levels, 1, n, 0, 1, "vf");
 	delayTime = OceanodeParameter.ar(\delay, 1, n, 0.1, 5, "vf");
 	delayJitter = OceanodeParameter.ar(\delay_jit, 0.1, n, 0, 1, "vf");
 	trigRate = OceanodeParameter.ar(\trighz, 10, n, 1, 50, "vf");
 	periodicity = OceanodeParameter.ar(\periodicity, 0, n, 0, 1, "vf");
 	grainDur = OceanodeParameter.ar(\graindur, 0.35, n, 0.01, 1, "vf");
 	grainDurJitter = OceanodeParameter.ar(\graindur_jit, 0, n, 0, 1, "vf");
-	grainAmp = OceanodeParameter.ar(\grainamp, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	grainAmp = OceanodeParameter.ar(\grainamp, 1, n, 0, 1, "vf");
 	grainAmpJitter = OceanodeParameter.ar(\grainamp_jit, 0, n, 0, 1, "vf");
 	grainReverseProb = OceanodeParameter.ar(\grainrev_prob, 0, n, 0, 1, "vf");
 	rate = OceanodeParameter.ar(\pitch, 0, n, -24, 24, "vf").midiratio;

@@ -25,7 +25,7 @@
 			accent: accent[chan],
 			brightness: brightness[chan],
 			damping: damping[chan]
-		) * amp[chan].lincurve(0, 1, 0, 1, 4)
+		) * amp[chan]
 	});
 
 	// Output the signal

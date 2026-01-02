@@ -13,7 +13,7 @@
 	vibfreq = OceanodeParameterLag.kr(\vibfreq, 5, n, 0, 10, "vf", 1/30, true);
 	lpf = OceanodeParameterLag.kr(\lpf, 2000, n, 0, 10000, "vf", 1/30, true);
 	noise = OceanodeParameterLag.kr(\noise, 1, n, 0, 1, "vf", 1/30, true);
-	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Physical modeling implementation
 	sr = SampleRate.ir;

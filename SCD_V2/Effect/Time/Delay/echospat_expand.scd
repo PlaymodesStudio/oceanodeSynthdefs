@@ -1,13 +1,13 @@
 (
 ~synthCreator.value("EchoSpatExpand", {|n, variables|
-    var filters, fb, del, cut, res, selfilt, sig, mx, dry, feedback, wet, ing;
+    var filters, fb, del, cut, res, selfilt, sig, mx, dry, feedback, wet, send;
     var panPos, totalCycleTime, smoothRands, pattern, numSpeakers;
 
     // Get number of speakers from variables
     numSpeakers = variables[0];
 
     // Parameters with proper ranges from Synthdefs.json
-    ing = OceanodeParameterLag.ar(\inputgain, 1, n, 0, 1, "vf", 1/30, true);
+    send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
     del = OceanodeParameterLag.ar(\delay, 0.2, n, 0.01, 2, "vf", 1/30, true);
     pattern = OceanodeParameter.kr(\pattern, 0, n, 0, 3, "vi");
     fb = OceanodeParameter.ar(\feed, 0.3, n, 0, 1, "vf");
@@ -65,7 +65,7 @@
     ]);
 
     // Apply feedback
-    LocalOut.ar(filters + (dry * ing));
+    LocalOut.ar(filters + (dry * send));
 
     // Output with mix control - convert from input channels to output channels
     sig = XFade2.ar(dry, filters.flop.collect(Mix(_)), mx*2-1);

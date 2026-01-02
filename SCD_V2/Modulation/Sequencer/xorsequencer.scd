@@ -63,10 +63,10 @@
 
 	// Apply level scaling (mainly for amplitude control in gate mode)
 	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
-	finalSig = finalSig * levels.lincurve(0, 1, 0, 1, 4);
+	finalSig = finalSig * levels;
 
 	// Output the numerical values as audio rate signals
 	Out.ar(OceanodeOutput.kr(\out), finalSig);
 
-}, description: "XOR shift register sequencer outputting pitch or gate values as audio signals", category: "Source/Special");
+}, description: "XOR shift register sequencer outputting pitch or gate values as audio signals", category: "Modulation/Sequencer");
 )

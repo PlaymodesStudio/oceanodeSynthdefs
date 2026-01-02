@@ -12,7 +12,7 @@
 	freqMod = OceanodeParameter.kr(\freqmod, 500, n, 0, 2000, "vf");
 	filterFreq = OceanodeParameterLag.kr(\lpf, 95, n, 0, 127, "vf", 1/30, true).midicps;
 	filterQ = OceanodeParameter.kr(\q, 1, n, 0.1, 4, "vf");
-	levels = OceanodeParameterLag.kr(\levels, 0.2, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.kr(\levels, 0.2, n, 0, 1, "vf", 1/30, true);
 
 	// Create individual LocalBuf for each channel (exactly like original)
 	mainBufs = n.collect { LocalBuf(1).clear };

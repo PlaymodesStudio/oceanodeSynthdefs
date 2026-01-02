@@ -5,12 +5,12 @@
 	var phaseStart, phaseEnd, phase, phaseLoop;
 
 	// Get buffer info
-	buffer = OceanodeBuffer.kr(\buf);
+	buffer = OceanodeParameter.kr(\buf, 0, n, 0, 1000, "vi");
 	bufFrames = BufFrames.kr(buffer);
 	bufDur = BufDur.kr(buffer);
 
 	// Parameters with lag for smooth transitions
-	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 	duration = OceanodeParameterLag.ar(\duration, 1000, n, 100, 10000, "vf", 1/30, true);
 
 	// Position parameters

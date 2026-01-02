@@ -42,11 +42,10 @@
                 (atkCoeff[i] * trigger[i]).clip(0, 0.99),  // Clip to prevent exactly 1.0
                 (dcyCoeff[i] * trigger[i]).clip(0, 0.99)   // Clip to prevent exactly 1.0
             ),
-            // Time-based control
-            PV_Freezish.lag(fftChain,
-                atkTime[i] * trigger[i].max(0.001),  // Ensure non-zero attack time
-                dcyTime[i] * trigger[i].max(0.001),  // Ensure non-zero decay time
-                hopSize[i]
+            // Time-based control - convert time to coefficient
+            PV_Freezish(fftChain,
+                (1 - (1/atkTime[i])).clip(0, 0.99) * trigger[i],  // Convert attack time to coefficient
+                (1 - (1/dcyTime[i])).clip(0, 0.99) * trigger[i]   // Convert decay time to coefficient
             )
         ]);
 

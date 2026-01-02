@@ -50,5 +50,5 @@
 	// Output the signal
 	Out.ar(OceanodeOutput.kr(\out), signal);
 
-}, description: "Vocal formant filter with 6 vowel types", category: "Effects/Filter");
+}, description: "Vocal formant filter with 6 vowel types", category: "Effect/Filter");
 )

@@ -1,20 +1,20 @@
 (
 ~synthCreator.value("Echo", {|n|
-	var filters, fb, del, cut, res, selfilt, sig, mx, dry, feedback, wet, ing;
+	var filters, fb, del, cut, res, selfilt, sig, mx, dry, feedback, wet, send;
 
 	// Parameters
 	fb = OceanodeParameter.ar(\feed, 0.5, n, 0, 1, "vf");
 	del = OceanodeParameterLag.ar(\delay, 0.2, n, 0.01, 2, "vf", 1/30, true);
 	cut = OceanodeParameterLag.ar(\cutoff, 60, n, 12, 120, "vf", 1/30, true).midicps;
 	res = OceanodeParameter.ar(\resonance, 0.2, n, 0, 1, "vf");
-	selfilt = OceanodeParameterDropdown.kr(\filtertype, 0, n, "LowPass:HighPass:BandPass:PeakEQ");
+	selfilt = OceanodeParameterDropdown.ar(\filtertype, 0, n, "LowPass:HighPass:BandPass:PeakEQ");
 	mx = OceanodeParameter.ar(\mix, 0, n, 0, 1, "vf");
-	ing = OceanodeParameterLag.ar(\inputgain, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Input processing
 	dry = In.ar(OceanodeInput.kr(\in), n);
 	feedback = LocalIn.ar(n);
-	wet = LeakDC.ar(feedback * fb + (dry * ing));
+	wet = LeakDC.ar(feedback * fb + (dry * send));
 
 	// Filter options
 	filters = [

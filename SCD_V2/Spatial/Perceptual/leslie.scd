@@ -47,5 +47,5 @@
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), wet);
 
-}, description: "Rotating speaker cabinet effect with modulated delays and panning", category: "Effect/PTime/hase");
+}, description: "Rotating speaker cabinet effect with modulated delays and panning", category: "Spatial/Perceptual");
 )

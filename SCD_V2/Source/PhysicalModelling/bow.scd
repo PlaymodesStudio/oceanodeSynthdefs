@@ -5,7 +5,7 @@
 
 	// Control parameters with lag for smooth transitions
 	freq = OceanodeParameterLag.ar(\pitch, 36, n, 0, 127, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 1, n, 0, 1, "vf", 1/30, true);
+	amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	force = OceanodeParameterLag.ar(\force, 0.13, n, 0, 1, "vf", 1/30, true);
 	pos = OceanodeParameterLag.ar(\pos, 0.1, n, 0, 1, "vf", 1/30, true);
 	invDec = OceanodeParameterLag.ar(\invdec, 1, n, 0, 10, "vf", 1/30, true);
@@ -16,7 +16,7 @@
 	vibAmp = OceanodeParameterLag.kr(\vibamp, 0.003, n, 0, 1, "vf", 1/30, true);
 
 	// Output level control with proper curve scaling
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Generate vibrato
 	vib = Gendy1.kr(1, 1, 1, 1, 0.1, 4, mul: vibAmp, add: 1);

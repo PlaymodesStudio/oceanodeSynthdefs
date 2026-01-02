@@ -18,7 +18,7 @@
 	outMaxFreq = OceanodeParameter.kr(\outmaxfreq, 6000, n, 1000, 18000, "f");
 	attack = OceanodeParameter.kr(\attack, 0.01, n, 0.001, 0.1, "f");
 	release = OceanodeParameter.kr(\release, 0.05, n, 0.01, 0.5, "f");
-	level = OceanodeParameter.kr(\level, 0.2, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	level = OceanodeParameter.kr(\level, 0.2, n, 0, 1, "vf");
 	mix = OceanodeParameter.kr(\mix, 1, n, 0, 1, "vf");
 	envShape = OceanodeParameterDropdown.kr(\envtype, 0, n, "Linear:Convex:S-curve:Reversed");
 	shapeFactor = OceanodeParameter.kr(\shapefactor, 0, n, -2, 2, "f");
@@ -80,5 +80,5 @@
 
 	// Output the processed signal
 	Out.ar(OceanodeOutput.kr(\out), outSig);
-}, category: "Effects/Spectral", description: "Spectral morphing effect");
+}, category: "Effect/Spectral", description: "Spectral morphing effect");
 )

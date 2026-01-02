@@ -7,7 +7,7 @@
 	// Parameters
 	readerRates = OceanodeParameterLag.ar(\rate, 1, n, 0, 8, "vf", 1/30, true);
 	readerOffsets = OceanodeParameterLag.ar(\offsetms, 0, n, 0, 20000, "vf", 1/30, true);
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Setup
 	bufferSize = 20;  // 20 seconds buffer

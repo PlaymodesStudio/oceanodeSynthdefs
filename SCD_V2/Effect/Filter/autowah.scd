@@ -16,7 +16,7 @@
     resonance = OceanodeParameterLag.ar(\resonance, 0.5, n, 0.1, 1, "vf", 1/30, true);
     filterType = OceanodeParameterDropdown.kr(\filtertype, 0, n, "LowPass:BandPass:HighPass:Notch");
     direction = OceanodeParameterDropdown.kr(\direction, 0, n, "Up:Down");
-    mix = OceanodeParameterLag.ar(\mix, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    mix = OceanodeParameterLag.ar(\mix, 1, n, 0, 1, "vf", 1/30, true);
 
     // Create envelope follower to track input amplitude
     envFollower = Amplitude.ar(source, attack, release);

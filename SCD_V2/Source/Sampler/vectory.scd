@@ -16,8 +16,8 @@
 	maxSteps = maxSlices; // Keep consistent with maxSlices
 
 	// Define our parameters
-	buf = OceanodeBuffer.kr(\bufnum);
-	gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	buf = OceanodeParameter.kr(\bufnum, 0, n, 0, 1000, "vi");
+	gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 	duration = OceanodeParameterLag.ar(\duration, 2000, n, 100, 16000, "vf", 0.05, true)/1000.0;
 	trigger = OceanodeParameter.ar(\reset, 0, n, 0, 1, "vi");
 	mode = OceanodeParameter.kr(\mode, 0, n, 0, 1, "vi");

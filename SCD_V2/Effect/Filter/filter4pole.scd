@@ -5,7 +5,7 @@
 	// Parameters
 	freq = OceanodeParameterLag.ar(\pitch, 128, n, 20, 135, "vf", 0.05, true).midicps;
 	res = OceanodeParameter.ar(\q, 1, n, 0.1, 4, "vf");
-	type = OceanodeParameterDropdown.kr(\type, 0, n, "LowPass:HighPass");
+	type = OceanodeParameterDropdown.ar(\type, 0, n, "LowPass:HighPass");
 	mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
 	fmin = OceanodeParameterLag.ar(\fm_in, 0, n, -1, 1, "vf", 1/30, true);
 

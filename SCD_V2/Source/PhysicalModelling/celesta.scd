@@ -5,12 +5,12 @@
 
     // Parameters
     pitch = OceanodeParameterLag.ar(\pitch, 60, n, 0, 127, "vf", 1/30, true);
-    brightness = OceanodeParameter.ar(\brightness, 0.5, n, 0, 1, "vf");
-    strike = OceanodeParameter.ar(\strike, 0.25, n, 0, 1, "vf");
-    hardness = OceanodeParameter.ar(\hardness, 0.6, n, 0, 1, "vf");
-    resonance = OceanodeParameter.ar(\resonance, 0.7, n, 0, 1, "vf");
-    gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
-    levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    brightness = OceanodeParameterLag.ar(\brightness, 0.5, n, 0, 1, "vf", 1/30, true);
+    strike = OceanodeParameterLag.ar(\strike, 0.25, n, 0, 1, "vf", 1/30, true);
+    hardness = OceanodeParameterLag.ar(\hardness, 0.6, n, 0, 1, "vf", 1/30, true);
+    resonance = OceanodeParameterLag.ar(\resonance, 0.7, n, 0, 1, "vf", 1/30, true);
+    gate = OceanodeParameterLag.ar(\gate, 0, n, 0, 1, "vi", 1/30, true);
+    levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
     // Simplified modal ratios
     beamRatios = [1.0, 2.76, 5.4, 8.93, 13.34, 18.64];

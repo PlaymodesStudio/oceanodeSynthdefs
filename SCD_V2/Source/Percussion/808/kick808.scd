@@ -70,7 +70,7 @@
 	sig = Limiter.ar(sig, 0.5) * 2;
 	
 	// Apply level control with proper dB scaling
-	sig = sig * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	sig = sig * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// Output directly - no need for wrapExtend as multichannel expansion handles this
 	Out.ar(OceanodeOutput.kr(\out), sig);

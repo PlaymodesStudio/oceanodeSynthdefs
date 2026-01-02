@@ -3,7 +3,7 @@
 	var source, signal, position, level, width, numSpeakers;
 	numSpeakers = variables[0];
 	position = OceanodeParameterLag.ar(\position, 0, n, 0, 1, "vf", 1/30, true);
-	level = OceanodeParameter.ar(\level, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	level = OceanodeParameter.ar(\level, 1, n, 0, 1, "vf");
 	width = OceanodeParameter.kr(\width, 2, n, 0, 2, "vf");
 	source = In.ar(OceanodeInput.kr(\in), n);
 	source = source.asArray;

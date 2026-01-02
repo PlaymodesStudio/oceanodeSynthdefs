@@ -12,7 +12,7 @@
 	var ratio3 = OceanodeParameter.ar(\ratio3, 8, n, 1, 12, "vf");
 	var lpf = OceanodeParameter.ar(\lpf, 3000, n, 100, 20000, "vf");
 	var mix = OceanodeParameter.ar(\mix, 0.5, n, 0, 1, "vf");
-	var level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	var level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);
 
 		// Input audio - properly handle n channels
 	input = In.ar(OceanodeInput.kr(\in), n);

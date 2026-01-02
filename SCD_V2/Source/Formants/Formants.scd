@@ -5,7 +5,7 @@
     
     // Control parameters with multichannel expansion
     freq = OceanodeParameterLag.ar(\pitch, 60, n, 0, 128, "vf", 1/30, true).midicps;
-    amp = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    amp = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
     vibratoSpeed = OceanodeParameterLag.ar(\vibf, 6, n, 0.1, 16, "vf", 1/30, true);
     vibratoDepth = OceanodeParameterLag.ar(\viba, 4, n, 0.1, 16, "vf", 1/30, true);
     vowel = OceanodeParameterLag.ar(\vowel, 0, n, 0, 4, "vf", 1/30, true);

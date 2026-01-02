@@ -64,5 +64,5 @@
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), sig);
-}, description: "Mutes input signal after specified delay time when gate is triggered. Immediately unmutes when gate is off.", category: "Effect/Utility/Mute");
+}, description: "Mutes input signal after specified delay time when gate is triggered. Immediately unmutes when gate is off.", category: "Effect/Time/Delay");
 )

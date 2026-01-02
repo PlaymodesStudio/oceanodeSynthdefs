@@ -5,7 +5,7 @@
 	// Get parameters
 	var drive = OceanodeParameterLag.ar(\drive, 0.5, n, 0, 1, "vf", 1/30, true);
 	var mix = OceanodeParameterLag.ar(\mix, 0.5, n, 0, 1, "vf", 1/30, true);
-	var outputLevel = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	var outputLevel = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);
 	var algorithmType = OceanodeParameterDropdown.kr(\type, 0, n, "Digital:Analog");
 	var normType = OceanodeParameterDropdown.kr(\normalize, 1, n, "Raw:Norm01");
 
@@ -41,5 +41,5 @@
 
 	// Send to output
 	Out.ar(OceanodeOutput.kr(\out), finalSig);
-}, description: "Classic waveshaping distortion with digital and analog modes", category: "Effect/Distortion");
+}, description: "Harmonic exciter for enhancing high frequency content", category: "Effect/Eq");
 )

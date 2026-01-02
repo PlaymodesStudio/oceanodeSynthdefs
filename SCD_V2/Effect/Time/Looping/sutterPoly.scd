@@ -21,7 +21,7 @@
 	var reset = OceanodeParameter.ar(\reset, 0, n, 0, 1, "vi");
 	var send = OceanodeParameterLag.ar(\send, 1, n, 0, 4, "vf", 1/30, true);
 	var drywet = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
-	var levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/50, true).lincurve(0, 1, 0, 1, 4);
+	var levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/50, true);
 
 	// Calculate loop duration from MIDI pitch
 	loopDurs = pitch.midicps.reciprocal;

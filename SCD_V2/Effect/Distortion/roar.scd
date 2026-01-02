@@ -89,5 +89,5 @@
 
 	Out.ar(OceanodeOutput.kr(\out), sig);
 
-}, description: "Dynamic distortion effect with feedback and filtering", category: "Effects/Distortion");
+}, description: "Dynamic distortion effect with feedback and filtering", category: "Effect/Distortion");
 )

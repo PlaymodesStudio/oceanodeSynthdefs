@@ -5,7 +5,7 @@
 
 	// Parameters with lag for smooth transitions
 	freq = OceanodeParameterLag.ar(\pitch, 60, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 	rodPressure = OceanodeParameterLag.ar(\rodpressure, 0.5, n, 0, 1, "vf", 1/30, true);
 	rodPosition = OceanodeParameterLag.ar(\rodposition, 0.3, n, 0, 1, "vf", 1/30, true);
 	metalResonance = OceanodeParameterLag.ar(\metalres, 0.7, n, 0, 1, "vf", 1/30, true);

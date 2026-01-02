@@ -47,7 +47,7 @@
 			sustain: sustain[chan],
 			decay: decay[chan],
 			release: release[chan]
-		) * levels[chan].lincurve(0, 1, 0, 1, 4)
+		) * levels[chan]
 	});
 
 	// Output the signal

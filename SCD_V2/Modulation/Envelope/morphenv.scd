@@ -55,8 +55,8 @@
 	// Apply morph function to the phase
 	morphOut = getMultiLFO.(phase, skew, shape);
 
-	// Apply level control with proper curve
-	finalSig = morphOut * levels.lincurve(0, 1, 0, 1, 4);
+	// Apply level control
+	finalSig = morphOut * levels;
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), finalSig);

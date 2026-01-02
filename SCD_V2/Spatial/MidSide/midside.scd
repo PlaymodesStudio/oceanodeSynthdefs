@@ -13,8 +13,8 @@
     side = input - mid;
 
     // Apply level controls with natural curve
-    mid = mid * OceanodeParameterLag.ar(\midlevel, 1, 1, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
-    side = side * OceanodeParameterLag.ar(\sidelevel, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    mid = mid * OceanodeParameterLag.ar(\midlevel, 1, 1, 0, 1, "vf", 1/30, true);
+    side = side * OceanodeParameterLag.ar(\sidelevel, 1, n, 0, 1, "vf", 1/30, true);
 
     // Duplicate the mid signal to match the number of output channels
     mid = Array.fill(n, { mid });

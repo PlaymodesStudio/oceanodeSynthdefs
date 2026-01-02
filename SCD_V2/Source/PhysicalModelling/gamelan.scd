@@ -1,12 +1,12 @@
 (
 ~synthCreator.value("Gamelan", {|n|
-	var freq, amp, thickness, damping, brightness, mallet, strikePos, detune;
+	var freq, levels, thickness, damping, brightness, mallet, strikePos, detune;
 	var pairBalance, gate, sig, chanSig, exciter, modes, pair;
 	var nModes, modeRatios, adjustedRatios, modeDecays, modeAmps;
 
 	// Main parameters
 	freq = OceanodeParameterLag.ar(\pitch, 60, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.95, n, 0, 1, "vf", 1/30, true);
+	levels = OceanodeParameterLag.ar(\levels, 0.95, n, 0, 1, "vf", 1/30, true);
 	thickness = OceanodeParameter.ar(\thickness, 0.7, n, 0, 1, "vf");
 	damping = OceanodeParameter.ar(\damping, 0.3, n, 0, 1, "vf");
 	brightness = OceanodeParameter.ar(\brightness, 0.6, n, 0, 1, "vf");
@@ -39,7 +39,7 @@
 		// Excitation signal
 		exciter = EnvGen.ar(
 			Env.perc(0.0001, 0.01),
-			levelScale: amp[chan],
+			levelScale: levels[chan],
 			gate: gate[chan]
 		) * Mix([
 			Impulse.ar(0) * mallet[chan],
@@ -83,7 +83,7 @@
 		).sum;
 
 		// Apply limiting and final amplitude shaping
-		Limiter.ar(chanSig * 2, 0.9) * amp[chan].lincurve(0, 1, 0, 1, 4)
+		Limiter.ar(chanSig * 2, 0.9) * levels[chan]
 	});
 
 	// Output the signal

@@ -3,7 +3,7 @@
 	var sig, distorted, buf, amp, mix;
 
 	// Parameters
-	amp = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);
 	mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
 	buf = OceanodeParameter.kr(\bufnum, 0, n, 0, 100, "vi");
 

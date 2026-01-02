@@ -6,7 +6,7 @@
     startChan = OceanodeParameter.kr(\chan, 0, 1, 0, 48, "i");
 
     // Gain parameter with lag for smooth level changes
-    gain = OceanodeParameterLag.ar(\gain, 1, 1, 0, 2, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    gain = OceanodeParameterLag.ar(\gain, 1, 1, 0, 2, "vf", 1/30, true);
 
     // Create array of consecutive channel indices
     inputSignal = Array.fill(n, {|i|

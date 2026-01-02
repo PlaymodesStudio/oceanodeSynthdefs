@@ -7,7 +7,7 @@
     // Parameters
     amount = OceanodeParameter.ar(\amount, 0.5, n, 0, 1, "vf");
     spread = OceanodeParameter.ar(\spread, 0.5, n, 0.01, 1, "vf");
-    level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);
     mix = OceanodeParameter.ar(\mix, 0.5, n, 0, 1, "vf");
 
     // Input signal
@@ -33,7 +33,7 @@
         chain[0];
     });
 
-    // Mix between dry and wet signals
+    // Mix between dry and processed signals
     result = XFade2.ar(signal, blurred, mix * 2 - 1);
 
     // Apply level control

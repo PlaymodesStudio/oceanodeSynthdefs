@@ -1,6 +1,6 @@
 (
 File.mkdir(d ++ "/" ++ "info");
-(1..~maxVoices).do({arg n;
+[1, 2, 4, 6, 21, 126].do({arg n;
 	var numChan = n;
 	SynthDef.new(\info ++ (numChan).asSymbol, {
 		arg in, amp, peak, value, lagTime = 0.2, decay = 0.99;

@@ -20,10 +20,10 @@
     // High band
     high = HPF.ar(HPF.ar(input, highFreq), highFreq);
 
-    // Apply level controls with natural curve
-    low = low * OceanodeParameterLag.ar(\lowlevel, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
-    mid = mid * OceanodeParameterLag.ar(\midlevel, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
-    high = high * OceanodeParameterLag.ar(\highlevel, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    // Apply level controls
+    low = low * OceanodeParameterLag.ar(\lowlevel, 1, n, 0, 1, "vf", 1/30, true);
+    mid = mid * OceanodeParameterLag.ar(\midlevel, 1, n, 0, 1, "vf", 1/30, true);
+    high = high * OceanodeParameterLag.ar(\highlevel, 1, n, 0, 1, "vf", 1/30, true);
 
     // Output each band to its own output bus
     Out.ar(OceanodeOutput.kr(\lowout), low);

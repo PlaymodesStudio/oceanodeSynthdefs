@@ -7,7 +7,7 @@
     // Parameters with lag for smooth transitions
     pitch = OceanodeParameter.kr(\pitch, 60, n, 0, 130, "vf").midicps;
     gate = OceanodeParameter.kr(\gate, 0, n, 0, 1, "vi");
-    level = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    level = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
     lo = OceanodeParameter.kr(\lo, 0.8, n, 0, 1, "vf");
     mid = OceanodeParameter.kr(\mid, 0.05, n, 0, 1, "vf");
     hi = OceanodeParameter.kr(\hi, 0.07, n, 0, 1, "vf");
@@ -27,7 +27,8 @@
         resonators = DynKlank.ar(`[resonatorFreqs, resonatorAmps, resonatorDecays], clickNoise);
 
         // Correct mix between basic tone and resonators
-		mixedSignal = ((resonators*(1-resoMix[i]))+(basicTone*resoMix[i]))* level[i]*0.2;    });
+		mixedSignal = ((resonators*(1-resoMix[i]))+(basicTone*resoMix[i]))* level[i]*0.2;
+	});
 
     // Output the signal
     Out.ar(OceanodeOutput.kr(\out), snd);

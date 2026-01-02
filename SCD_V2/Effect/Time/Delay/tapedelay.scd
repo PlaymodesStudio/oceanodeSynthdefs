@@ -11,7 +11,7 @@
 	hiGain = OceanodeParameter.ar(\higain, 0, n, -12, 12, "vf");
 	time = OceanodeParameterLag.ar(\time, 1, n, 0.1, 5, "vf", 0.4, true);
 	mix = OceanodeParameter.ar(\mix, 0.5, n, 0, 1, "vf");
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// Input processing
 	input = In.ar(OceanodeInput.kr(\in), n);

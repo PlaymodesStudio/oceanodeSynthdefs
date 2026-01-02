@@ -14,7 +14,7 @@
 	ampSlope = OceanodeParameterLag.kr(\ampslope, 3, n, 0, 10, "vf", 1/30, true);
 	decCoef = OceanodeParameterLag.kr(\deccoef, 0.15, n, 0, 1, "vf", 1/30, true);
 	hiFreqSus = OceanodeParameterLag.kr(\hifreqsus, 0, n, 0, 1, "vf", 1/30, true);
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// Process each channel independently
 	snd = Array.fill(n, {|i|

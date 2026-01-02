@@ -28,7 +28,7 @@
     );
 
     // Apply output level with proper curve for natural level control
-    octaveDown = octaveDown * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    octaveDown = octaveDown * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 
     // Output the signal
     Out.ar(OceanodeOutput.kr(\out), octaveDown);

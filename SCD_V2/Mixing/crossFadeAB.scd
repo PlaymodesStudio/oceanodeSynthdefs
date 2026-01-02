@@ -13,7 +13,7 @@
 	output = XFade2.ar(inA, inB, xfade.linlin(0, 1, -1, 1));
 
 	// Apply level control with proper dB scaling
-	output = output * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	output = output * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Output the signal
 	Out.ar(OceanodeOutput.kr(\out), output);

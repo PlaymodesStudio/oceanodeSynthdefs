@@ -8,7 +8,7 @@
 	// Parameters with appropriate ranges from synthdefs.json
 	freq = OceanodeParameter.ar(\frequency, 2, n, 0, 10, "vf");
 	mx = OceanodeParameter.ar(\mix, 0, n, 0, 1, "vf");
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// Input signal
 	source = In.ar(OceanodeInput.kr(\in), n);

@@ -132,5 +132,5 @@
 	Out.ar(OceanodeOutput.kr(\ticksout), tickCounter);
 	Out.ar(OceanodeOutput.kr(\beatweight), K2A.ar(beatWeight));
 
-}, description: "Global transport with audio rate timing - Outputs PPQ counter beats bars sixteenths ticks milliseconds and beat weight", category: "Modulation/Transport");
+}, description: "Global transport with audio rate timing - Outputs PPQ counter beats bars sixteenths ticks milliseconds and beat weight", category: "Modulation/Sequencer");
 )

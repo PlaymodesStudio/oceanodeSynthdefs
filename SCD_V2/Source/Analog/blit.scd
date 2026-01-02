@@ -12,11 +12,9 @@
 	vibRate = OceanodeParameterLag.ar(\vibf, 0, n, 0, 8, "vf", 1/30, true);
 	vibAmount = OceanodeParameterLag.ar(\viba, 0, n, 0, 1, "vf", 1/30, true);
 
-
 	// Apply vibrato to pitch
 	vib = SinOsc.ar(vibRate, 0, vibAmount, 0);
 	p = p + vib;
-
 
 	// Different waveforms
 	waves = [
@@ -33,10 +31,10 @@
 	trem = 1 - ((SinOsc.ar(tremRate, 0, 1, 1) / 2) * tremAmount);
 
 	// Final amplitude
-	finalSig = finalSig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).linlin(0, 1, -60, 0).dbamp * trem;
+	finalSig = finalSig * OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true) * trem;
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), finalSig);
 
-}, description: "Band limited oscillators with different wave shapes", category: "Source/Oscillator");
+}, description: "Band limited oscillators with different wave shapes", category: "Source/Analog");
 )

@@ -75,7 +75,7 @@
 	sig = Select.ar(type, chaotic_oscs);
 
 	// Apply level control with natural dB scaling
-	sig = sig * levels.lincurve(0, 1, 0, 1, 4);
+	sig = sig * levels;
 
 	// Soft limiting to prevent extreme values
 	sig = sig.tanh * 0.5;

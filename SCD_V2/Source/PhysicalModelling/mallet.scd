@@ -1,6 +1,6 @@
 (
 ~synthCreator.value("Mallet", {|n|
-	var mode, pitch, t60, amp, gate, excite, lpf, sig, exciter;
+	var mode, pitch, t60, levels, gate, excite, lpf, sig, exciter;
 	var ratios, amps, decays, input;
 
 	// Mode selector as a dropdown parameter
@@ -9,7 +9,7 @@
 	// Common parameters with lag for smooth transitions
 	pitch = OceanodeParameterLag.ar(\pitch, 60, n, 0, 130, "vf", 1/30, true).midicps;
 	t60 = OceanodeParameterLag.ar(\t60, 2.5, n, 0.1, 10, "vf", 1/30, true);
-	amp = OceanodeParameterLag.ar(\amp, 0.125, n, 0, 1, "vf", 1/30, true);
+	levels = OceanodeParameterLag.ar(\levels, 0.125, n, 0, 1, "vf", 1/30, true);
 
 	// Mode-specific parameters
 	gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
@@ -50,10 +50,11 @@
 		);
 
 		// Apply amplitude and output
-		LPF.ar(sig * amp[chan].lincurve(0, 1, 0, 1, 4), lpf[chan])
+		LPF.ar(sig * levels[chan], lpf[chan])
 	});
 
 	// Output with limiter for safety
-	Out.ar(OceanodeOutput.kr(\out), Limiter.ar(sig * 0.1));
+	Out.ar(OceanodeOutput.kr(\out), Limiter.ar(sig));
 
 }, description: "Resonant mallet percussion with trigger gate drone and input modes", category: "Source/PhysicalModelling");
+)

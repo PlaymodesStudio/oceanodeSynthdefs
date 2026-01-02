@@ -1,11 +1,11 @@
 (
 ~synthCreator.value("PV_Magabove", {|n|
-	var sig, chain, drywet;
+	var sig, chain, mix;
 	var mag;
 	
 	// Parameters with appropriate ranges from synthdefs.json
 	mag = OceanodeParameter.ar(\magabove, 1, n, 0, 500, "vi");
-	drywet = OceanodeParameter.ar(\drywet, 1, n, 0, 1, "vf");
+	mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
 	
 	// Input signal
 	sig = In.ar(OceanodeInput.kr(\in), n);
@@ -15,8 +15,8 @@
 	chain = PV_MagAbove(chain, mag);
 	chain = IFFT(chain);
 	
-	// Apply dry/wet control
-	sig = XFade2.ar(sig, chain, drywet * 2 - 1);
+	// Apply mix control
+	sig = XFade2.ar(sig, chain, mix * 2 - 1);
 	
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), sig);

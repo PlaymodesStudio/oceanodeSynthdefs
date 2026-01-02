@@ -6,7 +6,7 @@
 	// Parameters with lag for smooth transitions
 	phmod = OceanodeParameterLag.ar(\phfeed, 0.5, n, 0, 3, "vf", 1/30, true);
 	ampmod = OceanodeParameterLag.ar(\amp, 1, n, 0, 6, "vf", 1/30, true);
-	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 	pitch = OceanodeParameterLag.ar(\pitch, 36, n, 0, 130, "vf", 1/30, true).midicps;
 	pw = OceanodeParameterLag.ar(\pw, 0.5, n, 0, 1, "vf", 1/30, true);
 

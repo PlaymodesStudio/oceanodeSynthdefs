@@ -4,7 +4,7 @@
 	var early_reflections, diffuse_field, max_delay_time;
 
 	// Parameters with proper ranges from Synthdefs.json
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 	predel = OceanodeParameterLag.ar(\predelay, 0.02, n, 0, 1, "vf", 1/30, true);
 	revtime = OceanodeParameterLag.ar(\time, 4, n, 0.1, 20, "vf", 1/30, true);
 	lpf = OceanodeParameterLag.ar(\lowpass, 90, n, 10, 120, "vf", 1/30, true).midicps;

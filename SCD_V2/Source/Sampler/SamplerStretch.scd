@@ -4,8 +4,8 @@
     var windowSize, overlaps, windowRandRatio, interp;
 
     // Controls
-    gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
-    buf = OceanodeBuffer.kr(\bufnum);
+    gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
+    buf = OceanodeParameter.kr(\bufnum, 0, n, 0, 1000, "vi");
     buf2 = OceanodeBuffer.kr(\envbuf);
     spd = OceanodeParameterLag.ar(\pitch, 0, n, -24, 24, "vf", 1/30, true).midiratio;
     pos = OceanodeParameterLag.ar(\position, 0, n, 0, 1, "vf", 1/30, true);
@@ -35,5 +35,3 @@
     Out.ar(OceanodeOutput.kr(\out), signal);
 }, description: "Time-stretching sampler with granular capabilities", category: "Source/Sampler");
 )
-
-warp1

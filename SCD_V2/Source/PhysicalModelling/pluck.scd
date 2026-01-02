@@ -5,7 +5,7 @@
 
 	// Control parameters
 	freq = OceanodeParameterLag.ar(\pitch, 36, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 1, n, 0, 1, "vf", 1/30, true);
+	amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	trig = OceanodeParameter.kr(\trigg, 1, n, 0, 1, "vi");
 	pos = OceanodeParameterLag.ar(\pos, 0.1, n, 0, 1, "vf", 1/30, true);
 	invDec = OceanodeParameterLag.ar(\invdec, 1, n, 0, 10, "vf", 1/30, true);
@@ -17,7 +17,7 @@
 	rel = OceanodeParameterLag.ar(\rel, 0.0005, n, 0.0005, 10, "vf", 1/30, true);
 
 	// Output level with proper curve scaling
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels2, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Create envelope and trigger conditioning
 	env = Env.new([0, 1, 1, 0], [att, 0.006, rel], [5, -5, -8]);

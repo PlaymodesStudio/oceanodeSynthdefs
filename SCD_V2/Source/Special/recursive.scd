@@ -87,5 +87,5 @@
     // Send to output
     Out.ar(OceanodeOutput.kr(\out), limited);
 
-}, description: "Selfreferential feedback network of oscillators creating complex timbres", category: "Source/Feedback");
+}, description: "Selfreferential feedback network of oscillators creating complex timbres", category: "Source/Special");
 )

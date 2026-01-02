@@ -3,7 +3,7 @@
 	var sig, local, wet, dry;
 
 	// Input gain parameter with proper lag for smooth transitions
-	var inputGain = OceanodeParameterLag.ar(\inputgain, 1, n, 0, 1, "vf", 1/30, true);
+	var inputGain = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Feedback parameter with lag
 	var feedback = OceanodeParameterLag.ar(\feedback, 0.5, n, 0, 1, "vf", 1/30, true);

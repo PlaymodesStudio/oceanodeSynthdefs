@@ -3,8 +3,8 @@
     var t, rates, rate, ratefreq, freq, freqs, ratenorm, signal, fq, buf, bucle, start, end, gain, ph, offset, segdur, playmode, loopmodes, sampleRateCorrection;
     // Controls
     t = OceanodeParameter.ar(\trigger, 0, n, 0, 1, "vi");
-    gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
-    buf = OceanodeBuffer.kr(\bufnum);
+    gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
+    buf = OceanodeParameter.kr(\bufnum, 0, n, 0, 1000, "vi");
     fq = OceanodeParameter.kr(\freq, 1, n, 0.1, 10, "vf");
     bucle = OceanodeParameter.kr(\loop, 0, n, 0, 1, "vi");
     start = OceanodeParameter.ar(\startpos, 0, n, 0, 1, "vf") * BufFrames.kr(buf);

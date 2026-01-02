@@ -9,7 +9,7 @@
 	del = OceanodeParameter.ar(\pitch, 60, n, 0, 128, "vf").midicps.reciprocal;
 	fb = OceanodeParameter.ar(\feedback, 0.5, n, 0, 1, "vf");
 	mx = OceanodeParameter.ar(\mix, 0, n, 0, 1, "vf");
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// Input signal
 	source = In.ar(OceanodeInput.kr(\in), n);

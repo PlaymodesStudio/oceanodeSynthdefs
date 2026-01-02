@@ -9,7 +9,7 @@
 
 	// Parameters
 	freq = OceanodeParameterLag.ar(\pitch, 60, n, 24, 96, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
+	amp = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 	gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
 
 	// Additional parameters for drone and input modes
@@ -72,7 +72,7 @@
 		]);
 
 		// Low-pass filter and apply amplitude
-		LPF.ar(modes * amp[chan].lincurve(0, 1, 0, 1, 4), lpf[chan])
+		LPF.ar(modes * amp[chan], lpf[chan])
 	});
 
 	// Output with limiter for safety

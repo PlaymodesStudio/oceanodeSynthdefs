@@ -18,7 +18,7 @@
 	modRate = OceanodeParameterLag.ar(\modrate, 0.3, n, 0.01, 5, "vf", 1/30, true);
 	ratio = OceanodeParameterLag.kr(\ratio, 2, n, 0, 4, "vf", 1/30, true);
 	mix = OceanodeParameterLag.ar(\mix, 0.5, n, 0, 1, "vf", 1/30, true);
-	level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Input audio - properly handle n channels
 	input = In.ar(OceanodeInput.kr(\in), n);

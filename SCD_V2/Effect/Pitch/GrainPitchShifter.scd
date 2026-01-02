@@ -8,7 +8,7 @@
 	grainPeriods = OceanodeParameter.ar(\grainperiods, 4, n, 1, 10, "vf");
 	timeDispersion = OceanodeParameter.ar(\timedisp, 6, n, 0, 20, "vf");
 	mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
-	amp = OceanodeParameter.ar(\amp, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameter.ar(\amp, 1, n, 0, 1, "vf");
 
 	// Input signal
 	input = In.ar(OceanodeInput.kr(\in), n);

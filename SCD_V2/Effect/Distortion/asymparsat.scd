@@ -2,10 +2,10 @@
 ~synthCreator.value("AsymParSat", {|n|
 	var sym, softhard, satpos, satneg, hipos, hineg, sympos, symneg, inputsig,
 		eventclippos, eventclipneg, clippedsigpos, clippedsigneg, finalsig,
-		satarray, dry, wet, inputGain, mix;
+		satarray, dry, wet, inputGain, mix, send;
 
 	// Parameters
-	inputGain = OceanodeParameter.ar(\inputgain, 1, n, 0, 4, "vf");
+	send = OceanodeParameter.ar(\send, 1, n, 0, 4, "vf");
 	softhard = OceanodeParameter.ar(\softhard, 0.5, n, 0, 1, "vf");
 	sym = OceanodeParameter.ar(\sym, 0.5, n, 0, 1, "vf");
 	mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
@@ -13,7 +13,7 @@
 	// Input stage
 	inputsig = In.ar(OceanodeInput.kr(\in), n);
 	dry = inputsig;
-	inputsig = inputsig * inputGain;
+	inputsig = inputsig * send;
 
 	// Saturation calculations
 	hipos = softhard;

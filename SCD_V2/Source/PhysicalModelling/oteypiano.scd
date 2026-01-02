@@ -81,7 +81,7 @@
 		);
 
 		// Apply envelope and amplitude curve
-		 finalSig = pianoSig * env * amp[chan].lincurve(0, 1, 0, 1, 4);
+		 finalSig = pianoSig * env * amp[chan];
 
 		// Safety processing - DC filtering and limiting
 		finalSig = LeakDC.ar(finalSig);

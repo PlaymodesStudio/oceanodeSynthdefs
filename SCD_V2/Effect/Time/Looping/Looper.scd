@@ -9,7 +9,7 @@
 	// Parameters
 	var rec = OceanodeParameter.ar(\rec, 0, n, 0, 1, "vi");
 	var rate = OceanodeParameter.ar(\rate, 1, n, 0.01, 8, "vf");
-	var amp = OceanodeParameterLag.ar(\amp, 1, n, 0, 1, "vf", 1/50, true).lincurve(0, 1, 0, 1, 4);
+	var amp = OceanodeParameterLag.ar(\amp, 1, n, 0, 1, "vf", 1/50, true);
 	var mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
 	var start = OceanodeParameter.ar(\start, 0, n, 0, 1, "vf");
 	var end = OceanodeParameter.ar(\end, 1, n, 0, 1, "vf");
@@ -18,7 +18,7 @@
 	var fixedtime = OceanodeParameter.ar(\fixedtime, 0, n, 0, 1, "vi");
 	var recms = OceanodeParameter.ar(\recms, 1000, n, 0, 10000, "vf");
 	var declick = OceanodeParameter.ar(\declick, 0.1, n, 0, 1, "vf");
-	var drywet = OceanodeParameter.ar(\drywet, 1, n, 0, 1, "vf");
+	var drywet = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
 	
 	// Setup
 	bufferSize = 16;

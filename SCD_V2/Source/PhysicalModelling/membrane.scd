@@ -13,7 +13,7 @@
 
 	// Amplitude parameters
 	exciterLevel = OceanodeParameterLag.ar(\exciterlevel, 0.15, n, 0, 1, "vf", 1/30, true);
-	masterLevel = OceanodeParameterLag.ar(\masterlevel, 0, n, 0, 1, "vf", 1/30, true);
+	masterLevel = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Map loss parameter to exponential scaling
 	lossexp = LinLin.ar(loss, 0.9, 4.0, 0.9, 1.0);
@@ -39,7 +39,7 @@
 		);
 
 		// Apply master level with curve
-		signal * masterLevel[chan].lincurve(0, 1, 0, 1, 4)
+		signal * masterLevel[chan]
 	});
 
 	// Output the signal

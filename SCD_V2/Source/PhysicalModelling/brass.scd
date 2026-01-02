@@ -11,7 +11,7 @@
 	brightness = OceanodeParameterLag.ar(\brightness, 0.95, n, 0, 1, "vf", 1/30, true);
 
 	// Output level with proper curve scaling
-	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 
 	// Lip model - self-oscillating system using feedback
 	lipOsc = SinOscFB.ar(

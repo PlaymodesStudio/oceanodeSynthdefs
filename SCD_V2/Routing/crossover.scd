@@ -13,9 +13,9 @@
 	// Filter slope selection
 	slope = OceanodeParameterDropdown.kr(\slope, 1, n, "6dB:12dB:18dB:24dB");
 
-	// Individual band gains with natural curve
-	lowGain = OceanodeParameterLag.ar(\lowgain, 1, n, 0, 2, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
-	highGain = OceanodeParameterLag.ar(\highgain, 1, n, 0, 2, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	// Individual band gains
+	lowGain = OceanodeParameterLag.ar(\lowgain, 1, n, 0, 2, "vf", 1/30, true);
+	highGain = OceanodeParameterLag.ar(\highgain, 1, n, 0, 2, "vf", 1/30, true);
 
 	// Polarity inversion (0 = normal, 1 = inverted)
 	lowPolarity = OceanodeParameter.kr(\polarity, 0, n, 0, 1, "vi");
@@ -57,5 +57,5 @@
 	Out.ar(OceanodeOutput.kr(\highout), highOut);
 	Out.ar(OceanodeOutput.kr(\mixhout), highOut+lowOut);
 
-}, description: "Frequency crossover with polarity phase alignment and gain per band", category: "Effect/Filter");
+}, description: "Frequency crossover with polarity phase alignment and gain per band", category: "Routing");
 )

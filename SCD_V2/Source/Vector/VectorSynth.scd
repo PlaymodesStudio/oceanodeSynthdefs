@@ -7,7 +7,7 @@
     freq = OceanodeParameterLag.ar(\pitch, 36, n, 0, 127, "vf", 1/30, true).midicps;
     horizontal = OceanodeParameterLag.ar(\horizontal, 0.3, n, 0.001, 0.999, "vf", 1/30, true);
     vertical = OceanodeParameterLag.ar(\vertical, 5.5, n, 1, 10, "vf", 1/30, true);
-    amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
     pmIndex = OceanodeParameterLag.ar(\pmindex, 4, n, 0, 16, "vf", 1/30, true);
     pmFreq = OceanodeParameterLag.ar(\pmpitch, 48, n, 12, 130, "vf", 1/30, true).midicps;
     

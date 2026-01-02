@@ -6,7 +6,7 @@
 	// Parameters
 	t_gate = OceanodeParameter.ar(\gate, 0, n, 0, 1, "vi");
 	freq = OceanodeParameter.ar(\pitch, 60, n, 24, 96, "vf").midicps;
-	amp = OceanodeParameter.ar(\amp, 0.1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameter.ar(\levels, 0.1, n, 0, 1, "vf");
 	pan = OceanodeParameter.ar(\pan, 0, n, -1, 1, "vf");
 	att = OceanodeParameter.ar(\att, 0.01, n, 0.001, 0.5, "vf");
 	dec = OceanodeParameter.ar(\dec, 1.5, n, 0.1, 5, "vf");

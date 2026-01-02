@@ -13,11 +13,11 @@
 	amps = OceanodeParameterLag.ar(\amparray, 0.0, partials, 0, 1, "vf", 1/30, true);
 
 	// Levels for each output channel
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Mix and send parameters
 	mix = OceanodeParameter.ar(\mix, 0.5, n, 0, 1, "vf");
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Input signal
 	input = In.ar(OceanodeInput.kr(\in), n);

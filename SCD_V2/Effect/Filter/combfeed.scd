@@ -1,11 +1,12 @@
+(
 ~synthCreator.value("CombFeed", {|n|
-	var input, output, feedbackSig, delayedSig, p, finalP, fb, drywet, vib, ing, vibf, viba, prelpf, postlpf, delayTime, maxDelayTime, fmin;
+	var input, output, feedbackSig, delayedSig, p, finalP, fb, drywet, vib, ing, vibf, viba, prelpf, postlpf, delayTime, maxDelayTime, fmin, send, mix;
 
 	// Parameters
-	ing = OceanodeParameterLag.ar(\inputgain, 1, n, 0, 2, "vf", 1/30, true);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 2, "vf", 1/30, true);
 	p = OceanodeParameterLag.ar(\pitch, 48, n, 0, 128, "vf", 1/30, true);
 	fb = OceanodeParameterLag.ar(\feedback, 0.5, n, -0.9999, 0.9999, "vf", 1/30, true);
-	drywet = OceanodeParameterLag.ar(\mix, 0, n, 0, 1, "vf", 1/30, true);
+	mix = OceanodeParameterLag.ar(\mix, 0, n, 0, 1, "vf", 1/30, true);
 
 	// FM input parameter - same as SinOs
 	fmin = OceanodeParameterLag.ar(\fm_in, 0, n, -1, 1, "vf", 1/30, true);
@@ -20,10 +21,10 @@
 
 
 	// Input processing
-	input = In.ar(OceanodeInput.kr(\in), n);
+	input = In.ar(OceanodeInput.kr(\in), n) * send;
 
 	// Apply input gain and pre-filtering
-	input = input * ing;
+	input = input;
 	input = LPF.ar(input, prelpf.midicps);
 
 	// Apply vibrato to pitch AND add FM input
@@ -72,8 +73,9 @@
 	output = output.tanh;
 
 	// Mix dry/wet using crossfade for smooth transitions
-	output = XFade2.ar(input, output, drywet * 2 - 1);
+	output = XFade2.ar(input, output, mix * 2 - 1);
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), output);
 }, description: "High quality feedforward and feedback comb filter with interpolation and FM input", category: "Effect/Filter");
+)

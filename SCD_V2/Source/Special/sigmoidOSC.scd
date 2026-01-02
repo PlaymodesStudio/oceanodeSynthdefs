@@ -53,7 +53,7 @@
 	oscOut = sigmoidEnv.(phase, peakX, inflection1, shape1, inflection2, shape2, 0.0, 1.0, 0.0);
 
 	// Apply level control with proper curve
-	finalSig = oscOut * levels.lincurve(0, 1, 0, 1, 4);
+	finalSig = oscOut * levels;
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), finalSig);

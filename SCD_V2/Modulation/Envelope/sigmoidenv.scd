@@ -117,8 +117,8 @@
 	// Select between the two envelope types
 	envOut = Select.ar(useSustain, [oneShotEnv, sustainEnv]);
 
-	// Apply level control with proper curve
-	finalSig = envOut * levels.lincurve(0, 1, 0, 1, 4);
+	// Apply level control
+	finalSig = envOut * levels;
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), finalSig);

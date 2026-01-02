@@ -27,8 +27,8 @@
 	var numsteps = OceanodeParameter.ar(\numpitchsteps, 12, n, 0, 24, "vi");
 	var grainamp = OceanodeParameter.ar(\grainamp, 1, n, 0, 1, "vf");
 	var reset = OceanodeParameter.ar(\reset, 0, n, 0, 1, "vi");
-	var drywet = OceanodeParameter.ar(\drywet, 1, n, 0, 1, "vf");
-	var levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/50, true).lincurve(0, 1, 0, 1, 4);
+	var drywet = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
+	var levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/50, true);
 
 	// Setup
 	bufferSize = 8;

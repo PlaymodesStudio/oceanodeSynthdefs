@@ -33,5 +33,5 @@
 	
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), Pan2.ar(sig, pan));
-}, description: "Complex bubble sound using TwoTube physical model", category: "Sources/Special");
+}, description: "Complex bubble sound using TwoTube physical model", category: "Source/Special");
 )

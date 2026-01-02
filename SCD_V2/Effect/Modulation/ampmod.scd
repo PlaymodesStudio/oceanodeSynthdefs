@@ -31,8 +31,8 @@
 	// Mix using XFade2 for constant power crossfade
 	sig = XFade2.ar(input, modulated, mix * 2 - 1);
 
-	// Apply level scaling with proper curve for natural control
-	sig = sig * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	// Apply level scaling
+	sig = sig * OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Output the processed signal
 	Out.ar(OceanodeOutput.kr(\out), sig);

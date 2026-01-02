@@ -44,5 +44,5 @@
 	
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), snd);
-}, description: "Feedback drone with pitch shifting and filtering", category: "feedback");
+}, description: "Feedback drone with pitch shifting and filtering", category: "Source/Feedback");
 )

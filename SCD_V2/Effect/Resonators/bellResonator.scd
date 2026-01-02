@@ -9,7 +9,7 @@
 	levelsArray = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	freqArray = OceanodeParameterLag.ar(\pitch, 24, n, 0, 130, "vf", 1/30, true).midicps;
 	mix = OceanodeParameter.ar(\mix, 0.5, n, 0, 1, "vf");
-	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Input signal
 	input = In.ar(OceanodeInput.kr(\in), n);
@@ -20,7 +20,7 @@
 		freq = freqArray[chan];
 		decayscale = decayscaleArray[chan];
 		levels = levelsArray[chan];
-		chanInput = input[chan] * send[chan] * levels.lincurve(0, 1, 0, 1, 4);
+		chanInput = input[chan] * send[chan] * levels;
 
 		// Calculate frequency scaling
 		freqscale = freq / 2434;

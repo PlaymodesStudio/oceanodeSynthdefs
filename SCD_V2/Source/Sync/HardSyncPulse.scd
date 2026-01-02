@@ -6,7 +6,7 @@
     // Parameters
     freq = OceanodeParameterLag.ar(\pitch, 26, n, 0, 127, "vf", 1/30, true).midicps;
     syncFreqRatio = OceanodeParameterLag.ar(\ratio, 4, n, 0.1, 10, "vf", 1/30, true);
-    amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    amp = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
     
     // Pulse width parameters
     pwMaster = OceanodeParameterLag.ar(\pwmaster, 0.5, n, 0.01, 0.99, "vf", 1/30, true);

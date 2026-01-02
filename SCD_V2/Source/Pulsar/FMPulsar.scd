@@ -8,7 +8,7 @@
     
     // Amplitude and levels
     amp = OceanodeParameterLag.ar(\preamp, 0.6, n, 0, 1, "vf", 1/30, true).clip(0, 1.0);  // Clip amp to prevent overload
-    levels = OceanodeParameterLag.ar(\levels, 0.15, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    levels = OceanodeParameterLag.ar(\levels, 0.15, n, 0, 1, "vf", 1/30, true);
     
     // FM parameters
     carfreq = f * OceanodeParameterLag.ar(\carrier, 1.142857, n, 0, 32, "vf", 1/30, true);

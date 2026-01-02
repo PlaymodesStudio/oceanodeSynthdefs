@@ -51,5 +51,5 @@
 	
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), snd);
-}, description: "Feedback drone with modulated parameters", category: "feedback");
+}, description: "Feedback drone with modulated parameters", category: "Source/Feedback");
 )

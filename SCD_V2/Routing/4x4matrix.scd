@@ -18,7 +18,7 @@
 	route4 = OceanodeParameterLag.kr(\route4, 3, n, 0, 4, "vf", 1/30, true);
 
 	// Master level
-	level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	level = OceanodeParameterLag.ar(\level, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Calculate outputs with crossfading between adjacent channels
 	output1 =

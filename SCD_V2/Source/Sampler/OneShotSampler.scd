@@ -8,8 +8,8 @@
     t = OceanodeParameter.ar(\trigger, 0, n, 0, 1, "vi");
     trigEdge = Trig.kr(A2K.kr(t), 0.001);  // Edge detector for latching
 
-    gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
-    buf = OceanodeBuffer.kr(\bufnum);
+    gain = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
+    buf = OceanodeParameter.kr(\bufnum, 0, n, 0, 1000, "vi");
     spd = OceanodeParameterLag.ar(\pitch, 0, n, -24, 24, "vf", 1/30, true).midiratio;
     latchSpd = OceanodeParameter.kr(\latchspeed, 1, n, 0, 1, "vi"); // 0=false, 1=true
     start = OceanodeParameter.ar(\startpos, 0, n, 0, 1, "vf") * BufFrames.kr(buf);

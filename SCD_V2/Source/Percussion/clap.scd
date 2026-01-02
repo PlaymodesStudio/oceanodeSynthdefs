@@ -13,7 +13,7 @@
 	tailamp = OceanodeParameter.ar(\tailamp, 1, n, 0, 2, "vf");
 	pophi = OceanodeParameter.kr(\pophi, 600, n, 100, 2000, "vf");
 	popmid = OceanodeParameter.kr(\popmid, 1620, n, 500, 3000, "vf");
-	amp = OceanodeParameter.ar(\amp, 1, n, 0, 1, "vf").lincurve(0, 1, 0, 1, 4);
+	amp = OceanodeParameter.ar(\amp, 1, n, 0, 1, "vf");
 
 	// Create trigger signals from gate - element-wise
 	 trig = Trig.ar(gate);

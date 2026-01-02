@@ -1,6 +1,6 @@
 (
 ~synthCreator.value("Marimba", {|n|
-	var mode, freq, amp, att, dec, rel, decCoef, position, ampSlope;
+	var mode, freq, levels, att, dec, rel, decCoef, position, ampSlope;
 	var trig, excite, snd, input, mallet, trigSignal;
 
 	// Mode selector as a dropdown parameter
@@ -8,7 +8,7 @@
 
 	// Common parameters with lag for smooth transitions
 	freq = OceanodeParameterLag.ar(\pitch, 78, n, 0, 130, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 1, n, 0, 1, "vf", 1/30, true);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 
 	// Material and excitation parameters
 	att = OceanodeParameter.ar(\att, 0.001, n, 0.001, 1, "vf");
@@ -84,7 +84,7 @@
 				decs      // decay times
 			]),
 			input: mallet
-		) * amp[chan].lincurve(0, 1, 0, 1, 4)
+		) * levels[chan]
 	});
 
 	// Output with limiter for safety

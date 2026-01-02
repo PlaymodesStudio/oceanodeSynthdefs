@@ -8,7 +8,7 @@
 	bandwidth = OceanodeParameter.ar(\bandwidth, 0.1, n, 0.01, 1, "vf");
 	resonance = OceanodeParameter.ar(\resonance, 30, n, 1, 100, "vf");
 	mix = OceanodeParameter.ar(\mix, 1, n, 0, 1, "vf");
-	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Input signal
 	input = In.ar(OceanodeInput.kr(\in), n);
@@ -42,5 +42,5 @@
 
 	// Output
 	Out.ar(OceanodeOutput.kr(\out), outputSignal);
-}, description: "Filter that passes frequencies at specified pitches array", category: "Effects/Filter", variables: [], variableDimensions: []);
+}, description: "Filter that passes frequencies at specified pitches array", category: "Effect/Spectral", variables: [], variableDimensions: []);
 )

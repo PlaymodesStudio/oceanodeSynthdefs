@@ -2,6 +2,7 @@
 ~synthCreator.value("MorphLFO", {|n|
     var signals, hz, pow, amp, phaseoffset, phasereset, phase;
     var skew, pw, shape, lfo, min, max, invert, quant;
+    var externalph, extphinput;
     var getTriangle, getSine, getTrapezoid, getMultiLFO;
 
     // Define LFO functions (improved version from Tremolo)
@@ -55,9 +56,18 @@
     max = OceanodeParameterLag.ar(\max, 1, n, -128, 128, "vf", 1/30, true);
     invert = OceanodeParameterLag.ar(\invert, 0, n, 0, 1, "vf", 1/30, true);
 
-    // Phase calculation with reset capability
-    phase = Phasor.ar(phasereset > 0.5, hz * SampleDur.ir, 0, 1) + phaseoffset;
-    phase = phase.wrap(0, 1);
+    // New External Phase Parameters
+    externalph = OceanodeParameter.ar(\externalph, 0, n, 0, 1, "vi");
+    extphinput = OceanodeParameterLag.ar(\extphinput, 0, n, 0, 1, "vf", 1/30, true);
+
+    // Phase calculation: Select between Internal Phasor and External Input
+    phase = Select.ar(externalph, [
+        Phasor.ar(phasereset > 0.5, hz * SampleDur.ir, 0, 1), // Internal
+        extphinput // External
+    ]);
+
+    // Apply offset and wrap (applied to both internal and external sources)
+    phase = (phase + phaseoffset).wrap(0, 1);
 
     // Generate morphable LFO
     lfo = getMultiLFO.(phase, skew, shape, pw);
@@ -75,7 +85,7 @@
     lfo = lfo * (1 - invert) + ((1 - lfo) * invert);
 
     // Scale LFO output to min/max range
-    lfo = lfo.linlin(0, 1, min, max);
+    lfo = lfo * (max - min) + min;
 
     // Output
     Out.ar(OceanodeOutput.kr(\out), lfo);

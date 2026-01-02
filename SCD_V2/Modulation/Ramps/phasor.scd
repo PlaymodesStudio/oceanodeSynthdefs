@@ -4,7 +4,7 @@
 	var cycleCounter, shouldRun, combinedReset;
 
 	// Basic LFO controls
-	beats = OceanodeParameterLag.ar(\beats, 1, n, 0, 128, "vf", 1/30, true);
+	beats = OceanodeParameterLag.ar(\beats, 1, n, 0.001, 128, "vf", 1/30, true);
 	bpm = OceanodeParameterLag.ar(\bpm, 120, n, 0, 120, "vf", 1/30, true);
 	initPh = OceanodeParameterLag.ar(\phoff, 0, n, -1, 1, "vf", 1/30, true);
 	min = OceanodeParameterLag.ar(\min, 0, n, -1, 1, "vf", 1/30, true);

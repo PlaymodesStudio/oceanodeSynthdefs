@@ -70,5 +70,5 @@
 	signal = LeakDC.ar(signal);
 
 	Out.ar(OceanodeOutput.kr(\out), signal);
-}, description: "Adds warmth, distortion and fatness to audio signals", category: "Effects/Distortion");
+}, description: "Adds warmth, distortion and fatness to audio signals", category: "Effect/Distortion");
 )

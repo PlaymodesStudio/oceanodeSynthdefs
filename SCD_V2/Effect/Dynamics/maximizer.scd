@@ -65,5 +65,5 @@
 	signal = LeakDC.ar(signal.clip(-0.99, 0.99));
 
 	Out.ar(OceanodeOutput.kr(\out), signal);
-}, description: "Dynamic processor inspired by the Ozone 3 Maximizer", category: "Effects/Dynamics");
+}, description: "Dynamic processor inspired by the Ozone 3 Maximizer", category: "Effect/Dynamics");
 )

@@ -10,7 +10,7 @@
     var tank0, tank1, tank2, tank3, tail, mix, send;
 
     // Parameters
-    send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    send = OceanodeParameterLag.ar(\send, 1, n, 0, 1, "vf", 1/30, true);
     inputhpf = OceanodeParameter.ar(\inputhpf, 150, n, 20, 20000, "vf");
     inputlpf = OceanodeParameter.ar(\inputlpf, 0.5, n, 0, 1, "vf");
     predelay = OceanodeParameter.ar(\predelay, 0, n, 0, 0.1, "vf");

@@ -1,6 +1,6 @@
 (
 ~synthCreator.value("JunkPerc", {|n|
-	var curv, dev, rndms, attack, decay, snd, freqs, ratio, velocity, trigger;
+	var curv, dev, rndms, attack, decay, snd, freqs, ratio, velocity, trigger, levels;
 	var ratioHash1, ratioHash2, curveEnv;
 
 	// Main parameters - same as before
@@ -8,6 +8,7 @@
 	velocity = OceanodeParameter.ar(\velocity, 1, n, 0, 10, "vf");
 	ratio = OceanodeParameter.ar(\ratio, 1, n, 0, 10, "vf");
 	freqs = OceanodeParameterLag.ar(\pitch, 60, n, 0, 130, "vf", 1/30, true).midicps;
+	levels = OceanodeParameterLag.ar(\levels, 0.5, n, 0, 1, "vf", 1/30, true);
 
 	// Sound shaping parameters - same as before
 	dev = OceanodeParameter.ar(\pdevratio, 1, n, 0, 4, "vf");
@@ -98,10 +99,10 @@
 
 		// Final level adjustment and limiting - same as before
 		snd = snd * -8.dbamp;
-		Limiter.ar(snd * velocity[chan].lincurve(0, 1, 0, 1, 4));
+		Limiter.ar(snd * levels[chan]);
 	});
 
 	// Output the signal - same as before
 	Out.ar(OceanodeOutput.kr(\out), snd);
-}, description: "Complex percussive sounds with tunable randomness and transient behavior", category: "Source/Percussion");
+}, description: "Complex percussive sounds with tunable randomness and transient behavior", category: "Source/PhysicalModelling");
 )

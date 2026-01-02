@@ -11,7 +11,7 @@
 	pow = OceanodeParameter.ar(\pow, 0, n, -1, 1, "vf");
 	bipow = OceanodeParameter.ar(\bipow, 0, n, -1, 1, "vf");
 	type = OceanodeParameter.ar(\type, 1, n, 0, 3, "vf");
-	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
 	
 	// FM parameters
 	fmp = OceanodeParameter.ar(\fmpitch, 48, n, 24, 96, "vf");

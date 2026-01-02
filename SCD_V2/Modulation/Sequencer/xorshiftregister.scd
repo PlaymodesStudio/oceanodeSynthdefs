@@ -68,7 +68,7 @@
 	]);
 
 	// Apply level scaling (convert to audio rate)
-	finalSig = output * K2A.ar(levels).lincurve(0, 1, 0, 1, 4);
+	finalSig = output * K2A.ar(levels);
 
 	// Output the values as audio rate signals
 	Out.ar(OceanodeOutput.kr(\out), finalSig);

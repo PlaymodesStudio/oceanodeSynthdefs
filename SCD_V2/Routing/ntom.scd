@@ -42,5 +42,5 @@
 
 	// Output the result
 	Out.ar(OceanodeOutput.kr(\out), signal);
-}, description: "Channel count converter with interpolation", category: "Utilities/Routing", variables: ["NumOut"], variableDimensions: [32]);
+}, description: "Channel count converter with interpolation", category: "Routing", variables: ["NumOut"], variableDimensions: [32]);
 )

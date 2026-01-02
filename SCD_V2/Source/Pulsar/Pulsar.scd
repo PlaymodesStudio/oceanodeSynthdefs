@@ -7,7 +7,7 @@
     freq = OceanodeParameterLag.ar(\freq, 10, n, 0, 1000, "vf", 1/30, true);
     formantFreq = OceanodeParameterLag.ar(\formantfreq, 1000, n, 0, 10000, "vf", 1/30, true);
     sineCycles = OceanodeParameter.ar(\cycles, 4, n, 1, 800, "vi");
-    levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
     
     // Force scalar operation for consistent behavior across all channel counts
     // This is a more direct approach that ensures the same behavior regardless of channel count

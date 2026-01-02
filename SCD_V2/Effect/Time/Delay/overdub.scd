@@ -5,7 +5,7 @@
     // Parameters
     del = OceanodeParameterLag.ar(\delay, 0.5, n, 0, 4, "vf", 0.4, true);
     mx = OceanodeParameterLag.ar(\mix, 0.5, n, 0, 1, "vf", 1/30, true);
-    send = OceanodeParameterLag.ar(\send, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    send = OceanodeParameterLag.ar(\send, 0, n, 0, 1, "vf", 1/30, true);
 	dec=OceanodeParameterLag.ar(\decay, 100, n, 0, 100, "vf", 1/30, true);
     // Input processing
     dry = In.ar(OceanodeInput.kr(\in), n);

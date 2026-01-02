@@ -1,28 +1,24 @@
-(
 ~synthCreator.value("SuperPulse", {|n|
-
-	var pitch = OceanodeParameterLag.ar(\pitch, 36, n, 0, 127, "vf", 1/30, true),
+    var pitch = OceanodeParameterLag.ar(\pitch, 36, n, 0, 127, "vf", 1/30, true),
         mix = OceanodeParameterLag.kr(\mix, 0.75, n, 0, 1, "vf", 1/30, true),
         detune = OceanodeParameterLag.kr(\detune, 0.75, n, 0, 1, "vf", 1/30, true),
         pw = OceanodeParameterLag.ar(\pw, 0.5, n, 0, 1, "vf", 1/30, true),
-        levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4),
-
+        levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true),
+        fmin = OceanodeParameterLag.ar(\fm_in, 0, n, -1, 1, "vf", 1/30, true),
         // Additional modulation parameters
         tremRate = OceanodeParameterLag.kr(\tremf, 0, n, 0, 8, "vf", 1/30, true),
         tremAmount = OceanodeParameterLag.kr(\trema, 0, n, 0, 1, "vf", 1/30, true),
         vibRate = OceanodeParameterLag.kr(\vibf, 0, n, 0, 8, "vf", 1/30, true),
         vibAmount = OceanodeParameterLag.kr(\viba, 0, n, 0, 1, "vf", 1/30, true),
-
         // Processing variables
         trem, vib, freq, signals, detuneFactor, center,
         freqs1, freqs2, freqs3, freqs4, freqs5, freqs6, side, sig;
-
     var detuneCurve, centerGain, sideGain;
 
     // Apply vibrato and tremolo
     trem = 1 - ((SinOsc.ar(tremRate, 0, 1, 1) / 2) * tremAmount);
     vib = SinOsc.ar(vibRate, 0, vibAmount, 0);
-    freq = (pitch + vib).midicps;
+    freq = (pitch + vib).midicps + fmin;
 
     // Detune curve function
     detuneCurve = { |x|
@@ -44,10 +40,13 @@
     centerGain = { |x| (-0.55366 * x) + 0.99785 };
     sideGain = { |x| (-0.73764 * x.pow(2)) + (1.2841 * x) + 0.044372 };
 
-    // Let SuperCollider handle the multichannel expansion automatically
+    // Calculate detuning
     detuneFactor = freq * detuneCurve.(detune);
-    center = LFPulse.ar(freq, 0, pw); // Central oscillator - PULSE wave
 
+    // Central oscillator with random phase per channel
+    center = LFPulse.ar(freq, {Rand(0,2)}.dup(n), pw);
+
+    // Calculate detuned frequencies
     freqs1 = freq - (detuneFactor * 0.11002313);
     freqs2 = freq - (detuneFactor * 0.06288439);
     freqs3 = freq - (detuneFactor * 0.01952356);
@@ -55,23 +54,22 @@
     freqs5 = freq + (detuneFactor * 0.06216538);
     freqs6 = freq + (detuneFactor * 0.10745242);
 
-    // Using PULSE oscillators with pulse width
+    // Using PULSE oscillators with pulse width and unique random phases per channel
     side =
-        LFPulse.ar(freqs1, Rand(0,2), pw) +
-        LFPulse.ar(freqs2, Rand(0,2), pw) +
-        LFPulse.ar(freqs3, Rand(0,2), pw) +
-        LFPulse.ar(freqs4, Rand(0,2), pw) +
-        LFPulse.ar(freqs5, Rand(0,2), pw) +
-        LFPulse.ar(freqs6, Rand(0,2), pw);
+        LFPulse.ar(freqs1, {Rand(0,2)}.dup(n), pw) +
+        LFPulse.ar(freqs2, {Rand(0,2)}.dup(n), pw) +
+        LFPulse.ar(freqs3, {Rand(0,2)}.dup(n), pw) +
+        LFPulse.ar(freqs4, {Rand(0,2)}.dup(n), pw) +
+        LFPulse.ar(freqs5, {Rand(0,2)}.dup(n), pw) +
+        LFPulse.ar(freqs6, {Rand(0,2)}.dup(n), pw);
 
     sig = (center * centerGain.(mix)) + (side * sideGain.(mix));
-    signals = HPF.ar(sig, freq); // Apply high-pass filter
-
+    signals = HPF.ar(sig, freq);
     signals = signals * levels * trem;
 
     // Output the signals
     Out.ar(OceanodeOutput.kr(\out), signals);
 },
-description: "Rich detuned superpulse with pulse width vibrato and tremolo modulation", category: "Source/Analog"
+description: "Rich detuned superpulse with pulse width vibrato and tremolo modulation",
+category: "Source/Analog"
 );
-)

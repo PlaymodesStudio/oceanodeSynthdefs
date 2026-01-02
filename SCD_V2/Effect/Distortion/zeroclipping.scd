@@ -40,5 +40,5 @@
 	// Output the processed signal
 	Out.ar(OceanodeOutput.kr(\out), finalSig);
 
-}, description: "Distortion with threshold clipping", category: "Effects/Distortion");
+}, description: "Distortion with threshold clipping", category: "Effect/Distortion");
 )

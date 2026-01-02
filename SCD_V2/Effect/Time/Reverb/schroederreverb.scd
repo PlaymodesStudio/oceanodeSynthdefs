@@ -71,5 +71,5 @@
 	// Output to specified bus
 	Out.ar(OceanodeOutput.kr(\out), signal);
 
-}, description: "Schroeder feedback network reverb algorithm with diffusion control", category: "Effect/Reverb");
+}, description: "Schroeder feedback network reverb algorithm with diffusion control", category: "Effect/Time/Reverb");
 )

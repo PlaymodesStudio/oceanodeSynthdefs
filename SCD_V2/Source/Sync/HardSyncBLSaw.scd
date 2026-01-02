@@ -6,7 +6,7 @@
     // Parameters
     syncFreq = OceanodeParameterLag.ar(\syncpitch, 36, n, 0, 127, "vf", 1/30, true).midicps;
     sawFreq = OceanodeParameterLag.ar(\sawpitch, 60, n, 0, 127, "vf", 1/30, true).midicps;
-    levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+    levels = OceanodeParameterLag.ar(\levels, 1, n, 0, 1, "vf", 1/30, true);
     
     // Constants
     maxRatio = 20;

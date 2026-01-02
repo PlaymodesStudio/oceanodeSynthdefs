@@ -5,7 +5,7 @@
 
 	// Control parameters
 	freq = OceanodeParameterLag.ar(\pitch, 64, n, 0, 128, "vf", 1/30, true).midicps;
-	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true);
+	amp = OceanodeParameterLag.ar(\amp, 0.5, n, 0, 1, "vf", 1/30, true); // Keep as \amp since it's used for the instrument model
 	endReflection = OceanodeParameterLag.ar(\endreflection, 0.45, n, 0, 1, "vf", 1/30, true);
 	jetReflection = OceanodeParameterLag.ar(\jetreflection, 0.24, n, 0, 1, "vf", 1/30, true);
 	jetDelayRatio = OceanodeParameterLag.ar(\jetdelayratio, 0.33, n, 0, 1, "vf", 1/30, true);
@@ -17,7 +17,7 @@
 	contour = OceanodeParameterLag.ar(\contour, 1, n, 0, 2, "vf", 1/30, true);
 
 	// Output level with proper curve scaling
-	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	levels = OceanodeParameterLag.ar(\levels, 0, n, 0, 1, "vf", 1/30, true);
 
 	// Create vibrato and noise components
 	vib = SinOsc.kr(vibF, 0, vibA, 1);
@@ -30,6 +30,6 @@
 	signal = HPF.ar(LPF.ar(signal, lpf), hpf);
 
 	// Output
-	Out.ar(OceanodeOutput.kr(\out), signal * levels * amp);
+	Out.ar(OceanodeOutput.kr(\out), signal * levels);
 }, description: "Physical model of a flute instrument", category: "Source/PhysicalModelling");
 )

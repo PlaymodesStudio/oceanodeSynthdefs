@@ -21,5 +21,5 @@
 
 	// Output the processed signal
 	Out.ar(OceanodeOutput.kr(\out), output);
-}, description: "Asymmetric waveshaping distortion using rational function processing", category: "Effects/Distortion");
+}, description: "Asymmetric waveshaping distortion using rational function processing", category: "Effect/Distortion");
 )

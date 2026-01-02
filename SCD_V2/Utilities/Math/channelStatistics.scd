@@ -54,7 +54,7 @@
 	]));
 
 	// Apply level control with proper dB scaling
-	signal = signal * OceanodeParameterLag.ar(\levels, 1, 1, 0, 1, "vf", 1/30, true).lincurve(0, 1, 0, 1, 4);
+	signal = signal * OceanodeParameterLag.ar(\levels, 1, 1, 0, 1, "vf", 1/30, true);
 
 	// Output the signal - single channel replicated to all outputs
 	Out.ar(OceanodeOutput.kr(\out), Array.fill(n, { signal }));

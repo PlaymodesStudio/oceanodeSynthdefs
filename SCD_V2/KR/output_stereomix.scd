@@ -18,7 +18,7 @@ SynthDef.new(\output, {
 	var size = max(2, \stereomixsize.kr(2));
 	var level = 1 * size.reciprocal.sqrt;
 	// Create positions array
-    var positions = Array.fill(100, { |i|
+    var positions = Array.fill(128, { |i|
         Select.kr(
             i < size,
             [
@@ -32,7 +32,7 @@ SynthDef.new(\output, {
     });
 
 
-	sig = In.ar(in, 100);
+	sig = In.ar(in, 128);
 	sig = Select.ar(\stereomix.kr(0),
 		[
 			sig,
