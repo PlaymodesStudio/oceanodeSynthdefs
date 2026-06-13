@@ -1,0 +1,209 @@
+var o, p;
+o = [
+	Event.prNew,  Array.prNew(4),  Event.prNew,  Array.prNew(64),  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vf",  ControlSpec.prNew,  LinearWarp.prNew,  "vf",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vf",  ControlSpec.prNew,  LinearWarp.prNew,  "output",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vf",  ControlSpec.prNew,  LinearWarp.prNew,  "vf",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vf",  ControlSpec.prNew,  LinearWarp.prNew,  "vf",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vf",  ControlSpec.prNew,  LinearWarp.prNew,  "vf"
+];
+p = [
+	// Event
+	0, [ array: o[1],  size: 1,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	1, [ 'specs',  o[2],  nil,  nil ],  
+	// Event
+	2, [ array: o[3],  size: 20,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	3, [ 'stepPitch',  o[4],  'stepArpSpeed',  o[7],  
+		nil,  nil,  'stepReverse',  o[10],  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  'stepCut',  o[13],  
+		'stepStut',  o[16],  nil,  nil,  
+		'stepArp',  o[19],  'stepRevSend',  o[22],  
+		'out',  o[25],  'stepRes',  o[28],  
+		'stepOn',  o[31],  'stepSliceEnd',  o[34],  
+		'stepEchoSend',  o[37],  'stepSliceOn',  o[40],  
+		nil,  nil,  'stepSliceStart',  o[43],  
+		nil,  nil,  'stepPan',  o[46],  
+		'stepVol',  o[49],  nil,  nil,  
+		'stepProb',  o[52],  'stepProbGroup',  o[55],  
+		'stepStutSpeed',  o[58],  'stepDecayOffset',  o[61] ],  
+	// ControlSpec
+	4, [ minval: -12,  maxval: 12,  
+		warp: o[5],  step: 0.0,  
+		default: 0,  units: o[6],  
+		grid: nil,  clipLo: -12,  
+		clipHi: 12 ],  
+	// LinearWarp
+	5, [ spec: o[4] ],  
+	// ControlSpec
+	7, [ minval: 0.0,  maxval: 127,  
+		warp: o[8],  step: 0.0,  
+		default: 4.0,  units: o[9],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 127.0 ],  
+	// LinearWarp
+	8, [ spec: o[7] ],  
+	// ControlSpec
+	10, [ minval: 0,  maxval: 1,  
+		warp: o[11],  step: 0.0,  
+		default: 0,  units: o[12],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	11, [ spec: o[10] ],  
+	// ControlSpec
+	13, [ minval: -1,  maxval: 1,  
+		warp: o[14],  step: 0.0,  
+		default: 0,  units: o[15],  
+		grid: nil,  clipLo: -1,  
+		clipHi: 1 ],  
+	// LinearWarp
+	14, [ spec: o[13] ],  
+	// ControlSpec
+	16, [ minval: 0,  maxval: 1,  
+		warp: o[17],  step: 0.0,  
+		default: 0,  units: o[18],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	17, [ spec: o[16] ],  
+	// ControlSpec
+	19, [ minval: 0,  maxval: 1,  
+		warp: o[20],  step: 0.0,  
+		default: 0,  units: o[21],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	20, [ spec: o[19] ],  
+	// ControlSpec
+	22, [ minval: 0,  maxval: 1,  
+		warp: o[23],  step: 0.0,  
+		default: 0,  units: o[24],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	23, [ spec: o[22] ],  
+	// ControlSpec
+	25, [ minval: 0.0,  maxval: 1.0,  
+		warp: o[26],  step: 0.0,  
+		default: 0.0,  units: o[27],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 1.0 ],  
+	// LinearWarp
+	26, [ spec: o[25] ],  
+	// ControlSpec
+	28, [ minval: 0,  maxval: 1,  
+		warp: o[29],  step: 0.0,  
+		default: 0,  units: o[30],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	29, [ spec: o[28] ],  
+	// ControlSpec
+	31, [ minval: 0,  maxval: 1,  
+		warp: o[32],  step: 0.0,  
+		default: 0,  units: o[33],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	32, [ spec: o[31] ],  
+	// ControlSpec
+	34, [ minval: 0,  maxval: 1,  
+		warp: o[35],  step: 0.0,  
+		default: 1,  units: o[36],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	35, [ spec: o[34] ],  
+	// ControlSpec
+	37, [ minval: 0,  maxval: 1,  
+		warp: o[38],  step: 0.0,  
+		default: 0,  units: o[39],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	38, [ spec: o[37] ],  
+	// ControlSpec
+	40, [ minval: 0,  maxval: 1,  
+		warp: o[41],  step: 0.0,  
+		default: 1,  units: o[42],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	41, [ spec: o[40] ],  
+	// ControlSpec
+	43, [ minval: 0,  maxval: 1,  
+		warp: o[44],  step: 0.0,  
+		default: 0,  units: o[45],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	44, [ spec: o[43] ],  
+	// ControlSpec
+	46, [ minval: -1,  maxval: 1,  
+		warp: o[47],  step: 0.0,  
+		default: 0,  units: o[48],  
+		grid: nil,  clipLo: -1,  
+		clipHi: 1 ],  
+	// LinearWarp
+	47, [ spec: o[46] ],  
+	// ControlSpec
+	49, [ minval: 0,  maxval: 1,  
+		warp: o[50],  step: 0.0,  
+		default: 1,  units: o[51],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	50, [ spec: o[49] ],  
+	// ControlSpec
+	52, [ minval: 0,  maxval: 1,  
+		warp: o[53],  step: 0.0,  
+		default: 1,  units: o[54],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	53, [ spec: o[52] ],  
+	// ControlSpec
+	55, [ minval: 0,  maxval: 99,  
+		warp: o[56],  step: 0.0,  
+		default: 0,  units: o[57],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 99 ],  
+	// LinearWarp
+	56, [ spec: o[55] ],  
+	// ControlSpec
+	58, [ minval: 0.25,  maxval: 64,  
+		warp: o[59],  step: 0.0,  
+		default: 4.0,  units: o[60],  
+		grid: nil,  clipLo: 0.25,  
+		clipHi: 64.0 ],  
+	// LinearWarp
+	59, [ spec: o[58] ],  
+	// ControlSpec
+	61, [ minval: -1,  maxval: 1,  
+		warp: o[62],  step: 0.0,  
+		default: 0,  units: o[63],  
+		grid: nil,  clipLo: -1,  
+		clipHi: 1 ],  
+	// LinearWarp
+	62, [ spec: o[61] ]
+];
+prUnarchive(o,p);

@@ -1,0 +1,64 @@
+var o, p;
+o = [
+	Event.prNew,  Array.prNew(24),  "IkedaBass",  "Ikeda-style_bass_synth_using_phase_modulation_technique",  
+	"",  "",  Event.prNew,  Array.prNew(16),  
+	ControlSpec.prNew,  LinearWarp.prNew,  "avf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "avf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"output",  ControlSpec.prNew,  LinearWarp.prNew,  "avf",  
+	"source",  "Source/Special"
+];
+p = [
+	// Event
+	0, [ array: o[1],  size: 7,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	1, [ 'name',  o[2],  'description',  o[3],  
+		'variables',  o[4],  'variableDimensions',  o[5],  
+		'specs',  o[6],  'type',  o[20],  
+		'category',  o[21],  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Event
+	6, [ array: o[7],  size: 4,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	7, [ 'levels',  o[8],  'harm',  o[11],  
+		'out',  o[14],  nil,  nil,  
+		'pitch',  o[17],  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// ControlSpec
+	8, [ minval: 0,  maxval: 1,  
+		warp: o[9],  step: 0.0,  
+		default: 0,  units: o[10],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	9, [ spec: o[8] ],  
+	// ControlSpec
+	11, [ minval: 1,  maxval: 20,  
+		warp: o[12],  step: 0.0,  
+		default: 8,  units: o[13],  
+		grid: nil,  clipLo: 1,  
+		clipHi: 20 ],  
+	// LinearWarp
+	12, [ spec: o[11] ],  
+	// ControlSpec
+	14, [ minval: 0.0,  maxval: 1.0,  
+		warp: o[15],  step: 0.0,  
+		default: 0.0,  units: o[16],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 1.0 ],  
+	// LinearWarp
+	15, [ spec: o[14] ],  
+	// ControlSpec
+	17, [ minval: 24,  maxval: 96,  
+		warp: o[18],  step: 0.0,  
+		default: 36,  units: o[19],  
+		grid: nil,  clipLo: 24,  
+		clipHi: 96 ],  
+	// LinearWarp
+	18, [ spec: o[17] ]
+];
+prUnarchive(o,p);

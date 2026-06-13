@@ -1,0 +1,207 @@
+var o, p;
+o = [
+	Event.prNew,  Array.prNew(24),  "FMPercRnd",  "Stochastic_percussive_FM_synth_—_manual_or_auto-random_timbre_per_hit",  
+	"",  "",  Event.prNew,  Array.prNew(64),  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vi",  ControlSpec.prNew,  LinearWarp.prNew,  "vf",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vf",  ControlSpec.prNew,  LinearWarp.prNew,  "vi",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "output",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vf",  ControlSpec.prNew,  LinearWarp.prNew,  "vf",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"d:Manual:Auto",  ControlSpec.prNew,  LinearWarp.prNew,  "vf",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "vf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "vi",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"vf",  "source",  "Source/Percussion"
+];
+p = [
+	// Event
+	0, [ array: o[1],  size: 7,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	1, [ 'name',  o[2],  'description',  o[3],  
+		'variables',  o[4],  'variableDimensions',  o[5],  
+		'specs',  o[6],  'type',  o[65],  
+		'category',  o[66],  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Event
+	6, [ array: o[7],  size: 19,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	7, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		'mratio',  o[8],  'miscale',  o[11],  
+		'gate',  o[14],  'mfatk',  o[17],  
+		'mfdec',  o[20],  'atk',  o[23],  
+		'decay',  o[26],  nil,  nil,  
+		nil,  nil,  'mhnum',  o[29],  
+		'miatk',  o[32],  nil,  nil,  
+		'out',  o[35],  nil,  nil,  
+		nil,  nil,  'mioff',  o[38],  
+		'pitch',  o[41],  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		'modindex',  o[44],  'level',  o[47],  
+		nil,  nil,  'rnd',  o[50],  
+		'peatk',  o[53],  'pedec',  o[56],  
+		'mhden',  o[59],  'midec',  o[62] ],  
+	// ControlSpec
+	8, [ minval: 0.5,  maxval: 8.0,  
+		warp: o[9],  step: 0.0,  
+		default: 2.0,  units: o[10],  
+		grid: nil,  clipLo: 0.5,  
+		clipHi: 8.0 ],  
+	// LinearWarp
+	9, [ spec: o[8] ],  
+	// ControlSpec
+	11, [ minval: -3,  maxval: 2,  
+		warp: o[12],  step: 0.0,  
+		default: -1.0,  units: o[13],  
+		grid: nil,  clipLo: -3,  
+		clipHi: 2 ],  
+	// LinearWarp
+	12, [ spec: o[11] ],  
+	// ControlSpec
+	14, [ minval: 0,  maxval: 1,  
+		warp: o[15],  step: 0.0,  
+		default: 0,  units: o[16],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	15, [ spec: o[14] ],  
+	// ControlSpec
+	17, [ minval: 0.001,  maxval: 0.5,  
+		warp: o[18],  step: 0.0,  
+		default: 0.002,  units: o[19],  
+		grid: nil,  clipLo: 0.001,  
+		clipHi: 0.5 ],  
+	// LinearWarp
+	18, [ spec: o[17] ],  
+	// ControlSpec
+	20, [ minval: 0.001,  maxval: 0.02,  
+		warp: o[21],  step: 0.0,  
+		default: 0.003,  units: o[22],  
+		grid: nil,  clipLo: 0.001,  
+		clipHi: 0.02 ],  
+	// LinearWarp
+	21, [ spec: o[20] ],  
+	// ControlSpec
+	23, [ minval: 0.001,  maxval: 0.01,  
+		warp: o[24],  step: 0.0,  
+		default: 0.002,  units: o[25],  
+		grid: nil,  clipLo: 0.001,  
+		clipHi: 0.01 ],  
+	// LinearWarp
+	24, [ spec: o[23] ],  
+	// ControlSpec
+	26, [ minval: 0.001,  maxval: 5.0,  
+		warp: o[27],  step: 0.0,  
+		default: 0.05,  units: o[28],  
+		grid: nil,  clipLo: 0.001,  
+		clipHi: 5.0 ],  
+	// LinearWarp
+	27, [ spec: o[26] ],  
+	// ControlSpec
+	29, [ minval: 1,  maxval: 5,  
+		warp: o[30],  step: 0.0,  
+		default: 3,  units: o[31],  
+		grid: nil,  clipLo: 1,  
+		clipHi: 5 ],  
+	// LinearWarp
+	30, [ spec: o[29] ],  
+	// ControlSpec
+	32, [ minval: 0.01,  maxval: 0.5,  
+		warp: o[33],  step: 0.0,  
+		default: 0.05,  units: o[34],  
+		grid: nil,  clipLo: 0.01,  
+		clipHi: 0.5 ],  
+	// LinearWarp
+	33, [ spec: o[32] ],  
+	// ControlSpec
+	35, [ minval: 0.0,  maxval: 1.0,  
+		warp: o[36],  step: 0.0,  
+		default: 0.0,  units: o[37],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 1.0 ],  
+	// LinearWarp
+	36, [ spec: o[35] ],  
+	// ControlSpec
+	38, [ minval: -2,  maxval: 4,  
+		warp: o[39],  step: 0.0,  
+		default: 0.0,  units: o[40],  
+		grid: nil,  clipLo: -2,  
+		clipHi: 4 ],  
+	// LinearWarp
+	39, [ spec: o[38] ],  
+	// ControlSpec
+	41, [ minval: 20,  maxval: 128,  
+		warp: o[42],  step: 0.0,  
+		default: 60,  units: o[43],  
+		grid: nil,  clipLo: 20,  
+		clipHi: 128 ],  
+	// LinearWarp
+	42, [ spec: o[41] ],  
+	// ControlSpec
+	44, [ minval: 0.0,  maxval: 4.0,  
+		warp: o[45],  step: 0.0,  
+		default: 1.0,  units: o[46],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 4.0 ],  
+	// LinearWarp
+	45, [ spec: o[44] ],  
+	// ControlSpec
+	47, [ minval: 0.0,  maxval: 1.0,  
+		warp: o[48],  step: 0.0,  
+		default: 0.6,  units: o[49],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 1.0 ],  
+	// LinearWarp
+	48, [ spec: o[47] ],  
+	// ControlSpec
+	50, [ minval: 0.0,  maxval: 1.0,  
+		warp: o[51],  step: 0.0,  
+		default: 0,  units: o[52],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 1.0 ],  
+	// LinearWarp
+	51, [ spec: o[50] ],  
+	// ControlSpec
+	53, [ minval: 0.001,  maxval: 0.02,  
+		warp: o[54],  step: 0.0,  
+		default: 0.002,  units: o[55],  
+		grid: nil,  clipLo: 0.001,  
+		clipHi: 0.02 ],  
+	// LinearWarp
+	54, [ spec: o[53] ],  
+	// ControlSpec
+	56, [ minval: 0.001,  maxval: 0.02,  
+		warp: o[57],  step: 0.0,  
+		default: 0.01,  units: o[58],  
+		grid: nil,  clipLo: 0.001,  
+		clipHi: 0.02 ],  
+	// LinearWarp
+	57, [ spec: o[56] ],  
+	// ControlSpec
+	59, [ minval: 1,  maxval: 5,  
+		warp: o[60],  step: 0.0,  
+		default: 2,  units: o[61],  
+		grid: nil,  clipLo: 1,  
+		clipHi: 5 ],  
+	// LinearWarp
+	60, [ spec: o[59] ],  
+	// ControlSpec
+	62, [ minval: 0.01,  maxval: 1.5,  
+		warp: o[63],  step: 0.0,  
+		default: 0.3,  units: o[64],  
+		grid: nil,  clipLo: 0.01,  
+		clipHi: 1.5 ],  
+	// LinearWarp
+	63, [ spec: o[62] ]
+];
+prUnarchive(o,p);

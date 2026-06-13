@@ -1,0 +1,72 @@
+var o, p;
+o = [
+	Event.prNew,  Array.prNew(24),  "SampleAndHold",  "Sample_and_Hold_with_edge/gate_modes_and_last-value_output",  
+	"",  "",  Event.prNew,  Array.prNew(16),  
+	ControlSpec.prNew,  LinearWarp.prNew,  "output",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "avf",  ControlSpec.prNew,  LinearWarp.prNew,  
+	ControlSpec.prNew,  LinearWarp.prNew,  "b",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "avi",  "source",  "Modulation/Utility"
+];
+p = [
+	// Event
+	0, [ array: o[1],  size: 7,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	1, [ 'name',  o[2],  'description',  o[3],  
+		'variables',  o[4],  'variableDimensions',  o[5],  
+		'specs',  o[6],  'type',  o[22],  
+		'category',  o[23],  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Event
+	6, [ array: o[7],  size: 5,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	7, [ 'last_mono',  o[8],  nil,  nil,  
+		'input',  o[11],  'output',  o[14],  
+		nil,  nil,  nil,  nil,  
+		'edge',  o[16],  'gate',  o[19] ],  
+	// ControlSpec
+	8, [ minval: 0.0,  maxval: 1.0,  
+		warp: o[9],  step: 0.0,  
+		default: 0.0,  units: o[10],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 1.0 ],  
+	// LinearWarp
+	9, [ spec: o[8] ],  
+	// ControlSpec
+	11, [ minval: -1,  maxval: 1,  
+		warp: o[12],  step: 0.0,  
+		default: 0,  units: o[13],  
+		grid: nil,  clipLo: -1,  
+		clipHi: 1 ],  
+	// LinearWarp
+	12, [ spec: o[11] ],  
+	// ControlSpec
+	14, [ minval: 0.0,  maxval: 1.0,  
+		warp: o[15],  step: 0.0,  
+		default: 0.0,  units: o[10],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 1.0 ],  
+	// LinearWarp
+	15, [ spec: o[14] ],  
+	// ControlSpec
+	16, [ minval: 0,  maxval: 1,  
+		warp: o[17],  step: 0.0,  
+		default: 1,  units: o[18],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	17, [ spec: o[16] ],  
+	// ControlSpec
+	19, [ minval: 0,  maxval: 1,  
+		warp: o[20],  step: 0.0,  
+		default: 0,  units: o[21],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	20, [ spec: o[19] ]
+];
+prUnarchive(o,p);

@@ -1,0 +1,85 @@
+var o, p;
+o = [
+	Event.prNew,  Array.prNew(24),  "MorphEnv",  "Flexible_morphing_envelope_generator",  
+	"",  "",  Event.prNew,  Array.prNew(32),  
+	ControlSpec.prNew,  LinearWarp.prNew,  "output",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "avi",  ControlSpec.prNew,  LinearWarp.prNew,  
+	"avf",  ControlSpec.prNew,  LinearWarp.prNew,  "avf",  
+	ControlSpec.prNew,  LinearWarp.prNew,  "avf",  ControlSpec.prNew,  
+	LinearWarp.prNew,  "avf",  "source",  "Modulation/Envelope"
+];
+p = [
+	// Event
+	0, [ array: o[1],  size: 7,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	1, [ 'name',  o[2],  'description',  o[3],  
+		'variables',  o[4],  'variableDimensions',  o[5],  
+		'specs',  o[6],  'type',  o[26],  
+		'category',  o[27],  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Event
+	6, [ array: o[7],  size: 6,  
+		proto: nil,  parent: nil,  
+		know: true ],  
+	// Array
+	7, [ 'out',  o[8],  nil,  nil,  
+		nil,  nil,  'trigger',  o[11],  
+		nil,  nil,  'skew',  o[14],  
+		'shape',  o[17],  nil,  nil,  
+		'levels',  o[20],  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		'timems',  o[23],  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// ControlSpec
+	8, [ minval: 0.0,  maxval: 1.0,  
+		warp: o[9],  step: 0.0,  
+		default: 0.0,  units: o[10],  
+		grid: nil,  clipLo: 0.0,  
+		clipHi: 1.0 ],  
+	// LinearWarp
+	9, [ spec: o[8] ],  
+	// ControlSpec
+	11, [ minval: 0,  maxval: 1,  
+		warp: o[12],  step: 0.0,  
+		default: 0,  units: o[13],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	12, [ spec: o[11] ],  
+	// ControlSpec
+	14, [ minval: 1e-05,  maxval: 0.99999,  
+		warp: o[15],  step: 0.0,  
+		default: 0.5,  units: o[16],  
+		grid: nil,  clipLo: 1e-05,  
+		clipHi: 0.99999 ],  
+	// LinearWarp
+	15, [ spec: o[14] ],  
+	// ControlSpec
+	17, [ minval: 0,  maxval: 1,  
+		warp: o[18],  step: 0.0,  
+		default: 0.5,  units: o[19],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	18, [ spec: o[17] ],  
+	// ControlSpec
+	20, [ minval: 0,  maxval: 1,  
+		warp: o[21],  step: 0.0,  
+		default: 1,  units: o[22],  
+		grid: nil,  clipLo: 0,  
+		clipHi: 1 ],  
+	// LinearWarp
+	21, [ spec: o[20] ],  
+	// ControlSpec
+	23, [ minval: 1,  maxval: 10000,  
+		warp: o[24],  step: 0.0,  
+		default: 1000,  units: o[25],  
+		grid: nil,  clipLo: 1,  
+		clipHi: 10000 ],  
+	// LinearWarp
+	24, [ spec: o[23] ]
+];
+prUnarchive(o,p);
